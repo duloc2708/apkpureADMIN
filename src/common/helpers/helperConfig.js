@@ -1,0 +1,56 @@
+module.exports = {
+    listMenuAccount: [
+        { id: 'tab_profile', name: 'Profile' },
+        { id: 'tab_info', name: 'Account Information' },
+        { id: 'tab_changePassword', name: 'Change Pasword' },
+        // { id: 'tab_settings', name: 'Settings' },
+        // { id: 'tab_security', name: 'Security' }
+    ],
+    betList: {
+        'Soccer': 'ic ic_mainmenu_soccer_active',
+        29: 'ic ic_mainmenu_soccer_active',
+        'Basketball': 'ic ic_mainmenu_basketball_active',
+        4: 'ic ic_mainmenu_basketball_active',
+        'Tennis': 'ic ic_mainmenu_tennis_active',
+        33: 'ic ic_mainmenu_tennis_active',
+        'E Sports': 'ic ic_mainmenu_esport_active',
+        12: 'ic ic_mainmenu_esport_active',
+        'Baseball': 'ic ic_mainmenu_baseball_active',
+        3: 'ic ic_mainmenu_baseball_active',
+        'Football': 'ic ic_mainmenu_football_active',
+        15: 'ic ic_mainmenu_football_active',
+        'Volleyball': 'ic ic_mainmenu_volleyball_active',
+        34: 'ic ic_mainmenu_volleyball_active',
+        'Badminton': 'ic ic_mainmenu_badminton_active',
+        1: 'ic ic_mainmenu_badminton_active'
+    },
+    mapKeyToType: {
+        11: 'BET',
+        1: 'DEBIT',
+        2: 'CREDIT',
+        3: 'BET',
+        4: 'BET',
+        5: 'REFUND',
+        8: 'BET',
+        6: 'TRANSFER',
+        7: 'TRANSFER',
+        9: 'DEBIT',
+        10: 'CREDIT',
+        12:'TRANSFER'
+    },
+    mapKeyToMark: {
+        11: 'VIRTUAL PLACE BET',
+        1: 'DEPOSIT',
+        2: 'WITHDRAWAL',
+        3: 'PLACE BET',
+        4: 'E BET',
+        5: 'REFUND',
+        6: 'P2PLAY DEPOSIT',
+        7: 'P2PLAY WITHDRAWAL',
+        8: 'P2PLAY GAMES',
+        9:'DEPOSIT WALLET',
+        10: 'WITHDRAWL WALLET',
+        12:'PAYMENT'
+    },
+    sideEU: [4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57],
+}
