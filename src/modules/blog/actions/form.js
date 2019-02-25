@@ -31,7 +31,7 @@ export const updateDataImageUploads = (files) => {
 export const downFileAPK = (item) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
-            let fileName = ''
+            let fileName = item.title_slug
             axios.get(`${Config.API_URL}articles/getfileapk`, { params: { namefile: fileName } })
                 .then((response) => {
                     resolve(response)
