@@ -107,7 +107,16 @@ class BlogFormView extends React.Component {
         this.props.openModalDetailPost(true)
     };
     downFile(item) {
-        this.props.downFileAPK(item)
+        let fileName = item.title_slug
+        fetch(`${Config.API_URL}articles/getfileapk?namefile=${fileName}`)
+            .then(res => {
+                console.log('res>>>>>>>', res.url);
+                const link = document.createElement('downloadgame');
+                link.href = res.url;
+                link.setAttribute('download', fileName); //or any other extension
+                link.click();
+            })
+        // this.props.downFileAPK(item)
     }
     render() {
 
