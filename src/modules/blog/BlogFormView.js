@@ -184,9 +184,11 @@ class BlogFormView extends React.Component {
                                                 <td>{type_name}</td>
                                                 <td>{created_id}</td>
                                                 <td>{status}</td>
-                                                <td><i
-                                                    onClick={() => this.downFile(item)}
-                                                    className="fa fa-download" aria-hidden="true"></i></td>
+                                                <td>
+                                                    <a href={`${Config.API_URL}articles/getfileapk?namefile=${fileName}`}>
+                                                        <i className="fa fa-download" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
                                                 <td><button
                                                     onClick={() => this.showRow(item)}
                                                     className="btn btn-warning btn-icon"
