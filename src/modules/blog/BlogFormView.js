@@ -175,7 +175,7 @@ class BlogFormView extends React.Component {
                             <tbody>
                                 {
                                     list_data.map((item, i) => {
-                                        let { id, thumbnail, title, tags, type_name, created_id, status } = item
+                                        let { id, thumbnail, title, tags, type_name, created_id, status, atr3 } = item
                                         return (
                                             <tr key={id}>
                                                 <td><ComponentImage cell={thumbnail} /></td>
@@ -185,7 +185,7 @@ class BlogFormView extends React.Component {
                                                 <td>{created_id}</td>
                                                 <td>{status}</td>
                                                 <td>
-                                                    <a href={`${Config.API_URL}articles/getfileapk?namefile=${item.title_slug}`}>
+                                                    <a href={`${Config.API_URL}articles/getfileapk?namefile=${item.title_slug}&mineType=${atr3}`}>
                                                         <i className="fa fa-download" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
