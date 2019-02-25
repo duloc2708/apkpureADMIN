@@ -32,12 +32,27 @@ export const downFileAPK = (item) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             let fileName = item.title_slug
-            axios.get(`${Config.API_URL}articles/getfileapk`, { params: { namefile: fileName } })
-                .then((response) => {
-                    resolve(response)
-                }, (err) => {
-                    reject(err)
+            fetch(`${Config.API_URL}articles/getfileapk?namefile=${fileName}`)
+                .then(res => {
+                    console.log('res>>>>>>>', res.url);
+                    const link = document.createElement('downloadgame');
+                    link.href = res.url;
+                    link.setAttribute('download', fileName + '_apksafety'); //or any other extension
+                    link.click();
+                    resolve(res)
                 })
+            // axios.get(`${Config.API_URL}articles/getfileapk`, { params: { namefile: fileName } })
+            //     .then((response) => {
+            //         const url = window.URL.createObjectURL(new Blob([response.data], { type: "application/vnd.android.package-archive" }));
+            //         const link = document.createElement('a');
+            //         link.href = url;
+            //         link.setAttribute('download', fileName); //or any other extension
+            //         document.body.appendChild(link);
+            //         link.click();
+            //         resolve(response)
+            //     }, (err) => {
+            //         reject(err)
+            //     })
         })
     }
 }
