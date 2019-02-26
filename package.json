@@ -5,8 +5,8 @@
   "description": "7Sport is a online betting brand, offering sports betting products and services to certain Asia Pacific markets. Our philosophy is to grow our business through deliver the best experience of sports betting to all our customers.",
   "scripts": {
     "start": "node server",
-    "dev": "set NODE_ENV=development ./node_modules/.bin/webpack --watch",
-    "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack",
+    "dev": "NODE_ENV=development ./node_modules/.bin/webpack --watch",
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack",
     "webpack": "set NODE_ENV=production ./node_modules/.bin/webpack",
     "test": "jest",
     "test:watch": "npm test -- --watch"
