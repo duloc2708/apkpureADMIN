@@ -72,7 +72,8 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("development"),
-                LOCALHOST_PHOTO:  JSON.stringify('http://localhost:1337/images/')
+                LOCALHOST_PHOTO:  JSON.stringify('http://localhost:1337/images/'),
+                API_URL:JSON.stringify('http://localhost:1337/api/')
             }
         }),
         // new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),

@@ -72,7 +72,9 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("production"),
-                LOCALHOST_PHOTO: JSON.stringify('http://api.apksafety.com/images/')
+                LOCALHOST_PHOTO: JSON.stringify('http://api.apksafety.com/images/'),
+                API_URL:JSON.stringify('http://api.apksafety.com/api/')
+
             }
         }),
         new webpack.optimize.UglifyJsPlugin({
