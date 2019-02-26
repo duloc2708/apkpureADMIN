@@ -185,7 +185,7 @@ class BlogFormView extends React.Component {
                                                 <td>{created_id}</td>
                                                 <td>{status}</td>
                                                 <td>
-                                                    <a href={`${Config.API_URL}articles/getfileapk?namefile=${item.title_slug}&mineType=${atr3}`}>
+                                                    <a href={`${Config.API_DOWNLOAD_FILE}articles/getfileapk?namefile=${item.title_slug}&mineType=${atr3}`}>
                                                         <i className="fa fa-download" aria-hidden="true"></i>
                                                     </a>
                                                 </td>

@@ -73,6 +73,7 @@ module.exports = {
             "process.env": {
                 NODE_ENV: JSON.stringify("development"),
                 LOCALHOST_PHOTO:  JSON.stringify('http://localhost:1337/images/'),
+                API_DOWNLOAD_FILE:JSON.stringify('http://localhost:1337/api/'),
                 API_URL:JSON.stringify('http://localhost:1337/api/')
             }
         }),
