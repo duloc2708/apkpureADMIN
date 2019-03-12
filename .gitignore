@@ -1,2 +1,3 @@
 node_modules/*
 ./settingVer.json
+./public/js/bootstrap.min.js
