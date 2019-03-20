@@ -1,9 +1,9 @@
 const INITIAL_STATE = {
     listMenu: [
         { routes: '/blog', key: 'blog', text: 'Blog', icon: 'fas fa-fw fa-tachometer-alt' },
-        // { routes: '/video', key: 'video', text: 'Video', icon: 'fas fa-fw fa-chart-area' },
-        // { routes: '/uploads', key: 'uploads', text: 'Upload', icon: 'fas fa-upload' },
-        { routes: '/listtype', key: 'listtype', text: 'Chuyên mục', icon: 'fas fa-fw fa-chart-area' }
+        { routes: '/listtype', key: 'listtype', text: 'Chuyên mục', icon: 'fas fa-fw fa-chart-area' },
+        { routes: '/leecher', key: 'leecher', text: 'Leecher game', icon: 'fas fa-link' }
+
     ]
 }
 const Reducer = (state = INITIAL_STATE, action) => {

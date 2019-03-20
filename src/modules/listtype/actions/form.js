@@ -54,6 +54,7 @@ export const editChuyenMuc = () => {
         return new Promise((resolve, reject) => {
             let { objData } = getState().listtype
             let objDataNew = _.clone(objData, true)
+            
             axios.post(`${Config.API_URL}listtype/update`, objDataNew)
                 .then((response) => {
                     let { StatusCode, Message } = response.data
