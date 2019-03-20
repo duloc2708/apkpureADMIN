@@ -92,6 +92,7 @@
     "webpack-dev-server": "^1.14.0"
   },
   "devDependencies": {
+    "bugsnag-js": "^4.7.3",
     "cheerio": "^1.0.0-rc.2",
     "jest": "^23.5.0",
     "react-bootstrap-table": "^4.3.1",

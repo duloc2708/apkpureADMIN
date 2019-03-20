@@ -16,6 +16,9 @@ const Routes = {
     },
     uploads: {
         view: '/uploads'
+    },
+    leecher: {
+        view: '/leecher'
     }
     
 }
