@@ -7,7 +7,7 @@ class LeecherFormView extends React.Component {
             result: []
         }
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.resetLeech()
     }
     _onGetLink() {
@@ -23,7 +23,7 @@ class LeecherFormView extends React.Component {
     }
     render() {
         let { url, isDisplay, data } = this.props.leecher
-        let { title, content_long, atr4 } = data
+        let { title, content_long, atr4, type, title_slug } = data
         console.log('data>>>>>>', data);
 
         return (
@@ -43,7 +43,7 @@ class LeecherFormView extends React.Component {
                     isDisplay ?
                         <div className="row">
                             <div className="col-md-12">
-                                <a href="#">Xem chi tiết</a>
+                                <a target="_blank" href={`${Config.API_URL_USER + type + '/' + title_slug}`}>Xem chi tiết</a>
                             </div>
                         </div>
                         : ''

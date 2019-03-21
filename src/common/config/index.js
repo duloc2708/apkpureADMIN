@@ -1,8 +1,8 @@
 export const DEFAULT_FOLDER = '/';
 export const DEFAULT_URL = 'http://localhost:1337';
-
 export const API_URL = process.env.API_URL
 export const API_DOWNLOAD_FILE = process.env.API_DOWNLOAD_FILE
+export const API_URL_USER = 'https://apksafety.com/'
 
 export const DEFAULT_DATE = '1900-01-01 00:00:00';
 export const TIMEOUT = 0;
