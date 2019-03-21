@@ -35,6 +35,7 @@ export const getListGame = () => {
             axios.post(`${Config.API_URL}getLink`, { url: url })
                 .then((response) => {
                     let { Data } = response.data
+                    alert('Cập nhật thành công')
                     dispatch({
                         type: GET_LINK_GAME,
                         payload: {
