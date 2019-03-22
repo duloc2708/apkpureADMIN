@@ -36,7 +36,9 @@ const INITIAL_STATE = {
         created_by: '',
         time_up: '',
         createdAt: timeDefault.getTime(),
-        updatedAt: timeDefault.getTime()
+        updatedAt: timeDefault.getTime(),
+        atr8: '', //SEO title
+        atr9: '', // SEO description
 
     },
     is_edit: false,
