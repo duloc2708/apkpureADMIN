@@ -5,7 +5,15 @@ class MenuNavView extends React.Component {
     }
     render() {
         const { pathname } = window.location
-        const { listMenu } = this.props.menuNav
+        const { listMenuUser, listMenuAdmin } = this.props.menuNav
+        let listMenu = listMenuUser
+        let userInfo = Helper._getCookie('userInfo')
+        if (userInfo) {
+            userInfo = JSON.parse(Helper._base64.decode(userInfo))
+            if (userInfo.username.toUpperCase() == "ADMIN") {
+                listMenu = listMenuAdmin
+            }
+        }
         return (
             < ul className="sidebar navbar-nav" >
                 {

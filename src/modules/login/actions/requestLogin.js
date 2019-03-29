@@ -19,11 +19,13 @@ const requestLogin = (params) => {
                     })
                     let { Data, Message, StatusCode } = response.data
                     if (StatusCode == 0 && Data) {
-                        Helper._setCookie('token', Data)
+                        let { token, userInfo } = Data
+                        Helper._setCookie('token', token)
+                        Helper._setCookie('userInfo', Helper._base64.encode(JSON.stringify(userInfo)))
                         dispatch({
                             type: LOGIN_SUCCESS,
                             payload: {
-                                token: Data
+                                token: token
                             }
                         })
                     } else {

@@ -19,6 +19,9 @@ const Routes = {
     },
     leecher: {
         view: '/leecher'
+    },
+    users: {
+        view: '/users'
     }
     
 }

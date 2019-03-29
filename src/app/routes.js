@@ -10,6 +10,7 @@ import VideoFormView from 'modules/video/VideoFormView'
 import UploadsFormView from 'modules/uploads/UploadsFormView'
 import BlogFormView from 'modules/blog/BlogFormView'
 import LeecherFormView from 'modules/leecher/LeecherFormView'
+import UsersFormView from 'modules/users/UsersFormView'
 
 
 const routes = (
@@ -19,6 +20,7 @@ const routes = (
         </Route>
         <Route component={AuthHoc(Backend)}>
             <Route component={HomeView} path={Routes.home.view}>
+                <Route component={UsersFormView} path={Routes.users.view}></Route>
                 <Route component={ListTypeFormView} path={Routes.listtype.view}></Route>
                 <Route component={LeecherFormView} path={Routes.leecher.view}></Route>
                 <Route component={VideoFormView} path={Routes.video.view}></Route>
