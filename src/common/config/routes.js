@@ -22,6 +22,9 @@ const Routes = {
     },
     users: {
         view: '/users'
+    },
+    pageservice: {
+        view: '/pageService'
     }
     
 }

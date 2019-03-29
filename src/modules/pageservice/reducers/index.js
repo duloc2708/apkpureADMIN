@@ -1,12 +1,12 @@
 import {
-    GET_LIST_DATA_USERS,
-    DELETE_USERS,
-    ADD_NEW_USERS,
-    GET_DETAIL_USERS,
-    OPEN_MODAL_DETAIL_USERS,
+    GET_LIST_DATA_PAGE_SERVICE,
+    DELETE_PAGE_SERVICE,
+    ADD_NEW_PAGE_SERVICE,
+    GET_DETAIL_PAGE_SERVICE,
+    OPEN_MODAL_DETAIL_PAGE_SERVICE,
     UPDATE_INPUT_DATA,
-    EDIT_ITEM_USERS,
-    CLEAR_DATA_USERS
+    EDIT_ITEM_PAGE_SERVICE,
+    CLEAR_DATA_PAGE_SERVICE
 } from '../types'
 
 const INITIAL_STATE = {
@@ -14,17 +14,14 @@ const INITIAL_STATE = {
     itemDetail: {},
     isOpen: false,
     objData: {
-        username: '',
-        fullname: '',
-        email: '',
-        status: 'active',
+        routes: '',
+        content: '',
+        title: '',
         id: ''
     },
     listHeader: [
-        { key: 'USERNAME', title: 'Username', type: 'text', class: '' },
-        { key: 'NAME', title: 'Tên user', type: 'text', class: '' },
-        { key: 'EMAIL', title: 'Email', type: 'text', class: '' },
-        { key: 'STATUS', title: 'Trạng thái', type: 'text', class: '' },
+        { key: 'TITLE', title: 'Title', type: 'text', class: '' },
+        { key: 'ROUTES', title: 'Routes name', type: 'text', class: '' },
         { key: 'EDIT', title: 'Cập nhật', type: 'text', class: '' },
         { key: 'DELETE', title: 'Xoá', type: 'text', class: '' }
     ],
@@ -32,11 +29,11 @@ const INITIAL_STATE = {
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case CLEAR_DATA_USERS:
+        case CLEAR_DATA_PAGE_SERVICE:
             return {
                 ...INITIAL_STATE
             }
-        case EDIT_ITEM_USERS:
+        case EDIT_ITEM_PAGE_SERVICE:
             return {
                 ...state,
                 ...action.payload
@@ -46,34 +43,33 @@ const Reducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 ...action.payload
             }
-        case OPEN_MODAL_DETAIL_USERS:
+        case OPEN_MODAL_DETAIL_PAGE_SERVICE:
             return {
                 ...state,
                 ...action.payload
             }
-        case DELETE_USERS:
+        case DELETE_PAGE_SERVICE:
             return {
                 ...state,
                 ...action.payload
             }
-        case ADD_NEW_USERS:
+        case ADD_NEW_PAGE_SERVICE:
             return {
                 ...state,
                 objData: {
-                    username: '',
-                    fullname: '',
-                    email: '',
-                    status: 'active',
+                    routes: '',
+                    content: '',
+                    title: '',
                     id: ''
                 },
                 isOpen: false,
             }
-        case GET_LIST_DATA_USERS:
+        case GET_LIST_DATA_PAGE_SERVICE:
             return {
                 ...state,
                 ...action.payload
             }
-        case GET_DETAIL_USERS:
+        case GET_DETAIL_PAGE_SERVICE:
             return {
                 ...state,
                 ...action.payload

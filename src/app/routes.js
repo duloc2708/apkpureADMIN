@@ -11,7 +11,7 @@ import UploadsFormView from 'modules/uploads/UploadsFormView'
 import BlogFormView from 'modules/blog/BlogFormView'
 import LeecherFormView from 'modules/leecher/LeecherFormView'
 import UsersFormView from 'modules/users/UsersFormView'
-
+import PageServiceFormView from 'modules/pageservice/PageServiceFormView'
 
 const routes = (
     <Route component={App}>
@@ -20,6 +20,7 @@ const routes = (
         </Route>
         <Route component={AuthHoc(Backend)}>
             <Route component={HomeView} path={Routes.home.view}>
+                <Route component={PageServiceFormView} path={Routes.pageservice.view}></Route>
                 <Route component={UsersFormView} path={Routes.users.view}></Route>
                 <Route component={ListTypeFormView} path={Routes.listtype.view}></Route>
                 <Route component={LeecherFormView} path={Routes.leecher.view}></Route>
