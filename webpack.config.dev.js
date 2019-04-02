@@ -28,20 +28,20 @@ module.exports = {
     },
     module: {
         loaders: [{
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    plugins: ['transform-decorators-legacy'],
-                    presets: ['react', 'es2015']
-                }
-            },
-            { test: /\.css$/, loader: "style-loader!css-loader" }, {
-                test: /\.(jpe?g|png|gif|svg|eot|svg|woff|woff2|ttf)$/i,
-                loaders: [
-                    'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
-                    'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
-                ]
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+                plugins: ['transform-decorators-legacy'],
+                presets: ['react', 'es2015']
             }
+        },
+        { test: /\.css$/, loader: "style-loader!css-loader" }, {
+            test: /\.(jpe?g|png|gif|svg|eot|svg|woff|woff2|ttf)$/i,
+            loaders: [
+                'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+                'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+            ]
+        }
         ]
     },
     resolve: {
@@ -72,9 +72,10 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("development"),
-                LOCALHOST_PHOTO:  JSON.stringify('http://localhost:1337/images/'),
-                API_DOWNLOAD_FILE:JSON.stringify('http://localhost:1337/api/'),
-                API_URL:JSON.stringify('http://localhost:1337/api/')
+                LOCALHOST_PHOTO: JSON.stringify('http://localhost:1337/images/'),
+                API_DOWNLOAD_FILE: JSON.stringify('http://localhost:1337/api/'),
+                API_URL: JSON.stringify('http://localhost:1337/api/'),
+                API_IMAGE: JSON.stringify('https://api.apksafety.com/api/image')
             }
         }),
         // new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),

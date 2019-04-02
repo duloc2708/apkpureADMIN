@@ -8,8 +8,8 @@ const ComponentImage = (props) => {
     if (cell.indexOf('image.winudf') != -1) {
         pathSrc = cell
     } else {
-        pathSrc = Config.LOCALHOST_PHOTO + cell;
-
+        pathSrc = Helper._getImageIndex(cell, 175, 175);
+ 
     }
     return (
         <img key={cell} width="100px" height="100px" src={`${pathSrc}`} alt={cell} />

@@ -69,8 +69,10 @@ import _filterOddForTodayEarly from './_filterOddForTodayEarly'
 import _customOddView from './_customOddView'
 import _updateItemFavourite from './_updateItemFavourite'
 import ChangeToSlug from './ChangeToSlug'
+import _getImageIndex from './_getImageIndex'
 
 export {
+    _getImageIndex,
     ChangeToSlug,
     _updateItemFavourite,
     _mapMessageStatusToClass,
