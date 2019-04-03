@@ -222,7 +222,7 @@ class BlogDetailFormView extends React.Component {
         let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp } = this.props.blog
         let { numWord, numChar, _id, title, content_long, content_short, status, image_large,
             image, time_up, type, type_code, tags, listTagOld,
-            displayAddNew, url, levels, atr8, atr9 } = objData
+            displayAddNew, url, levels, atr8, atr9, atr10 } = objData
         let jobTypes = [{
             value: 'active',
             text: 'Publish'
@@ -285,7 +285,20 @@ class BlogDetailFormView extends React.Component {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <label>Link tải file apk</label>
+                                        <input type="text"
+                                            className="form-control"
+                                            value={atr10}
+                                            onChange={(event) => this.handleInput(event)}
+                                            name="atr10"
+                                            id="atr10"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <div className="form-group">
                                 <label>Nội dung</label>
                                 <input id="my-file" type="file" style={{ display: "none" }} name="my-file" />

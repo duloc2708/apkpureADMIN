@@ -38,7 +38,8 @@ const INITIAL_STATE = {
         createdAt: timeDefault.getTime(),
         updatedAt: timeDefault.getTime(),
         atr8: '', //SEO title
-        atr9: '', // SEO description
+        atr9: '', // SEO description,
+        atr10: '', // link down apk pure
 
     },
     is_edit: false,
