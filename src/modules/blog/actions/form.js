@@ -14,6 +14,65 @@ import {
     UPDATE_DATEIME_UP
 } from '../types'
 const { LOCALHOST_PHOTO } = Config
+export const uploadListImageNew = () => {
+    return (dispatch, getState) => {
+        let { listSlide } = getState().blog
+        let listSlideTemp = []
+        listSlide.map(item => {
+            if (item.type == 'upload') {
+                listSlideTemp.push({ filename: item.filename, base64: item.url })
+            }
+        })
+        return new Promise((resolve, reject) => {
+            if (listSlideTemp.length > 0) {
+                axios.post(`${Config.API_URL}articles/upload_list_slide`, { data: listSlideTemp })
+                    .then((response) => {
+                        resolve(response)
+                    }, (err) => {
+                        reject(err)
+                    })
+            } else {
+                resolve(UPDATE_INPUT_DATA)
+            }
+        })
+    }
+}
+export const removeImageToSlide = (item) => {
+    return (dispatch, getState) => {
+        let { listSlide } = getState().blog
+        let slide = _.clone(listSlide, true)
+        slide = slide.filter(x => x.index != item.index)
+        return new Promise((resolve, reject) => {
+            dispatch({
+                type: UPDATE_INPUT_DATA,
+                payload: {
+                    listSlide: slide
+                }
+            })
+        })
+
+    }
+}
+export const addImageToSlide = (files) => {
+    return (dispatch, getState) => {
+        let { listSlide, lengthSlide, objData } = getState().blog
+        let slide = _.clone(listSlide, true)
+        let filename = objData.title_slug + '-screen-' + lengthSlide
+        let objImage = { index: lengthSlide, type: 'upload', url: files, fullfilename: filename + '.jpg', filename: filename }
+        slide.push(objImage);
+        return new Promise((resolve, reject) => {
+            dispatch({
+                type: UPDATE_INPUT_DATA,
+                payload: {
+                    listSlide: slide,
+                    lengthSlide: lengthSlide + 1
+                }
+            })
+        })
+
+    }
+}
+
 export const updateDataImageUploads = (files) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
@@ -135,7 +194,7 @@ export const relaceAllImageContent = (data, title) => {
 }
 export const updateBlog = () => {
     return (dispatch, getState) => {
-        const { listTypeDefault, objData,
+        const { listSlide, listTypeDefault, objData,
             listTagsDefault, dateTimeUp, objImageUpload, is_edit } = getState().blog
         const objImage = _.clone(objImageUpload, true)
         let objData_temp = _.clone(objData, true)
@@ -185,6 +244,18 @@ export const updateBlog = () => {
         objData_temp['list_image'] = infoContent.list_image
         //==============UPDATE CONTENT, IMAGE
 
+
+        if (listSlide.length > 0) {
+            let str = ''
+            listSlide.map(item => {
+                str = str + item.fullfilename + ','
+            })
+            if (str) {
+                str = str.substr(0, str.length - 1)
+            }
+            objData_temp['atr7'] = str
+        }
+        dispatch(uploadListImageNew())
         return new Promise((resolve, reject) => {
             axios.post(`${Config.API_URL}articles/add`, objData_temp)
                 .then((response) => {
@@ -336,12 +407,20 @@ export const changeInputContent = (numWord, numChar, content) => {
 }
 export const changeRowEditPost = (item) => {
     return (dispatch, getState) => {
+        let listSlide = []
+        if (item.atr7) {
+            item.atr7.split(',').map((item, i) => {
+                listSlide.push({ index: i, type: "default", url: item, fullfilename: item, filename: item })
+            })
+        }
         dispatch({
             type: EDIT_POST,
             payload: {
                 objData: item,
                 is_edit: true,
-                isOpen: true
+                isOpen: true,
+                listSlide: listSlide,
+                lengthSlide: listSlide.length
             }
         })
     }

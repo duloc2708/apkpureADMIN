@@ -75,7 +75,7 @@ module.exports = {
                 LOCALHOST_PHOTO: JSON.stringify('http://localhost:1337/images/'),
                 API_DOWNLOAD_FILE: JSON.stringify('http://localhost:1337/api/'),
                 API_URL: JSON.stringify('http://localhost:1337/api/'),
-                API_IMAGE: JSON.stringify('https://api.apksafety.com/api/image')
+                API_IMAGE: JSON.stringify('http://localhost:1337/api/image')
             }
         }),
         // new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),

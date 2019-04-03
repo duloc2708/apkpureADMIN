@@ -3,6 +3,9 @@ import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-
 var TinyMCEInput = require('react-tinymce-input');
 import * as blogActions from 'modules/blog/actions/form'
 import UploadAvatar from './UploadAvatar'
+import FormUploadSlide from './FormUploadSlide'
+import { isBuffer } from 'util';
+
 class BlogDetailFormView extends React.Component {
     constructor(props) {
         super(props);
@@ -72,6 +75,9 @@ class BlogDetailFormView extends React.Component {
         let { objData } = this.props.blog
         let objDataTemp = _.clone(objData, true)
         objDataTemp[id] = value
+        if (id == 'title') {
+            objDataTemp['title_slug'] = Helper.ChangeToSlug(value)
+        }
         this.props.updateInputItem(objDataTemp)
         // this.setState({ [name]: value });
     }
@@ -117,27 +123,6 @@ class BlogDetailFormView extends React.Component {
             name: typename.value.trim(),
             slug: Helper.ChangeToSlug(typename.value)
         };
-        // fetch(URL_AUTH_API + '/typearticles_insert', {
-        //     method: 'post',
-        //     headers: {
-        //         'Accept': 'application/json, text/plain, */*',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(obj)
-        // })
-        //     .then(res => {
-        //         let obj = {
-        //             type: typecode.value,
-        //             text: typename.value,
-        //             value: false
-        //         };
-        //         let listobj = this.props.blog.loadlisttype;
-        //         listobj.push(obj);
-        //         var descending = listobj.sort((a, b) => Number(b.id) - Number(a.id));
-        //         this.setState({ loadlisttype: descending });
-        //         alert('Lưu thành công')
-        //     })
-
     }
     AddTag() {
         if (this.refs.tag.value.length > 0) {
@@ -219,10 +204,10 @@ class BlogDetailFormView extends React.Component {
         // this.props.convertListCheckType(filteredAry)
     }
     render() {
-        let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp } = this.props.blog
+        let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp, listSlide } = this.props.blog
         let { numWord, numChar, _id, title, content_long, content_short, status, image_large,
             image, time_up, type, type_code, tags, listTagOld,
-            displayAddNew, url, levels, atr8, atr9, atr10 } = objData
+            displayAddNew, url, levels, atr7, atr8, atr9, atr10 } = objData
         let jobTypes = [{
             value: 'active',
             text: 'Publish'
@@ -298,6 +283,9 @@ class BlogDetailFormView extends React.Component {
                                         />
                                     </div>
                                 </div>
+                            </div>
+                            <div className="form-group">
+                                <FormUploadSlide />
                             </div>
                             <div className="form-group">
                                 <label>Nội dung</label>

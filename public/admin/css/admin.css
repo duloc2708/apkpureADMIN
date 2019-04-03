@@ -552,3 +552,35 @@ background-color: white
 .table-borderless th {
     border: 0;
 }
+
+.slide-image {
+  border: 0px solid #90bade;
+  height: 200px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: scroll;
+}
+
+.slide-image li {
+  float: left;
+}
+
+.slide-image li  a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.image-slide-item {
+  position: relative;
+}
+.btn-delete {
+  position: absolute;
+  left: 100%;
+  margin-left: -10px;
+  margin-top: 2px;
+  cursor: pointer;
+}

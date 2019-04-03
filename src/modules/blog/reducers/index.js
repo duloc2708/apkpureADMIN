@@ -58,7 +58,9 @@ const INITIAL_STATE = {
         { key: 'DOWWFILE', title: 'Tải file', type: 'text', class: '' },
         { key: 'EDIT', title: 'Cập nhật', type: 'text', class: '' },
         { key: 'DELETE', title: 'Xoá', type: 'text', class: '' },
-    ]
+    ],
+    lengthSlide: 0,
+    listSlide: []
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
