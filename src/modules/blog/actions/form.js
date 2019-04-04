@@ -244,10 +244,13 @@ export const updateBlog = () => {
         objData_temp['list_image'] = infoContent.list_image
         //==============UPDATE CONTENT, IMAGE
 
-
+        let slide_image_default = ''
         if (listSlide.length > 0) {
             let str = ''
-            listSlide.map(item => {
+            listSlide.map((item, i) => {
+                if (i == 0) {
+                    slide_image_default = item.fullfilename
+                }
                 str = str + item.fullfilename + ','
             })
             if (str) {
@@ -255,6 +258,10 @@ export const updateBlog = () => {
             }
             objData_temp['atr7'] = str
         }
+        if (!objData_temp.atr4) {
+            objData_temp['atr4'] = slide_image_default
+        }
+        console.log('objData_temp>>>>>', objData_temp);
         dispatch(uploadListImageNew())
         return new Promise((resolve, reject) => {
             axios.post(`${Config.API_URL}articles/add`, objData_temp)
