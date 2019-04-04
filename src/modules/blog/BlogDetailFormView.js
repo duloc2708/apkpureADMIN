@@ -207,7 +207,7 @@ class BlogDetailFormView extends React.Component {
         let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp, listSlide } = this.props.blog
         let { numWord, numChar, _id, title, content_long, content_short, status, image_large,
             image, time_up, type, type_code, tags, listTagOld,
-            displayAddNew, url, levels, atr7, atr8, atr9, atr10 } = objData
+            displayAddNew, url, levels, atr7,atr5, atr6, atr8, atr9, atr10 } = objData
         let jobTypes = [{
             value: 'active',
             text: 'Publish'
@@ -284,6 +284,31 @@ class BlogDetailFormView extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <label>Version</label>
+                                        <input type="text"
+                                            className="form-control"
+                                            value={atr6}
+                                            onChange={(event) => this.handleInput(event)}
+                                            name="atr6"
+                                            id="atr6"
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label>Size apk</label>
+                                        <input type="text"
+                                            className="form-control"
+                                            value={atr5}
+                                            onChange={(event) => this.handleInput(event)}
+                                            name="atr5"
+                                            id="atr5"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="form-group">
                                 <FormUploadSlide />
                             </div>

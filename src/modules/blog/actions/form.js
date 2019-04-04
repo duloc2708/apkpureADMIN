@@ -261,7 +261,6 @@ export const updateBlog = () => {
         if (!objData_temp.atr4) {
             objData_temp['atr4'] = slide_image_default
         }
-        console.log('objData_temp>>>>>', objData_temp);
         dispatch(uploadListImageNew())
         return new Promise((resolve, reject) => {
             axios.post(`${Config.API_URL}articles/add`, objData_temp)
