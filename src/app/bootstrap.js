@@ -13,7 +13,7 @@ const customHistory = ReactRouter.useRouterHistory(createHistory)({
 });
 // moment.tz.setDefault('Asia/Taipei') //set default client timezone
 const routingMiddleware = ReactRouterRedux.routerMiddleware(customHistory)
-const createStoreWithMiddleware = Redux.applyMiddleware(reduxThunk, routingMiddleware, loggerMiddleware)(Redux.createStore)
+const createStoreWithMiddleware = Redux.applyMiddleware(reduxThunk, routingMiddleware)(Redux.createStore)
 const store = createStoreWithMiddleware(reducers)
 const history = ReactRouterRedux.syncHistoryWithStore(customHistory, store)
 //set interceptors response

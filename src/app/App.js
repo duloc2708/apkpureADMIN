@@ -1,6 +1,5 @@
 class App extends React.Component {
     componentDidMount() {
-        Helper.DisableWebKeyboard()
     }
     
     render() {

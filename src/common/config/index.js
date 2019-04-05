@@ -22,11 +22,7 @@ export const TIME_COUNT_DOWN_REFRESH = {
     2: 75,
     5: 75
 }
-export const v1 = 'get'
-export const v2 = 'getV2'
-export const siteWidth = 1366
+
 export const zoneLocal = moment().format('Z') //'+08:00'
-export const zoneSend = '-03:00'
-export const graphicCode = '7S'
 export const domainID = 1
 export const LOCALHOST_PHOTO = process.env.LOCALHOST_PHOTO

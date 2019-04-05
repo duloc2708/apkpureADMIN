@@ -58,12 +58,6 @@ module.exports = {
             Routes$: path.resolve(__dirname, 'src/common/config/routes.js'),
             ScriptHOC$: path.resolve(__dirname, 'src/common/hoc/Script.js'),
             //component
-            Loader$: path.resolve(__dirname, 'src/common/components/Loader.js'),
-            LoaderSidebar$: path.resolve(__dirname, 'src/common/components/LoaderSidebar.js'),
-            Single$: path.resolve(__dirname, 'src/common/components/Single.js'),
-            Double$: path.resolve(__dirname, 'src/common/components/Double.js'),
-            SingleTicket$: path.resolve(__dirname, 'src/common/components/SingleTicket.js'),
-            ComponentResetSidebar$: path.resolve(__dirname, 'src/common/components/ComponentResetSidebar.js'),
             ButtonAddNew$: path.resolve(__dirname, 'src/common/components/ButtonAddNew.js'),
             //end component
         }
@@ -103,7 +97,6 @@ module.exports = {
 
             //conf
             'Config': 'Config',
-            'SportConfig': 'SportConfig',
             'Check': 'Check',
             'Helper': 'Helper',
             'Routes': 'Routes',
@@ -111,12 +104,6 @@ module.exports = {
             //end conf
 
             //component
-            'Loader': 'Loader',
-            'LoaderSidebar': 'LoaderSidebar',
-            'Single': 'Single',
-            'Double': 'Double',
-            'SingleTicket': 'SingleTicket',
-            'ComponentResetSidebar': 'ComponentResetSidebar',
             'ButtonAddNew': 'ButtonAddNew'
             //end component
         })
