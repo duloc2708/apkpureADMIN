@@ -9,7 +9,7 @@ const ComponentImage = (props) => {
         pathSrc = cell
     } else {
         pathSrc = Helper._getImageIndex(cell, 175, 175);
- 
+
     }
     return (
         <img key={cell} width="100px" height="100px" src={`${pathSrc}`} alt={cell} />
@@ -118,6 +118,17 @@ class BlogFormView extends React.Component {
             })
         // this.props.downFileAPK(item)
     }
+    search() {
+        this.props.filterData()
+    }
+    changeInputSearch(e) {
+        this.props.changeInputSearch(e.target.value)
+    }
+    _onKeyPress(e) {
+        if (e.key == 'Enter') {
+            this.props.filterData()
+        }
+    }
     render() {
 
         let jobTypes = [{
@@ -147,7 +158,7 @@ class BlogFormView extends React.Component {
             onDeleteRow: this.onDeleteRow,
             paginationPosition: 'bottom'
         };
-        let { list_data, isOpen, listHeader } = this.props.blog
+        let { list_data, isOpen, listHeader, fieldSearch } = this.props.blog
         return (
             <div style={{ "margin": "10px", "marginBottom": "50px", "height": "500px" }} >
                 {isOpen
@@ -159,6 +170,25 @@ class BlogFormView extends React.Component {
                 {!isOpen
                     ?
                     <div className="table-responsive" style={{ "marginTop": "10px" }}>
+                        <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <input type="text"
+                                        className="form-control"
+                                        value={fieldSearch}
+                                        onChange={(event) => this.changeInputSearch(event)}
+                                        name="fieldSearch"
+                                        id="fieldSearch"
+                                        onKeyPress={this._onKeyPress.bind(this)} />
+
+                                </div>
+                                <div className="col-md-6">
+                                    <button type='button' onClick={() => this.search()}> Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <table className="table">
                             <thead>
                                 <tr>

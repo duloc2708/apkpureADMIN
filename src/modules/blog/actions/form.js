@@ -127,6 +127,37 @@ export const uploadImageAvatarAPI = (obj) => {
         })
     }
 }
+
+export const filterData = () => {
+    return (dispatch, getState) => {
+        let { fieldSearch, list_data, list_data_default } = getState().blog
+        let results = []
+        if (!fieldSearch) {
+            results = list_data_default
+        } else {
+            let list_dataTemp = _.clone(list_data, true)
+            results = list_dataTemp.filter(function (item) {
+                return item.title.toLowerCase().indexOf(fieldSearch.toLowerCase()) >= 0;
+            });
+        }
+        dispatch({
+            type: GET_LIST_DATA_POST,
+            payload: {
+                list_data: results
+            }
+        })
+    }
+}
+export const changeInputSearch = (value) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: UPDATE_INPUT_DATA,
+            payload: {
+                fieldSearch: value
+            }
+        })
+    }
+}
 export const insertTags = (data) => {
     return (dispatch, getState) => {
         dispatch({
@@ -318,7 +349,8 @@ export const getListDataBlog = () => {
                     dispatch({
                         type: GET_LIST_DATA_POST,
                         payload: {
-                            list_data: Data || []
+                            list_data: Data || [],
+                            list_data_default: Data || []
                         }
                     })
                     resolve(response)

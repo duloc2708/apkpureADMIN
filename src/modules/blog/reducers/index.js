@@ -17,6 +17,7 @@ const timeDefault = new Date()
 const INITIAL_STATE = {
     loadlisttype: [],
     list_data: [],
+    list_data_default: [],
     itemDetail: {},
     isOpen: false,
     objData: {
@@ -60,7 +61,8 @@ const INITIAL_STATE = {
         { key: 'DELETE', title: 'Xoá', type: 'text', class: '' },
     ],
     lengthSlide: 0,
-    listSlide: []
+    listSlide: [],
+    fieldSearch: ''
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
