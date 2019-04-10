@@ -72,10 +72,14 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("production"),
-                LOCALHOST_PHOTO: JSON.stringify('http://api.apksafety.com/images/'),
+                // LOCALHOST_PHOTO: JSON.stringify('http://api.apksafety.com/images/'),
+                // API_DOWNLOAD_FILE: JSON.stringify('http://apkverified.com/api/'),
+                // API_URL: JSON.stringify('http://api.apksafety.com/api/'),
+                // API_IMAGE: JSON.stringify('https://api.apksafety.com/api/image')
+                LOCALHOST_PHOTO: JSON.stringify('http://66.42.62.21:3004/images/'),
                 API_DOWNLOAD_FILE: JSON.stringify('http://apkverified.com/api/'),
-                API_URL: JSON.stringify('http://api.apksafety.com/api/'),
-                API_IMAGE: JSON.stringify('https://api.apksafety.com/api/image')
+                API_URL: JSON.stringify('http://66.42.62.21:1337/api/'),
+                API_IMAGE: JSON.stringify('http://66.42.62.21:1337/api/image')
             }
         }),
         new webpack.optimize.UglifyJsPlugin({
