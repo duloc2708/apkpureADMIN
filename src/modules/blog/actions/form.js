@@ -86,6 +86,20 @@ export const updateDataImageUploads = (files) => {
 
     }
 }
+export const updateDataSlideImageUploads = (files) => {
+    console.log('updateDataSlideImageUploads>>>>>>>>>>', files);
+    return (dispatch, getState) => {
+        return new Promise((resolve, reject) => {
+            dispatch({
+                type: UPDATE_INPUT_DATA,
+                payload: {
+                    objImageSlideUpload: files
+                }
+            })
+        })
+
+    }
+}
 
 export const downFileAPK = (item) => {
     return (dispatch, getState) => {
@@ -115,14 +129,19 @@ export const downFileAPK = (item) => {
         })
     }
 }
-export const uploadImageAvatarAPI = (obj) => {
+export const uploadImageAvatarAPI = (objAvatar, objSlide) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
-            axios.post(`${Config.API_URL}articles/upload_avatar`, obj)
+            let listAPI = []
+            if (objAvatar) {
+                listAPI.push(axios.post(`${Config.API_URL}articles/upload_avatar`, objAvatar))
+            }
+            if (objSlide) {
+                listAPI.push(axios.post(`${Config.API_URL}articles/upload_slide`, objSlide))
+            }
+            Promise.all(listAPI)
                 .then((response) => {
                     resolve(response)
-                }, (err) => {
-                    reject(err)
                 })
         })
     }
@@ -226,8 +245,10 @@ export const relaceAllImageContent = (data, title) => {
 export const updateBlog = () => {
     return (dispatch, getState) => {
         const { listSlide, listTypeDefault, objData,
-            listTagsDefault, dateTimeUp, objImageUpload, is_edit } = getState().blog
+            listTagsDefault, dateTimeUp, objImageUpload, objImageSlideUpload, is_edit } = getState().blog
         const objImage = _.clone(objImageUpload, true)
+        const objImageSlide = _.clone(objImageSlideUpload, true)
+
         let objData_temp = _.clone(objData, true)
         let slug = Helper.ChangeToSlug(objData_temp.title)
 
@@ -269,6 +290,17 @@ export const updateBlog = () => {
         }
         //==============UPDATE THUMBNAIL
 
+
+        //==============UPDATE THUMBNAIL
+        if (objImageSlide) {
+            let link = objImageSlide.replace('!', ',');
+            let dataImg = link.split(';base64,').pop()
+            let type = link.split(';')[0].split('/')[1]
+            let thumbnail = `slide_${slug}.` + type
+            objData_temp['atr11'] = thumbnail
+        }
+        //==============UPDATE THUMBNAIL
+
         //==============UPDATE CONTENT, IMAGE
         let infoContent = relaceAllImageContent(objData_temp.content_long, objData_temp.title)
         objData_temp['content_long'] = infoContent.content
@@ -302,8 +334,11 @@ export const updateBlog = () => {
                         resolve(response)
                     } else {
                         //==============UPDATE AVATAR
-                        if (objImage) {
-                            dispatch(uploadImageAvatarAPI({ filename: `thumnail_${slug}`, image: objImage })).then(resUpload => {
+                        if (objImage || objImageSlide) {
+                            dispatch(uploadImageAvatarAPI(
+                                { filename: `thumnail_${slug}`, image: objImage },
+                                { filename: `slide_${slug}`, image: objImageSlide })
+                            ).then(resUpload => {
                                 dispatch({
                                     type: CLEAR_DATA_POST,
                                     payload: null

@@ -40,7 +40,8 @@ const INITIAL_STATE = {
         updatedAt: timeDefault.getTime(),
         atr8: '', //SEO title
         atr9: '', // SEO description,
-        atr10: '', // link down apk pure
+        atr10: '', // link down apk pure,
+        atr11: '', // slide image firts
 
     },
     is_edit: false,
@@ -49,6 +50,7 @@ const INITIAL_STATE = {
     listTagsDefault: [],
     dateTimeUp: new Date(),
     objImageUpload: '',
+    objImageSlideUpload: '',
     listHeader: [
         { key: 'THUMB', title: 'Hình đại diện', type: 'text', class: '' },
         { key: 'TITLE', title: 'Tiêu đề', type: 'text', class: '' },
@@ -62,7 +64,8 @@ const INITIAL_STATE = {
     ],
     lengthSlide: 0,
     listSlide: [],
-    fieldSearch: ''
+    fieldSearch: '',
+    typeUpload: ''
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {

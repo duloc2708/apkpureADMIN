@@ -3,6 +3,7 @@ import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-
 var TinyMCEInput = require('react-tinymce-input');
 import * as blogActions from 'modules/blog/actions/form'
 import UploadAvatar from './UploadAvatar'
+import SlideUpload from './SlideUpload'
 import FormUploadSlide from './FormUploadSlide'
 import { isBuffer } from 'util';
 
@@ -207,7 +208,7 @@ class BlogDetailFormView extends React.Component {
         let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp, listSlide } = this.props.blog
         let { numWord, numChar, _id, title, content_long, content_short, status, image_large,
             image, time_up, type, type_code, tags, listTagOld,
-            displayAddNew, url, levels, atr7,atr5, atr6, atr8, atr9, atr10 } = objData
+            displayAddNew, url, levels, atr7, atr5, atr6, atr8, atr9, atr10 } = objData
         let jobTypes = [{
             value: 'active',
             text: 'Publish'
@@ -364,6 +365,8 @@ class BlogDetailFormView extends React.Component {
                         <div className="col-sm-4">
                             <label> Hình đại diện </label>
                             <UploadAvatar />
+                            <label> Slide đại diện </label>
+                            <SlideUpload />
                             <label>Trạng thái</label>
                             <select className="form-control" value={status} onChange={(e) => this.handleChangeStatus(e)} >
                                 <option value="active">Publish</option>
@@ -432,7 +435,6 @@ class BlogDetailFormView extends React.Component {
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
         )
