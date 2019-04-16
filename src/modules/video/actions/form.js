@@ -11,8 +11,22 @@ import {
     CONVERT_LIST_PLAY_LIST,
     SHOW_PLAY_LIST,
     EDIT_VIDEO,
-    UPDATE_THUMBNAIL_VIDEO
+    UPDATE_THUMBNAIL_VIDEO,
+    INSERT_TAGS_VIDEO
 } from '../types'
+export const updateDataImageUploads = (files) => {
+    return (dispatch, getState) => {
+        return new Promise((resolve, reject) => {
+            dispatch({
+                type: UPDATE_INPUT_DATA,
+                payload: {
+                    objImageUpload: files
+                }
+            })
+        })
+
+    }
+}
 // const { Config.API_URL, DOMAIN_READ_ARTICLE, LOCALHOST_PHOTO, URL_UPLOAD, URL_UPLOAD_THUMBAIL, PROD } = ConstantProject
 
 // export const updateThumbnail = (name, files) => {
@@ -51,13 +65,6 @@ export const changeRowEditVideo = (item) => {
                 list_play_temp = data
             }
         }
-        let converListTag = []
-        if (item.tags.length > 0) {
-            converListTag = item.tags.split(',').map(function (n) {
-                return { "name": n };
-            });
-        }
-        item["tags"] = converListTag
         dispatch({
             type: EDIT_VIDEO,
             payload: {
@@ -133,7 +140,7 @@ export const getListPlayList = () => {
 export const deleteVideo = (id) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
-            axios.get(`${Config.API_URL}/api/videos_delete`, { params: { id: id } })
+            axios.get(`${Config.API_URL}video/delete`, { params: { id: id } })
                 .then((response) => {
                     resolve(response)
                 }, (err) => {
@@ -162,63 +169,122 @@ export const getListDataVideo = () => {
         })
     }
 }
-export const addVideo = (data) => {
+export const uploadImageAvatarAPI = (objAvatar, objSlide) => {
     return (dispatch, getState) => {
-        let { objData, is_edit, list_play_default } = getState().video
+        return new Promise((resolve, reject) => {
+            let listAPI = []
+            if (objAvatar) {
+                listAPI.push(axios.post(`${Config.API_URL}post/upload_avatar`, objAvatar))
+            }
+            if (objSlide) {
+                listAPI.push(axios.post(`${Config.API_URL}post/upload_slide`, objSlide))
+            }
+            Promise.all(listAPI)
+                .then((response) => {
+                    resolve(response)
+                })
+        })
+    }
+}
+export const insertTags = (data) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: INSERT_TAGS_VIDEO,
+            payload: {
+                listTagsDefault: data
+            }
+        })
+    }
+}
+export const initDefaultVideo = () => {
+    return (dispatch, getState) => {
+        const { objData } = getState().video
+        let listobj = [], convertListtype = [], convertListtags = [];
+        //=============INIT TAGS
+        if (objData.tags) {
+            console.log('objData.tags>>>>', objData.tags);
+
+            convertListtags = objData.tags.split(',')
+        }
+        //=============INIT TAGS
+        dispatch({
+            type: INSERT_TAGS_VIDEO,
+            payload: {
+                listTagsDefault: convertListtags
+            }
+        })
+    }
+}
+export const addVideo = () => {
+    return (dispatch, getState) => {
+        let { listTagsDefault, objData, is_edit, list_play_default, objImageUpload } = getState().video
         let objData_temp = _.clone(objData, true)
-        // Lay list tag
-        let tagTemp = [];
-        if (objData_temp.tags) {
-            objData_temp.tags.map((item, i) => {
-                tagTemp.push(item.name);
-            })
-        }
-        // objData_temp["tags"] = tagTemp
-        // Lay playlist
-        let playlistTemp = [];
-        if (list_play_default) {
-            list_play_default.map((item, i) => {
-                if (item.value) {
-                    playlistTemp.push(item.text);
-                }
-            })
-        }
-        // objData_temp["list_play"] = playlistTemp
+        let slug = Helper.ChangeToSlug(objData_temp.title)
+
+        const objImage = _.clone(objImageUpload, true)
+
+
         if (!is_edit) {
-            delete objData_temp["id"]
-            return new Promise((resolve, reject) => {
-                axios.post(`${Config.API_URL}video/add`, objData_temp)
-                    .then((response) => {
-                        dispatch({
-                            type: ADD_NEW_VIDEO,
-                            payload: {
-                                isOpen: false
-                            }
-                        })
-                        resolve(response)
-                    }, (err) => {
-                        reject(err)
-                    })
-            })
-        } else {
-            return new Promise((resolve, reject) => {
-                axios.post(`${Config.API_URL}video/update`, objData_temp)
-                    .then((response) => {
-                        dispatch({
-                            type: ADD_NEW_VIDEO,
-                            payload: {
-                                isOpen: false
-                            }
-                        })
-                        resolve(response)
-                    }, (err) => {
-                        reject(err)
-                    })
-            })
+            delete objData_temp['id']
         }
+
+        //==============UPDATE TAGS, TIMEUP, SLUG
+        let str_tags = ''
+        listTagsDefault.map((item) => {
+            str_tags = str_tags + item + ','
+        })
+        if (str_tags) str_tags = str_tags.substr(0, str_tags.length - 1)
+        objData_temp['tags'] = str_tags
+        //==============UPDATE TAGS, TIMEUP, SLUG
+
+
+        //==============UPDATE THUMBNAIL
+        if (objImage) {
+            let link = objImage.replace('!', ',');
+            let dataImg = link.split(';base64,').pop()
+            let type = link.split(';')[0].split('/')[1]
+            let thumbnail = `thumnail_${slug}.` + type
+            objData_temp['thumbnail'] = thumbnail
+        }
+        //==============UPDATE THUMBNAIL
+
+
+
+        return new Promise((resolve, reject) => {
+            axios.post(`${Config.API_URL}video/add`, objData_temp)
+                .then((response) => {
+                    const { StatusCode, Message } = response.data
+                    if (StatusCode != 0) {
+                        alert(Message)
+                        resolve(response)
+                    } else {
+                        //==============UPDATE AVATAR
+                        if (objImage) {
+                            dispatch(uploadImageAvatarAPI(
+                                { filename: `thumnail_${slug}`, image: objImage }, '')
+                            ).then(resUpload => {
+                                dispatch({
+                                    type: CLEAR_DATA_VIDEO,
+                                    payload: null
+                                })
+                                resolve(response)
+                            })
+                        } else {
+                            dispatch({
+                                type: CLEAR_DATA_VIDEO,
+                                payload: null
+                            })
+                            resolve(response)
+                        }
+                    }
+                }, (err) => {
+                    reject(err)
+                })
+        })
 
     }
 }
+
 export const updateVideo = (data) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {

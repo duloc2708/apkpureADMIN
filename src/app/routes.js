@@ -8,7 +8,8 @@ import LoginView from 'modules/login/LoginView'
 import ListTypeFormView from 'modules/listtype/ListTypeFormView'
 import VideoFormView from 'modules/video/VideoFormView'
 import UploadsFormView from 'modules/uploads/UploadsFormView'
-import BlogFormView from 'modules/blog/BlogFormView'
+import PostFormView from 'modules/post/PostFormView'
+import BlogFormView from 'modules/post.blog/BlogFormView'
 import LeecherFormView from 'modules/leecher/LeecherFormView'
 import UsersFormView from 'modules/users/UsersFormView'
 import PageServiceFormView from 'modules/pageservice/PageServiceFormView'
@@ -26,6 +27,7 @@ const routes = (
                 <Route component={LeecherFormView} path={Routes.leecher.view}></Route>
                 <Route component={VideoFormView} path={Routes.video.view}></Route>
                 <Route component={UploadsFormView} path={Routes.uploads.view}></Route>
+                <Route component={PostFormView} path={Routes.post.view}></Route>
                 <Route component={BlogFormView} path={Routes.blog.view}></Route>
             </Route>
         </Route>

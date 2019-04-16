@@ -1,6 +1,6 @@
 import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-table';
 import BlogDetailFormView from './BlogDetailFormView.js';
-import * as blogActions from 'modules/blog/actions/form'
+import * as postActions from 'modules/post/actions/form'
 import { getListChuyenMuc } from 'modules/listtype/actions/form'
 const ComponentImage = (props) => {
     let { cell } = props
@@ -16,7 +16,7 @@ const ComponentImage = (props) => {
     )
 
 }
-class BlogFormView extends React.Component {
+class PostFormView extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -41,7 +41,7 @@ class BlogFormView extends React.Component {
         })
     };
     loaddata() {
-        this.props.getListDataBlog()
+        this.props.getListDataPost()
         this.props.getListChuyenMuc()
     }
 
@@ -108,7 +108,7 @@ class BlogFormView extends React.Component {
     };
     downFile(item) {
         let fileName = item.title_slug
-        fetch(`${Config.API_URL}articles/getfileapk?namefile=${fileName}`)
+        fetch(`${Config.API_URL}post/getfileapk?namefile=${fileName}`)
             .then(res => {
                 console.log('res>>>>>>>', res.url);
                 const link = document.createElement('downloadgame');
@@ -158,7 +158,7 @@ class BlogFormView extends React.Component {
             onDeleteRow: this.onDeleteRow,
             paginationPosition: 'bottom'
         };
-        let { list_data, isOpen, listHeader, fieldSearch } = this.props.blog
+        let { list_data, isOpen, listHeader, fieldSearch } = this.props.post
         return (
             <div style={{ "margin": "10px", "marginBottom": "50px", "height": "500px" }} >
                 {isOpen
@@ -215,7 +215,7 @@ class BlogFormView extends React.Component {
                                                 <td>{created_id}</td>
                                                 <td>{status}</td>
                                                 <td>
-                                                    <a href={`${Config.API_DOWNLOAD_FILE}articles/getfileapk?namefile=${item.title_slug}&mineType=${atr3}`}>
+                                                    <a href={`${Config.API_DOWNLOAD_FILE}post/getfileapk?namefile=${item.title_slug}&mineType=${atr3}`}>
                                                         <i className="fa fa-download" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
@@ -248,21 +248,21 @@ class BlogFormView extends React.Component {
 const mapStateToProps = ({
     userAuth,
     i18n,
-    blog
+    post
 }, ownProps) => {
     return {
         userAuth,
         i18n,
         ownProps,
-        blog
+        post
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return Redux.bindActionCreators({
         ...ReactRouterRedux.routerActions,
-        ...blogActions,
+        ...postActions,
         getListChuyenMuc
     }, dispatch)
 }
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(BlogFormView)
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(PostFormView)
 

@@ -1,12 +1,8 @@
 import React from 'react';
 import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-table';
 var TinyMCEInput = require('react-tinymce-input');
-import * as blogActions from 'modules/blog/actions/form'
+import * as blogActions from 'modules/post/actions/form'
 import UploadAvatar from './UploadAvatar'
-import SlideUpload from './SlideUpload'
-import FormUploadSlide from './FormUploadSlide'
-import { isBuffer } from 'util';
-
 class BlogDetailFormView extends React.Component {
     constructor(props) {
         super(props);
@@ -50,14 +46,14 @@ class BlogDetailFormView extends React.Component {
 
     handleChangeStatus(e) {
         let { id, value } = e.target
-        let { objData } = this.props.blog
+        let { objData } = this.props.post
         let objDataTemp = _.clone(objData, true)
         objDataTemp["status"] = value
         this.props.updateInputItem(objDataTemp)
     }
     handleChangeLeves(e) {
         let { id, value } = e.target
-        let { objData } = this.props.blog
+        let { objData } = this.props.post
         let objDataTemp = _.clone(objData, true)
         objDataTemp["levels"] = value
         this.props.updateInputItem(objDataTemp)
@@ -73,7 +69,7 @@ class BlogDetailFormView extends React.Component {
     }
     handleInput(e) {
         let { id, value } = e.target
-        let { objData } = this.props.blog
+        let { objData } = this.props.post
         let objDataTemp = _.clone(objData, true)
         objDataTemp[id] = value
         if (id == 'title') {
@@ -85,7 +81,7 @@ class BlogDetailFormView extends React.Component {
     onDateTimeChange(e) {
         var newDate = new Date();
         newDate.setTime(e);
-        let { objData } = this.props.blog
+        let { objData } = this.props.post
         let objDataTemp = _.clone(objData, true)
         objDataTemp["time_up"] = newDate
         this.props.updateInputItem(objDataTemp)
@@ -119,7 +115,7 @@ class BlogDetailFormView extends React.Component {
             return;
         }
         let obj = {
-            id: this.props.blog.loadlisttype.length + 1,
+            id: this.props.post.loadlisttype.length + 1,
             code: typecode.value.trim(),
             name: typename.value.trim(),
             slug: Helper.ChangeToSlug(typename.value)
@@ -127,7 +123,7 @@ class BlogDetailFormView extends React.Component {
     }
     AddTag() {
         if (this.refs.tag.value.length > 0) {
-            const { listTagsDefault } = this.props.blog
+            const { listTagsDefault } = this.props.post
             let listTagsDefaultTemp = _.clone(listTagsDefault, true)
             listTagsDefaultTemp.push(this.refs.tag.value)
             this.props.insertTags(listTagsDefaultTemp)
@@ -141,7 +137,7 @@ class BlogDetailFormView extends React.Component {
         this.setState({ tags: arr })
     }
     RemoveTag(value) {
-        const { listTagsDefault } = this.props.blog
+        const { listTagsDefault } = this.props.post
         let listTagsDefaultTemp = _.clone(listTagsDefault, true)
         listTagsDefaultTemp = listTagsDefaultTemp.filter(x => x != value)
         this.props.insertTags(listTagsDefaultTemp)
@@ -161,7 +157,7 @@ class BlogDetailFormView extends React.Component {
         }
     }
     onClickType(index) {
-        var data = [...this.props.blog.listTypeDefault];
+        var data = [...this.props.post.listTypeDefault];
         data[index].value = !data[index].value;
         this.props.checkedListType(data)
     }
@@ -200,12 +196,12 @@ class BlogDetailFormView extends React.Component {
         //     },
         //     body: JSON.stringify(obj)
         // });
-        // let ary = this.props.blog.loadlisttype;
+        // let ary = this.props.post.loadlisttype;
         // var filteredAry = ary.filter(e => e.type !== typecode);
         // this.props.convertListCheckType(filteredAry)
     }
     render() {
-        let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp, listSlide } = this.props.blog
+        let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp, listSlide } = this.props.post
         let { numWord, numChar, _id, title, content_long, content_short, status, image_large,
             image, time_up, type, type_code, tags, listTagOld,
             displayAddNew, url, levels, atr7, atr5, atr6, atr8, atr9, atr10 } = objData
@@ -246,72 +242,6 @@ class BlogDetailFormView extends React.Component {
                                         />
                                     </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <label>SEO tite</label>
-                                        <input type="text"
-                                            className="form-control"
-                                            value={atr8}
-                                            onChange={(event) => this.handleInput(event)}
-                                            name="atr8"
-                                            id="atr8"
-                                        />
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label>Meta description </label>
-                                        <input type="text"
-                                            className="form-control"
-                                            value={atr9}
-                                            onChange={(event) => this.handleInput(event)}
-                                            name="atr9"
-                                            id="atr9"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <label>Link tải file apk</label>
-                                        <input type="text"
-                                            className="form-control"
-                                            value={atr10}
-                                            onChange={(event) => this.handleInput(event)}
-                                            name="atr10"
-                                            id="atr10"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <label>Version</label>
-                                        <input type="text"
-                                            className="form-control"
-                                            value={atr6}
-                                            onChange={(event) => this.handleInput(event)}
-                                            name="atr6"
-                                            id="atr6"
-                                        />
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label>Size apk</label>
-                                        <input type="text"
-                                            className="form-control"
-                                            value={atr5}
-                                            onChange={(event) => this.handleInput(event)}
-                                            name="atr5"
-                                            id="atr5"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <FormUploadSlide />
                             </div>
                             <div className="form-group">
                                 <label>Nội dung</label>
@@ -365,47 +295,11 @@ class BlogDetailFormView extends React.Component {
                         <div className="col-sm-4">
                             <label> Hình đại diện </label>
                             <UploadAvatar />
-                            <label> Slide đại diện </label>
-                            <SlideUpload />
                             <label>Trạng thái</label>
                             <select className="form-control" value={status} onChange={(e) => this.handleChangeStatus(e)} >
                                 <option value="active">Publish</option>
                                 <option value="deactive">Draft</option>
                             </select>
-
-                            <label>Lên lịch đăng bài</label>
-                            <div className="input-icon"
-                                onClick={event => {
-                                    $(this.refs.datepicker).focus()
-                                }}
-                            >
-                                <input
-                                    type="text"
-                                    className="form-control datepicker"
-                                    readOnly
-                                    ref="datepicker"
-                                    value={time}
-                                />
-                            </div>
-                            <label>Chuyên mục</label>
-                            <div className="card">
-                                <div className="card-block" style={{ "height": "150px", "overflow": "auto", "margin": "5px" }}>
-                                    {listTypeDefault && listTypeDefault.map((item, i) => (
-                                        <div key={i} className="form-group">
-                                            <label className="checkbox">
-                                                <input type="checkbox"
-                                                    id={item.type}
-                                                    name={item.type} key={item.type}
-                                                    defaultChecked={item.value}
-                                                    onChange={() => this.onClickType(i)} />
-                                                <span></span>
-                                                <span style={{ "marginLeft": "5px" }}>{item.text}</span>
-                                            </label>
-                                            <i id={item.type} onClick={(e) => this.removeCategory(e)} className="fa fa-remove"></i>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
 
                             <label>Tags</label>
                             <div className="input-group">
@@ -446,14 +340,14 @@ const mapStateToProps = ({
     userAuth,
     i18n,
     listtype,
-    blog
+    post
 }, ownProps) => {
     return {
         userAuth,
         i18n,
         ownProps,
         listtype,
-        blog
+        post
     }
 }
 const mapDispatchToProps = (dispatch) => {

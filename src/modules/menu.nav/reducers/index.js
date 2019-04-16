@@ -1,10 +1,14 @@
 const INITIAL_STATE = {
     listMenuUser: [
-        { routes: '/blog', key: 'blog', text: 'Blog', icon: 'fas fa-fw fa-tachometer-alt' },
+        { routes: '/post', key: 'post', text: 'Post', icon: 'fas fa-fw fa-tachometer-alt' },
+        // { routes: '/blog', key: 'blog', text: 'Blog', icon: 'fas fa-fw fa-tachometer-alt' },
+        { routes: '/video', key: 'video', text: 'Collection', icon: 'fas fa-video' },
         { routes: '/leecher', key: 'leecher', text: 'Leecher game', icon: 'fas fa-link' },
     ],
     listMenuAdmin: [
-        { routes: '/blog', key: 'blog', text: 'Blog', icon: 'fas fa-fw fa-tachometer-alt' },
+        { routes: '/post', key: 'post', text: 'Post', icon: 'fas fa-fw fa-tachometer-alt' },
+        // { routes: '/blog', key: 'blog', text: 'Blog', icon: 'fas fa-fw fa-tachometer-alt' },
+        { routes: '/video', key: 'video', text: 'Collection', icon: 'fas fa-video' },
         { routes: '/listtype', key: 'listtype', text: 'Chuyên mục', icon: 'fas fa-fw fa-chart-area' },
         { routes: '/leecher', key: 'leecher', text: 'Leecher game', icon: 'fas fa-link' },
         { routes: '/users', key: 'users', text: 'Quản lý users', icon: 'fas fa-user' },

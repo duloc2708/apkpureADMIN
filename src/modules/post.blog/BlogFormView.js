@@ -1,6 +1,7 @@
 import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-table';
-import * as videoActions from 'modules/video/actions/form'
-import VideoDetailFormView from './VideoDetailFormView'
+import BlogDetailFormView from './BlogDetailFormView.js';
+import * as postActions from 'modules/post/actions/form'
+import { getListChuyenMuc } from 'modules/listtype/actions/form'
 const ComponentImage = (props) => {
     let { cell } = props
     let pathSrc = '';
@@ -15,22 +16,64 @@ const ComponentImage = (props) => {
     )
 
 }
-class VideoFormView extends React.Component {
+class BlogFormView extends React.Component {
+    constructor(props) {
+        super(props)
+    }
     componentDidMount() {
-        this.props.getListDataVideo()
+        this.loaddata();
     };
-    onDeleteProductSelected(row) {
+    onDeleteRow(_id) {
+        let listId = _id;
+        fetch(URL_AUTH_API + '/articles_remove', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(listId)
+        })
 
+    }
+    openModal() {
+        this.setState({
+            isOpen: true
+        })
+    };
+    loaddata() {
+        this.props.getListDataBlog()
+        this.props.getListChuyenMuc()
+    }
+
+    onDeleteRow(_id) {
+        let listId = _id;
+        fetch(URL_AUTH_API + '/articles_delete', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(listId)
+        })
+    }
+    onDeleteProductSelected(row) {
         let listId = row.id;
         var txt;
         var r = confirm(`Bạn có muốn xoá blog này ?`);
         if (r == true) {
-            this.props.deleteVideo(row.id).then(() => {
-                this.props.getListDataVideo()
+            this.props.deletePost(row.id).then(() => {
+                this.loaddata()
             })
 
         }
 
+    }
+    onClickProductSelected(item) {
+        // temp_time_up = '';
+        this.showRow(item)
+    }
+    showRow(row) {
+        this.props.changeRowEditPost(row)
     }
     delButton(cell, row, enumObject, rowIndex) {
         return (
@@ -40,7 +83,7 @@ class VideoFormView extends React.Component {
                     this.onDeleteProductSelected(cell, row)}
             >
                 Xoá
-            </button>
+        </button>
         )
     }
     cellButton(cell, row, enumObject, rowIndex) {
@@ -51,22 +94,28 @@ class VideoFormView extends React.Component {
                     this.onClickProductSelected(cell, row, rowIndex)}
             >
                 Cập nhật
-            </button>
+        </button>
         )
     }
-    onClickProductSelected(cell, row, rowIndex) {
-        // this.showRow(row)
+    componentWillUnmount() {
+        this.props.clearDataPost()
+    }
+    onRowSelect(e) {
+        // this.setState({ _id: e._id })
     }
     AddNew() {
-        this.props.openModalDetailVideo(true)
+        this.props.openModalDetailPost(true)
     };
+    search() {
+        this.props.filterData()
+    }
+    changeInputSearch(e) {
+        this.props.changeInputSearch(e.target.value)
+    }
     _onKeyPress(e) {
         if (e.key == 'Enter') {
-            // this.props.filterData()
+            this.props.filterData()
         }
-    }
-    showRow(row) {
-        this.props.changeRowEditVideo(row)
     }
     render() {
 
@@ -97,12 +146,12 @@ class VideoFormView extends React.Component {
             onDeleteRow: this.onDeleteRow,
             paginationPosition: 'bottom'
         };
-        let { list_data, isOpen, listHeader, fieldSearch } = this.props.video
+        let { list_data, isOpen, listHeaderBlogs, fieldSearch } = this.props.post
         return (
             <div style={{ "margin": "10px", "marginBottom": "50px", "height": "500px" }} >
                 {isOpen
                     ?
-                    <VideoDetailFormView parentObject={this} />
+                    <BlogDetailFormView parentObject={this} />
                     :
                     <ButtonAddNew parentObject={this} />
                 }
@@ -132,7 +181,7 @@ class VideoFormView extends React.Component {
                             <thead>
                                 <tr>
                                     {
-                                        listHeader.map((item, i) => {
+                                        listHeaderBlogs.map((item, i) => {
                                             return (
                                                 <th key={item.key}>{item.title}</th>
                                             )
@@ -144,13 +193,14 @@ class VideoFormView extends React.Component {
                             <tbody>
                                 {
                                     list_data.map((item, i) => {
-                                        let { id, link, thumbnail, title, tags, type_name, created_id, status, atr3 } = item
+                                        let { id, thumbnail, title, tags, type_name, created_id, status, atr3 } = item
                                         return (
                                             <tr key={id}>
                                                 <td><ComponentImage cell={thumbnail} /></td>
                                                 <td>{title}</td>
                                                 <td>{tags}</td>
-                                                <td>{link}</td>
+                                                <td>{created_id}</td>
+                                                <td>{status}</td>
                                                 <td><button
                                                     onClick={() => this.showRow(item)}
                                                     className="btn btn-warning btn-icon"
@@ -180,22 +230,21 @@ class VideoFormView extends React.Component {
 const mapStateToProps = ({
     userAuth,
     i18n,
-    video
-},
-    ownProps) => {
+    post
+}, ownProps) => {
     return {
         userAuth,
         i18n,
         ownProps,
-        video
+        post
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return Redux.bindActionCreators({
         ...ReactRouterRedux.routerActions,
-        ...videoActions
+        ...postActions,
+        getListChuyenMuc
     }, dispatch)
 }
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VideoFormView)
-
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(BlogFormView)
 

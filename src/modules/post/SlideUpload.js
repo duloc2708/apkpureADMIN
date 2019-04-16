@@ -1,4 +1,4 @@
-import { updateDataSlideImageUploads } from 'modules/blog/actions/form'
+import { updateDataSlideImageUploads } from 'modules/post/actions/form'
 class SlideUpload extends React.Component {
     componentDidMount() {
         let that = this

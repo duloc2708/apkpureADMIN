@@ -2,7 +2,8 @@ import React from 'react';
 import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-table';
 let temp_time_up = '';
 import * as videoActions from 'modules/video/actions/form'
-import Dropzone from 'react-dropzone';
+import UploadAvatar from './UploadAvatar'
+
 class VideoDetailFormView extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +19,7 @@ class VideoDetailFormView extends React.Component {
         this.props.clearDataVideo()
     }
     componentDidMount() {
+        this.props.initDefaultVideo();
         // this.loadPlaylist();
     }
     loadPlaylist() {
@@ -50,31 +52,25 @@ class VideoDetailFormView extends React.Component {
         let { is_edit } = this.props.video
         this.props.addVideo().then(() => {
             alert("Cập nhật video thành công!")
+            setTimeout(() => {
+                this.props.getListDataVideo()
+            }, 500)
         })
     }
     handleInput(e) {
         let { id, value } = e.target
         let { objData } = this.props.video
-        objData[id] = value
-        this.props.updateInputItem(objData)
+        let objDataTemp = _.clone(objData, true)
+        objDataTemp[id] = value
+        this.props.updateInputItem(objDataTemp)
     }
 
     AddTag() {
         if (this.refs.tag.value.length > 0) {
-            let converListTag = this.refs.tag.value.split(',').map(function (n) {
-                return n;
-            });
-            let arr = this.props.video.objData.tags;
-            converListTag.map((item, i) => {
-                if (item.length > 0) {
-                    let rs = arr.find(x => x.name === item);
-                    if (!rs) arr.push({ "name": item });
-                }
-            })
-
-            let { objData } = this.props.video
-            objData["tags"] = arr
-            this.props.updateInputItem(objData)
+            const { listTagsDefault } = this.props.video
+            let listTagsDefaultTemp = _.clone(listTagsDefault, true)
+            listTagsDefaultTemp.push(this.refs.tag.value)
+            this.props.insertTags(listTagsDefaultTemp)
         }
     }
     OpenPlaylist() {
@@ -128,11 +124,18 @@ class VideoDetailFormView extends React.Component {
 
 
     }
+    RemoveTag(value) {
+        const { listTagsDefault } = this.props.video
+        let listTagsDefaultTemp = _.clone(listTagsDefault, true)
+        listTagsDefaultTemp = listTagsDefaultTemp.filter(x => x != value)
+        this.props.insertTags(listTagsDefaultTemp)
+    }
     render() {
         let { isOpen, objData, displayPlaylist,
             list_play_default,
             fileName,
-            files
+            files,
+            listTagsDefault
         } = this.props.video
         let { title,
             id,
@@ -193,23 +196,7 @@ class VideoDetailFormView extends React.Component {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="col-md-4">
-                                            <label>Thumbnail</label>
-                                            {/* <Dropzone
-                                                onDrop={(files) => this.onDrop(files)}
-                                                style={dropzoneStyle}
-                                                required
-                                            >
-                                                <div >
-                                                    {url_image ?
-                                                        <img src={url_image} className="img-uploads" width="100%" height="350px" alt="avatar" />
-                                                        : 'Upload'
-                                                    }
-
-                                                </div>
-                                            </Dropzone> */}
-                                        </div>
-                                        <div className="col-md-8">
+                                        <div className="col-md-12">
                                             <label>Nội dung</label>
                                             <textarea type="text"
                                                 className="form-control"
@@ -226,57 +213,8 @@ class VideoDetailFormView extends React.Component {
                             <div className="col-sm-4">
                                 <div className="row">
                                     <div className="col-sm-12">
-                                        <label>Cấp độ</label>
-                                        <select className="form-control" value={levels} onChange={(e) => this.handleChangeLeves(e)} >
-                                            <option value="hard">Khó</option>
-                                            <option value="normal">Bình thường</option>
-                                        </select>
-
-                                        <label>Play list</label>
-                                        <div >
-                                            <a href="#" onClick={() => this.OpenPlaylist()}>
-                                                + Create new playlist </a></div>
-                                             <div style={{ "display": displayPlaylist }}>
-                                            <div className="input-group" >
-                                                <table>
-                                                    <tr >
-                                                        <td ><input ref="playlistname" placeholder="Tên Playlist" style={{ "width": "100%" }} type="text" className="form-control" /></td>
-                                                        <td>
-                                                            <span className="input-group-btn">
-                                                                <button
-                                                                    onClick={() => this.AddPlayList()}
-                                                                    className="btn btn-secondary" type="button">Add</button>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-
-                                        </div>
-
-                                        <div className="card">
-                                            <div className="card-block" style={{ "height": "100px", "overflow": "auto", "margin": "5px" }}>
-                                                {list_play_default && list_play_default.map((item, i) => (
-                                                    <div key={i} className="form-group">
-                                                        <label className="checkbox">
-                                                            <input type="checkbox"
-                                                                id={item.type}
-                                                                name={item.type} key={item.type}
-                                                                checked={item.value}
-                                                                onClick={() => this.onClickType(i)}
-                                                            />
-                                                            <span></span>
-                                                            <span style={{ "paddingLeft": "5px" }}>{item.text}</span>
-                                                        </label>
-                                                        <i id={item.type}
-                                                            // onClick={(e) => this.removeCategory(e)}
-                                                            className="fa fa-remove"></i>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-
+                                        <label>Uploads thumbnail</label>
+                                        <UploadAvatar />
                                         <label>Tags</label>
                                         <div className="input-group">
                                             <input ref="tag" type="text" className="form-control" />
@@ -287,16 +225,18 @@ class VideoDetailFormView extends React.Component {
                                             </span>
 
                                         </div>
-                                        {/* <span>
-                      Separate tags with commas
-
-                    </span> */}
                                         <br />
-                                        {tags && tags.map((item, i) => {
+                                        {listTagsDefault && listTagsDefault.map((item, i) => {
                                             return (
-                                                <a href="#" key={i} > <i
-                                                    onClick={(e) => this.RemoveTag(e)}
-                                                    id={item.name} className="fa fa-plus-circle" ><span style={{ "margin": "5px" }}>{item.name}</span></i></a>
+                                                [
+                                                    <i
+                                                        style={{ "cursor": "pointer" }}
+                                                        onClick={(e) => this.RemoveTag(item)}
+                                                        id={item}
+                                                        className="fa fa-times" ></i>,
+                                                    <span style={{ "margin": "5px" }}>{item}</span>
+                                                ]
+
                                             )
                                         })}
                                     </div>

@@ -5,6 +5,9 @@ const Routes = {
     home: {
         view: '/'
     },
+    post: {
+        view: '/post'
+    },
     blog: {
         view: '/blog'
     },

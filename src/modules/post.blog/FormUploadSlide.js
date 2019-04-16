@@ -1,4 +1,4 @@
-import { addImageToSlide, removeImageToSlide } from 'modules/blog/actions/form'
+import { addImageToSlide, removeImageToSlide } from 'modules/post/actions/form'
 class FormUploadSlide extends React.Component {
     componentDidMount() {
         let that = this
@@ -32,7 +32,7 @@ class FormUploadSlide extends React.Component {
         this.props.removeImageToSlide(item)
     }
     render() {
-        let { listSlide } = this.props.blog
+        let { listSlide } = this.props.post
         listSlide = _.orderBy(listSlide, 'index', 'desc')
         return (
             <div className="row">
@@ -72,13 +72,13 @@ class FormUploadSlide extends React.Component {
 const mapStateToProps = ({
     userAuth,
     i18n,
-    blog
+    post
 }, ownProps) => {
     return {
         userAuth,
         i18n,
         ownProps,
-        blog
+        post
     }
 }
 const mapDispatchToProps = (dispatch) => {

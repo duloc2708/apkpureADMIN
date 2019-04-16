@@ -16,7 +16,7 @@ import {
 const { LOCALHOST_PHOTO } = Config
 export const uploadListImageNew = () => {
     return (dispatch, getState) => {
-        let { listSlide } = getState().blog
+        let { listSlide } = getState().post
         let listSlideTemp = []
         listSlide.map(item => {
             if (item.type == 'upload') {
@@ -25,7 +25,7 @@ export const uploadListImageNew = () => {
         })
         return new Promise((resolve, reject) => {
             if (listSlideTemp.length > 0) {
-                axios.post(`${Config.API_URL}articles/upload_list_slide`, { data: listSlideTemp })
+                axios.post(`${Config.API_URL}post/upload_list_slide`, { data: listSlideTemp })
                     .then((response) => {
                         resolve(response)
                     }, (err) => {
@@ -39,7 +39,7 @@ export const uploadListImageNew = () => {
 }
 export const removeImageToSlide = (item) => {
     return (dispatch, getState) => {
-        let { listSlide } = getState().blog
+        let { listSlide } = getState().post
         let slide = _.clone(listSlide, true)
         slide = slide.filter(x => x.index != item.index)
         return new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ export const removeImageToSlide = (item) => {
 }
 export const addImageToSlide = (files) => {
     return (dispatch, getState) => {
-        let { listSlide, lengthSlide, objData } = getState().blog
+        let { listSlide, lengthSlide, objData } = getState().post
         let slide = _.clone(listSlide, true)
         let filename = objData.title_slug + '-screen-' + lengthSlide
         let objImage = { index: lengthSlide, type: 'upload', url: files, fullfilename: filename + '.jpg', filename: filename }
@@ -105,7 +105,7 @@ export const downFileAPK = (item) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             let fileName = item.title_slug
-            fetch(`${Config.API_URL}articles/getfileapk?namefile=${fileName}`)
+            fetch(`${Config.API_URL}post/getfileapk?namefile=${fileName}`)
                 .then(res => {
                     console.log('res>>>>>>>', res.url);
                     const link = document.createElement('downloadgame');
@@ -114,7 +114,7 @@ export const downFileAPK = (item) => {
                     link.click();
                     resolve(res)
                 })
-            // axios.get(`${Config.API_URL}articles/getfileapk`, { params: { namefile: fileName } })
+            // axios.get(`${Config.API_URL}post/getfileapk`, { params: { namefile: fileName } })
             //     .then((response) => {
             //         const url = window.URL.createObjectURL(new Blob([response.data], { type: "application/vnd.android.package-archive" }));
             //         const link = document.createElement('a');
@@ -134,10 +134,10 @@ export const uploadImageAvatarAPI = (objAvatar, objSlide) => {
         return new Promise((resolve, reject) => {
             let listAPI = []
             if (objAvatar) {
-                listAPI.push(axios.post(`${Config.API_URL}articles/upload_avatar`, objAvatar))
+                listAPI.push(axios.post(`${Config.API_URL}post/upload_avatar`, objAvatar))
             }
             if (objSlide) {
-                listAPI.push(axios.post(`${Config.API_URL}articles/upload_slide`, objSlide))
+                listAPI.push(axios.post(`${Config.API_URL}post/upload_slide`, objSlide))
             }
             Promise.all(listAPI)
                 .then((response) => {
@@ -149,7 +149,7 @@ export const uploadImageAvatarAPI = (objAvatar, objSlide) => {
 
 export const filterData = () => {
     return (dispatch, getState) => {
-        let { fieldSearch, list_data, list_data_default } = getState().blog
+        let { fieldSearch, list_data, list_data_default } = getState().post
         let results = []
         if (!fieldSearch) {
             results = list_data_default
@@ -245,7 +245,101 @@ export const relaceAllImageContent = (data, title) => {
 export const updateBlog = () => {
     return (dispatch, getState) => {
         const { listSlide, listTypeDefault, objData,
-            listTagsDefault, dateTimeUp, objImageUpload, objImageSlideUpload, is_edit } = getState().blog
+            listTagsDefault, dateTimeUp, objImageUpload, objImageSlideUpload, is_edit } = getState().post
+        const objImage = _.clone(objImageUpload, true)
+        const objImageSlide = _.clone(objImageSlideUpload, true)
+
+        let objData_temp = _.clone(objData, true)
+        let slug = Helper.ChangeToSlug(objData_temp.title)
+
+        if (!is_edit) {
+            delete objData_temp['id']
+        }
+
+        //==============UPDATE LIST TYPE
+        objData_temp['type'] = 'blogs'
+        //==============UPDATE LIST TYPE
+
+
+
+        //==============UPDATE TAGS, TIMEUP, SLUG
+        let str_tags = ''
+        listTagsDefault.map((item) => {
+            str_tags = str_tags + item + ','
+        })
+        if (str_tags) str_tags = str_tags.substr(0, str_tags.length - 1)
+        objData_temp['tags'] = str_tags
+        objData_temp['title_slug'] = slug
+        objData_temp['time_up'] = dateTimeUp.getTime()
+        //==============UPDATE TAGS, TIMEUP, SLUG
+
+
+        //==============UPDATE THUMBNAIL
+        if (objImage) {
+            let link = objImage.replace('!', ',');
+            let dataImg = link.split(';base64,').pop()
+            let type = link.split(';')[0].split('/')[1]
+            let thumbnail = `thumnail_${slug}.` + type
+            objData_temp['thumbnail'] = thumbnail
+        }
+        //==============UPDATE THUMBNAIL
+
+
+        //==============UPDATE THUMBNAIL
+        if (objImageSlide) {
+            let link = objImageSlide.replace('!', ',');
+            let dataImg = link.split(';base64,').pop()
+            let type = link.split(';')[0].split('/')[1]
+            let thumbnail = `slide_${slug}.` + type
+            objData_temp['atr11'] = thumbnail
+        }
+        //==============UPDATE THUMBNAIL
+
+        //==============UPDATE CONTENT, IMAGE
+        let infoContent = relaceAllImageContent(objData_temp.content_long, objData_temp.title)
+        objData_temp['content_long'] = infoContent.content
+        objData_temp['list_image'] = infoContent.list_image
+        //==============UPDATE CONTENT, IMAGE
+
+
+        return new Promise((resolve, reject) => {
+            axios.post(`${Config.API_URL}post/add`, objData_temp)
+                .then((response) => {
+                    const { StatusCode, Message } = response.data
+                    if (StatusCode != 0) {
+                        alert(Message)
+                        resolve(response)
+                    } else {
+                        //==============UPDATE AVATAR
+                        if (objImage) {
+                            dispatch(uploadImageAvatarAPI(
+                                { filename: `thumnail_${slug}`, image: objImage }, '')
+                            ).then(resUpload => {
+                                dispatch({
+                                    type: CLEAR_DATA_POST,
+                                    payload: null
+                                })
+                                resolve(response)
+                            })
+                        } else {
+                            dispatch({
+                                type: CLEAR_DATA_POST,
+                                payload: null
+                            })
+                            resolve(response)
+                        }
+                    }
+                }, (err) => {
+                    reject(err)
+                })
+        })
+
+    }
+}
+export const updatePost = () => {
+    return (dispatch, getState) => {
+        const { listSlide, listTypeDefault, objData,
+            listTagsDefault, dateTimeUp, objImageUpload, objImageSlideUpload, is_edit } = getState().post
         const objImage = _.clone(objImageUpload, true)
         const objImageSlide = _.clone(objImageSlideUpload, true)
 
@@ -326,7 +420,7 @@ export const updateBlog = () => {
         }
         dispatch(uploadListImageNew())
         return new Promise((resolve, reject) => {
-            axios.post(`${Config.API_URL}articles/add`, objData_temp)
+            axios.post(`${Config.API_URL}post/add`, objData_temp)
                 .then((response) => {
                     const { StatusCode, Message } = response.data
                     if (StatusCode != 0) {
@@ -363,7 +457,7 @@ export const updateBlog = () => {
 export const deletePost = (id) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
-            axios.get(`${Config.API_URL}articles/delete`, { params: { id: id } })
+            axios.get(`${Config.API_URL}post/delete`, { params: { id: id } })
                 .then((response) => {
                     const { StatusCode, Message } = response.data
                     if (StatusCode != 0) alert(Message)
@@ -378,7 +472,27 @@ export const deletePost = (id) => {
 export const getListDataBlog = () => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
-            axios.get(`${Config.API_URL}articles`)
+            axios.get(`${Config.API_URL}blogs`)
+                .then((response) => {
+                    let { Data } = response.data
+                    dispatch({
+                        type: GET_LIST_DATA_POST,
+                        payload: {
+                            list_data: Data || [],
+                            list_data_default: Data || []
+                        }
+                    })
+                    resolve(response)
+                }, (err) => {
+                    reject(err)
+                })
+        })
+    }
+}
+export const getListDataPost = () => {
+    return (dispatch, getState) => {
+        return new Promise((resolve, reject) => {
+            axios.get(`${Config.API_URL}post`)
                 .then((response) => {
                     let { Data } = response.data
                     dispatch({
@@ -413,24 +527,7 @@ export const addPost = (data) => {
         })
     }
 }
-export const updatePost = (data) => {
-    return (dispatch, getState) => {
-        return new Promise((resolve, reject) => {
-            axios.post(`${Config.API_URL}/articles_update`, data)
-                .then((response) => {
-                    dispatch({
-                        type: ADD_NEW_POST,
-                        payload: {
-                            isOpen: false
-                        }
-                    })
-                    resolve(response)
-                }, (err) => {
-                    reject(err)
-                })
-        })
-    }
-}
+
 export const convertListCheckType = (loadlisttype) => {
     return (dispatch) => {
         dispatch({
@@ -464,7 +561,7 @@ export const updateInputItem = (obj) => {
 }
 export const changeInputContent = (numWord, numChar, content) => {
     return (dispatch, getState) => {
-        let { objData } = getState().blog
+        let { objData } = getState().post
         let objData_temp = _.clone(objData, true)
         objData_temp["numWord"] = numWord
         objData_temp["numChar"] = numChar
@@ -500,7 +597,7 @@ export const changeRowEditPost = (item) => {
 }
 export const openCalendar = (item) => {
     return (dispatch, getState) => {
-        let { isdisplayCalendar } = getState().blog
+        let { isdisplayCalendar } = getState().post
 
         dispatch({
             type: OPEN_CALENDAR,
@@ -525,7 +622,7 @@ export const clearDataPost = () => {
 export const initDefaultPost = () => {
     return (dispatch, getState) => {
         const { list_data } = getState().listtype
-        const { objData } = getState().blog
+        const { objData } = getState().post
         let listobj = [], convertListtype = [], convertListtags = [];
         //=============INIT CHUYEN MỤC
         if (objData.type) {

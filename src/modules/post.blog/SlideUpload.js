@@ -1,8 +1,8 @@
-import { updateDataImageUploads } from 'modules/blog/actions/form'
-class UploadAvatar extends React.Component {
+import { updateDataSlideImageUploads } from 'modules/post/actions/form'
+class SlideUpload extends React.Component {
     componentDidMount() {
         let that = this
-        $("#imgInp").change(function () {
+        $("#imgInpSlideSingle").change(function () {
             that.readURL(this);
         });
     }
@@ -12,7 +12,7 @@ class UploadAvatar extends React.Component {
             var reader = new FileReader();
             reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result);
-                that.props.updateDataImageUploads(e.target.result)
+                that.props.updateDataSlideImageUploads(e.target.result)
             }
             reader.readAsDataURL(input.files[0]);
         }
@@ -22,7 +22,7 @@ class UploadAvatar extends React.Component {
             <div className="form-group">
                 <div className="row">
                     <div className="col-md-6">
-                        <input type='file' id="imgInp"
+                        <input type='file' id="imgInpSlideSingle"
                             name="Tải file"
                         />
                         <img
@@ -41,8 +41,8 @@ class UploadAvatar extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return Redux.bindActionCreators({
         ...ReactRouterRedux.routerActions,
-        updateDataImageUploads
+        updateDataSlideImageUploads
     }, dispatch)
 }
-export default ReactRedux.connect(null, mapDispatchToProps)(UploadAvatar)
+export default ReactRedux.connect(null, mapDispatchToProps)(SlideUpload)
 

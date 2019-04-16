@@ -12,10 +12,12 @@ import {
     CONVERT_LIST_PLAY_LIST,
     SHOW_PLAY_LIST,
     EDIT_VIDEO,
-    UPDATE_THUMBNAIL_VIDEO
+    UPDATE_THUMBNAIL_VIDEO,
+    INSERT_TAGS_VIDEO
 } from '../types'
 
 const INITIAL_STATE = {
+    objImageUpload: '',
     loadlisttype: [],
     list_data: [],
     itemDetail: {},
@@ -35,10 +37,25 @@ const INITIAL_STATE = {
     displayPlaylist: 'none',
     list_play_default: [],
     fileName: '',
-    files: ''
+    files: '',
+    listHeader: [
+        { key: 'THUMB', title: 'Hình đại diện', type: 'text', class: '' },
+        { key: 'TITLE', title: 'Tiêu đề', type: 'text', class: '' },
+        { key: 'TAGS', title: 'Tags', type: 'text', class: '' },
+        { key: 'LINK', title: 'Url video', type: 'text', class: '' },
+        { key: 'EDIT', title: 'Cập nhật', type: 'text', class: '' },
+        { key: 'DELETE', title: 'Xoá', type: 'text', class: '' },
+    ],
+    listTagsDefault: [],
+
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case INSERT_TAGS_VIDEO:
+            return {
+                ...state,
+                ...action.payload
+            }
         case UPDATE_THUMBNAIL_VIDEO:
             return {
                 ...state,
