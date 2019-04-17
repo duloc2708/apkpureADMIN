@@ -223,6 +223,7 @@ export const addVideo = () => {
 
         const objImage = _.clone(objImageUpload, true)
 
+        objData_temp['title_slug'] = slug
 
         if (!is_edit) {
             delete objData_temp['id']
