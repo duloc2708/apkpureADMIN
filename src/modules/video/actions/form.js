@@ -223,7 +223,6 @@ export const addVideo = () => {
 
         const objImage = _.clone(objImageUpload, true)
 
-        objData_temp['title_slug'] = slug
 
         if (!is_edit) {
             delete objData_temp['id']
@@ -238,6 +237,7 @@ export const addVideo = () => {
         objData_temp['tags'] = str_tags
         //==============UPDATE TAGS, TIMEUP, SLUG
 
+        objData_temp['title_slug'] = slug
 
         //==============UPDATE THUMBNAIL
         if (objImage) {
@@ -248,8 +248,14 @@ export const addVideo = () => {
             objData_temp['thumbnail'] = thumbnail
         }
         //==============UPDATE THUMBNAIL
-
-
+        let { link } = objData_temp
+        if (link) {
+            if (!objData_temp.thumbnail) {
+                var youtube_video_id = link.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop();
+                var video_thumbnail = `//img.youtube.com/vi/${youtube_video_id}/0.jpg`
+                objData_temp['thumbnail'] = video_thumbnail
+            }
+        }
 
         return new Promise((resolve, reject) => {
             axios.post(`${Config.API_URL}video/add`, objData_temp)

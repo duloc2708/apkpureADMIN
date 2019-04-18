@@ -6,6 +6,8 @@ const ComponentImage = (props) => {
     let pathSrc = '';
     if (cell.indexOf('image.winudf') != -1) {
         pathSrc = cell
+    } else if (cell.indexOf('youtube') != -1) {
+        pathSrc = cell
     } else {
         pathSrc = Helper._getImageIndex(cell, 175, 175);
 

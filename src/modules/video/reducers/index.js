@@ -28,7 +28,7 @@ const INITIAL_STATE = {
         link: '',
         desciption: '',
         tags: '',
-        thumbnail: 'link',
+        thumbnail: '',
         levels: 0,
         list_play: ''
     },
