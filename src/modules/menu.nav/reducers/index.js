@@ -1,11 +1,13 @@
 const INITIAL_STATE = {
     listMenuUser: [
+        { routes: '/slide', key: 'slide', text: 'Slide home', icon: 'far fa-image' },
         { routes: '/post', key: 'post', text: 'Post', icon: 'fas fa-fw fa-tachometer-alt' },
         // { routes: '/blog', key: 'blog', text: 'Blog', icon: 'fas fa-fw fa-tachometer-alt' },
         { routes: '/video', key: 'video', text: 'Collection', icon: 'fas fa-video' },
         { routes: '/leecher', key: 'leecher', text: 'Leecher game', icon: 'fas fa-link' },
     ],
     listMenuAdmin: [
+        { routes: '/slide', key: 'slide', text: 'Slide home', icon: 'far fa-image' },
         { routes: '/post', key: 'post', text: 'Post', icon: 'fas fa-fw fa-tachometer-alt' },
         // { routes: '/blog', key: 'blog', text: 'Blog', icon: 'fas fa-fw fa-tachometer-alt' },
         { routes: '/video', key: 'video', text: 'Collection', icon: 'fas fa-video' },

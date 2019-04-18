@@ -57,6 +57,7 @@ const INITIAL_STATE = {
         { key: 'TAGS', title: 'Tags', type: 'text', class: '' },
         { key: 'TYPE', title: 'Chuyên mục', type: 'text', class: '' },
         { key: 'CREATE_ID', title: 'Người tạo', type: 'text', class: '' },
+        { key: 'SLIDE', title: 'Slide', type: 'text', class: '' },
         { key: 'STATUS', title: 'Trạng thái', type: 'text', class: '' },
         { key: 'DOWWFILE', title: 'Tải file', type: 'text', class: '' },
         { key: 'EDIT', title: 'Cập nhật', type: 'text', class: '' },

@@ -16,7 +16,7 @@ const ComponentImage = (props) => {
     )
 
 }
-class PostFormView extends React.Component {
+class SlideFormView extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -212,30 +212,33 @@ class PostFormView extends React.Component {
                                     list_data.map((item, i) => {
                                         let { id, thumbnail, title, tags, type_name, created_id, status, atr3, slide } = item
                                         slide = slide == 'true' ? true : false
-                                        return (
-                                            <tr key={id}>
-                                                <td><ComponentImage cell={thumbnail} /></td>
-                                                <td>{title}</td>
-                                                <td>{tags}</td>
-                                                <td>{type_name}</td>
-                                                <td>{created_id}</td>
-                                                <td><input onChange={() => this._onChangeSlide(item, !slide)} type="checkbox" checked={slide}></input></td>
-                                                <td>{status}</td>
-                                                <td>
-                                                    <a href={`${Config.API_DOWNLOAD_FILE}post/getfileapk?namefile=${item.title_slug}&mineType=${atr3}`}>
-                                                        <i className="fa fa-download" aria-hidden="true"></i>
-                                                    </a>
-                                                </td>
-                                                <td><button
-                                                    onClick={() => this.showRow(item)}
-                                                    className="btn btn-warning btn-icon"
-                                                    type="button">Cập nhật</button></td>
-                                                <td><button
-                                                    onClick={() => this.onDeleteProductSelected(item)}
-                                                    className="btn btn-danger btn-icon"
-                                                    type="button">Xoá</button></td>
-                                            </tr>
-                                        )
+                                        if (slide) {
+                                            return (
+                                                <tr key={id}>
+                                                    <td><ComponentImage cell={thumbnail} /></td>
+                                                    <td>{title}</td>
+                                                    <td>{tags}</td>
+                                                    <td>{type_name}</td>
+                                                    <td>{created_id}</td>
+                                                    <td><input onChange={() => this._onChangeSlide(item, !slide)} type="checkbox" checked={slide}></input></td>
+                                                    <td>{status}</td>
+                                                    <td>
+                                                        <a href={`${Config.API_DOWNLOAD_FILE}post/getfileapk?namefile=${item.title_slug}&mineType=${atr3}`}>
+                                                            <i className="fa fa-download" aria-hidden="true"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td><button
+                                                        onClick={() => this.showRow(item)}
+                                                        className="btn btn-warning btn-icon"
+                                                        type="button">Cập nhật</button></td>
+                                                    <td><button
+                                                        onClick={() => this.onDeleteProductSelected(item)}
+                                                        className="btn btn-danger btn-icon"
+                                                        type="button">Xoá</button></td>
+                                                </tr>
+                                            )
+                                        }
+
                                     })
                                 }
                             </tbody>
@@ -271,5 +274,5 @@ const mapDispatchToProps = (dispatch) => {
         getListChuyenMuc
     }, dispatch)
 }
-export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(PostFormView)
+export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SlideFormView)
 

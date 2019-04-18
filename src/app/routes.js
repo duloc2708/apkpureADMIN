@@ -13,6 +13,7 @@ import BlogFormView from 'modules/post.blog/BlogFormView'
 import LeecherFormView from 'modules/leecher/LeecherFormView'
 import UsersFormView from 'modules/users/UsersFormView'
 import PageServiceFormView from 'modules/pageservice/PageServiceFormView'
+import SlideFormView from 'modules/slide/SlideFormView'
 
 const routes = (
     <Route component={App}>
@@ -21,6 +22,7 @@ const routes = (
         </Route>
         <Route component={AuthHoc(Backend)}>
             <Route component={HomeView} path={Routes.home.view}>
+                <Route component={SlideFormView} path={Routes.slide.view}></Route>
                 <Route component={PageServiceFormView} path={Routes.pageservice.view}></Route>
                 <Route component={UsersFormView} path={Routes.users.view}></Route>
                 <Route component={ListTypeFormView} path={Routes.listtype.view}></Route>

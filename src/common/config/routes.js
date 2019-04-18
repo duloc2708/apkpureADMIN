@@ -28,6 +28,9 @@ const Routes = {
     },
     pageservice: {
         view: '/pageService'
+    },
+    slide: {
+        view: '/slide'
     }
     
 }

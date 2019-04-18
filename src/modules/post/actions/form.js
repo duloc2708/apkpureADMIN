@@ -14,6 +14,23 @@ import {
     UPDATE_DATEIME_UP
 } from '../types'
 const { LOCALHOST_PHOTO } = Config
+export const onChangeSlide = (item, status) => {
+    return (dispatch, getState) => {
+        return new Promise((resolve, reject) => {
+            axios.post(`${Config.API_URL}post/update_slide`, {
+                data: {
+                    id: item.id,
+                    slide: status
+                }
+            })
+                .then((response) => {
+                    resolve(response)
+                }, (err) => {
+                    reject(err)
+                })
+        })
+    }
+}
 export const uploadListImageNew = () => {
     return (dispatch, getState) => {
         let { listSlide } = getState().post
