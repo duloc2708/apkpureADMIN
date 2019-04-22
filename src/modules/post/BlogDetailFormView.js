@@ -237,7 +237,6 @@ class BlogDetailFormView extends React.Component {
                                         <label>Url</label>
                                         <input type="text"
                                             className="form-control"
-                                            readOnly={is_edit}
                                             value={url}
                                             onChange={(event) => this.handleInput(event)}
                                             name="url"
