@@ -261,6 +261,7 @@ export const relaceAllImageContent = (data, title) => {
 }
 export const updateBlog = () => {
     return (dispatch, getState) => {
+        console.log('updateBlog>>>>>>');
         const { listSlide, listTypeDefault, objData,
             listTagsDefault, dateTimeUp, objImageUpload, objImageSlideUpload, is_edit } = getState().post
         const objImage = _.clone(objImageUpload, true)
@@ -294,10 +295,12 @@ export const updateBlog = () => {
         //==============UPDATE THUMBNAIL
         if (objImage) {
             let link = objImage.replace('!', ',');
-            let dataImg = link.split(';base64,').pop()
-            let type = link.split(';')[0].split('/')[1]
-            let thumbnail = `thumnail_${slug}.` + type
-            objData_temp['thumbnail'] = thumbnail
+            if (link) {
+                let dataImg = link.split(';base64,').pop()
+                let type = link.split(';')[0].split('/')[1]
+                let thumbnail = `thumnail_${slug}.` + type
+                objData_temp['thumbnail'] = thumbnail
+            }
         }
         //==============UPDATE THUMBNAIL
 
