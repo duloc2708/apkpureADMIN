@@ -143,7 +143,8 @@ class VideoDetailFormView extends React.Component {
             desciption,
             tags,
             thumbnail,
-            levels
+            levels,
+            gameother
         } = objData
         const dropzoneStyle = {
             width: "100%",
@@ -205,6 +206,19 @@ class VideoDetailFormView extends React.Component {
                                                 name="desciption"
                                                 id="desciption"
                                             />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <label>Các game liên quan</label>
+                                            <input type="text"
+                                                className="form-control"
+                                                value={gameother}
+                                                onChange={(event) => this.handleInput(event)}
+                                                name="gameother"
+                                                id="gameother"
+                                            />
+
                                         </div>
                                     </div>
                                 </div>

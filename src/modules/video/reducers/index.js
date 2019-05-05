@@ -26,6 +26,7 @@ const INITIAL_STATE = {
         id: '',
         title: '',
         link: '',
+        gameother: '',
         desciption: '',
         tags: '',
         thumbnail: '',
