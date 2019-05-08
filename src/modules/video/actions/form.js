@@ -12,8 +12,31 @@ import {
     SHOW_PLAY_LIST,
     EDIT_VIDEO,
     UPDATE_THUMBNAIL_VIDEO,
-    INSERT_TAGS_VIDEO
+    INSERT_TAGS_VIDEO,
+    ADD_LIST_GAME
 } from '../types'
+export const addListGame = (item) => {
+    console.log('addListGame', item);
+
+    return (dispatch, getState) => {
+        let { objData } = getState().video
+        let objDataTemp = _.clone(objData, true)
+        if (!objDataTemp["gameother"]) {
+            objDataTemp["gameother"] = item.value
+        } else {
+            objDataTemp["gameother"] = objDataTemp["gameother"] + ',' + item.value
+        }
+        return new Promise((resolve, reject) => {
+            dispatch({
+                type: ADD_LIST_GAME,
+                payload: {
+                    objData: objDataTemp
+                }
+            })
+        })
+
+    }
+}
 export const updateDataImageUploads = (files) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {

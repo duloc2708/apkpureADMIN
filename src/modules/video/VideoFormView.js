@@ -1,6 +1,8 @@
 import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-table';
 import * as videoActions from 'modules/video/actions/form'
 import VideoDetailFormView from './VideoDetailFormView'
+import * as postActions from 'modules/post/actions/form'
+
 const ComponentImage = (props) => {
     let { cell } = props
     let pathSrc = '';
@@ -20,6 +22,7 @@ const ComponentImage = (props) => {
 class VideoFormView extends React.Component {
     componentDidMount() {
         this.props.getListDataVideo()
+        this.props.getListDataPost()
     };
     onDeleteProductSelected(row) {
 
@@ -195,7 +198,8 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch) => {
     return Redux.bindActionCreators({
         ...ReactRouterRedux.routerActions,
-        ...videoActions
+        ...videoActions,
+        ...postActions
     }, dispatch)
 }
 export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(VideoFormView)

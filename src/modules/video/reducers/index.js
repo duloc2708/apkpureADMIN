@@ -13,7 +13,8 @@ import {
     SHOW_PLAY_LIST,
     EDIT_VIDEO,
     UPDATE_THUMBNAIL_VIDEO,
-    INSERT_TAGS_VIDEO
+    INSERT_TAGS_VIDEO,
+    ADD_LIST_GAME
 } from '../types'
 
 const INITIAL_STATE = {
@@ -52,6 +53,11 @@ const INITIAL_STATE = {
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case ADD_LIST_GAME:
+            return {
+                ...state,
+                ...action.payload
+            }
         case INSERT_TAGS_VIDEO:
             return {
                 ...state,

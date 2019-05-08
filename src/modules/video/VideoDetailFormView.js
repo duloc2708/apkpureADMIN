@@ -3,6 +3,7 @@ import { BootstrapTable, TableHeaderColumn, ButtonGroup } from 'react-bootstrap-
 let temp_time_up = '';
 import * as videoActions from 'modules/video/actions/form'
 import UploadAvatar from './UploadAvatar'
+import ComboboxListGame from './ComboboxListGame'
 
 class VideoDetailFormView extends React.Component {
     constructor(props) {
@@ -137,6 +138,7 @@ class VideoDetailFormView extends React.Component {
             files,
             listTagsDefault
         } = this.props.video
+        let { list_data: dataPost } = this.props.post
         let { title,
             id,
             link,
@@ -211,6 +213,8 @@ class VideoDetailFormView extends React.Component {
                                     <div className="row">
                                         <div className="col-md-12">
                                             <label>Các game liên quan</label>
+                                            <ComboboxListGame list_data={dataPost} />
+                                            <br/>
                                             <input type="text"
                                                 className="form-control"
                                                 value={gameother}
@@ -273,12 +277,15 @@ class VideoDetailFormView extends React.Component {
 
 const mapStateToProps = ({
     i18n,
-    video },
+    video,
+    post
+},
     ownProps) => {
     return {
         i18n,
         ownProps,
-        video
+        video,
+        post
     }
 }
 const mapDispatchToProps = (dispatch) => {
