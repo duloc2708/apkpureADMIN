@@ -26,6 +26,7 @@ export const addListGame = (item) => {
         } else {
             objDataTemp["gameother"] = objDataTemp["gameother"] + ',' + item.value
         }
+        objDataTemp["gameother"]=objDataTemp["gameother"].trim()
         return new Promise((resolve, reject) => {
             dispatch({
                 type: ADD_LIST_GAME,
