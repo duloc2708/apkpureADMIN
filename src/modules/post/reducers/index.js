@@ -11,7 +11,8 @@ import {
     INIT_DATA_LISTTYPE,
     CHECKED_LIST_TYPE,
     INSERT_TAGS,
-    UPDATE_DATEIME_UP
+    UPDATE_DATEIME_UP,
+    INSERT_VERSION
 } from '../types'
 const timeDefault = new Date()
 const INITIAL_STATE = {
@@ -41,13 +42,15 @@ const INITIAL_STATE = {
         atr8: '', //SEO title
         atr9: '', // SEO description,
         atr10: '', // link down apk pure,
-        atr11: '', // slide image firts
+        atr11: '', // slide image firts,
+        listversion: ''
 
     },
     is_edit: false,
     isdisplayCalendar: false,
     listTypeDefault: [],
     listTagsDefault: [],
+    listVersionDefault: [],
     dateTimeUp: new Date(),
     objImageUpload: '',
     objImageSlideUpload: '',
@@ -79,6 +82,11 @@ const INITIAL_STATE = {
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case INSERT_VERSION:
+            return {
+                ...state,
+                ...action.payload
+            }
         case UPDATE_DATEIME_UP:
             return {
                 ...state,

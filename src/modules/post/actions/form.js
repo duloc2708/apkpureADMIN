@@ -11,7 +11,8 @@ import {
     INIT_DATA_LISTTYPE,
     CHECKED_LIST_TYPE,
     INSERT_TAGS,
-    UPDATE_DATEIME_UP
+    UPDATE_DATEIME_UP,
+    INSERT_VERSION
 } from '../types'
 const { LOCALHOST_PHOTO } = Config
 export const onChangeSlide = (item, status) => {
@@ -204,6 +205,17 @@ export const insertTags = (data) => {
         })
     }
 }
+export const insertVersion = (data) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: INSERT_VERSION,
+            payload: {
+                listVersionDefault: data
+            }
+        })
+    }
+}
+
 export const updateDateTimeUp = (data) => {
     return (dispatch, getState) => {
         dispatch({
@@ -359,7 +371,7 @@ export const updateBlog = () => {
 export const updatePost = () => {
     return (dispatch, getState) => {
         const { listSlide, listTypeDefault, objData,
-            listTagsDefault, dateTimeUp, objImageUpload, objImageSlideUpload, is_edit } = getState().post
+            listTagsDefault, dateTimeUp, objImageUpload, objImageSlideUpload, is_edit, listVersionDefault } = getState().post
         const objImage = _.clone(objImageUpload, true)
         const objImageSlide = _.clone(objImageSlideUpload, true)
 
@@ -438,6 +450,18 @@ export const updatePost = () => {
         if (!objData_temp.atr4) {
             objData_temp['atr4'] = slide_image_default
         }
+        // UPDATE VERSION NEW LINK DOWN
+        let strVersion = ''
+        listVersionDefault.map(item => {
+            if (item.checked) {
+                objData_temp['atr10'] = item.value
+            }
+            strVersion = strVersion + item.value + ','
+        })
+        if (strVersion) {
+            strVersion = strVersion.substr(0, strVersion.length - 1)
+        }
+        objData_temp['listversion'] = strVersion
         dispatch(uploadListImageNew())
         return new Promise((resolve, reject) => {
             axios.post(`${Config.API_URL}post/add`, objData_temp)
@@ -597,10 +621,20 @@ export const changeInputContent = (numWord, numChar, content) => {
 }
 export const changeRowEditPost = (item) => {
     return (dispatch, getState) => {
-        let listSlide = []
+        let listSlide = [], listVersionDefault = []
         if (item.atr7) {
             item.atr7.split(',').map((item, i) => {
                 listSlide.push({ index: i, type: "default", url: item, fullfilename: item, filename: item })
+            })
+        }
+        if (item.listversion) {
+            let listData = item.listversion.split(',')
+            listData.map(data => {
+                if (item.atr10 == data) {
+                    listVersionDefault.push({ value: data, checked: true })
+                } else {
+                    listVersionDefault.push({ value: data, checked: false })
+                }
             })
         }
         dispatch({
@@ -610,7 +644,8 @@ export const changeRowEditPost = (item) => {
                 is_edit: true,
                 isOpen: true,
                 listSlide: listSlide,
-                lengthSlide: listSlide.length
+                lengthSlide: listSlide.length,
+                listVersionDefault: listVersionDefault
             }
         })
     }
@@ -618,7 +653,6 @@ export const changeRowEditPost = (item) => {
 export const openCalendar = (item) => {
     return (dispatch, getState) => {
         let { isdisplayCalendar } = getState().post
-
         dispatch({
             type: OPEN_CALENDAR,
             payload: {
@@ -684,6 +718,16 @@ export const checkedListType = (data) => {
             type: CHECKED_LIST_TYPE,
             payload: {
                 listTypeDefault: data
+            }
+        })
+    }
+}
+export const checkedListVersion = (data) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: INSERT_VERSION,
+            payload: {
+                listVersionDefault: data
             }
         })
     }

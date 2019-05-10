@@ -132,6 +132,20 @@ class BlogDetailFormView extends React.Component {
             this.props.insertTags(listTagsDefaultTemp)
         }
     }
+    AddVersion() {
+        let value = this.refs.version.value
+        if (value.length > 0) {
+            const { listVersionDefault } = this.props.post
+            let listVersionDefaultTemp = _.clone(listVersionDefault, true)
+            let checkFindExists = listVersionDefaultTemp.filter(x => x.value == value)
+            if (checkFindExists.length == 0) {
+                listVersionDefaultTemp.push(
+                    { checked: false, value: value }
+                )
+            }
+            this.props.insertVersion(listVersionDefaultTemp)
+        }
+    }
     AddTagFromList(e) {
         let idTag = e.target.getAttribute('id');
         let arr = this.state.tags;
@@ -163,6 +177,17 @@ class BlogDetailFormView extends React.Component {
         var data = [...this.props.post.listTypeDefault];
         data[index].value = !data[index].value;
         this.props.checkedListType(data)
+    }
+    onClickVersion(value, checked) {
+        let dataTemp = _.clone(this.props.post.listVersionDefault, true)
+        dataTemp = dataTemp.map(item => {
+            item.checked = false
+            if (item.value == value) {
+                item.checked = true
+            }
+            return item
+        })
+        this.props.checkedListVersion(dataTemp)
     }
     OpenCalendar() {
         this.props.openCalendar();
@@ -204,7 +229,8 @@ class BlogDetailFormView extends React.Component {
         // this.props.convertListCheckType(filteredAry)
     }
     render() {
-        let { objData, is_edit, isdisplayCalendar, loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp, listSlide } = this.props.post
+        let { listVersionDefault, objData, is_edit, isdisplayCalendar
+            , loadlisttype, isOpen, listTypeDefault, listTagsDefault, dateTimeUp, listSlide } = this.props.post
         let { numWord, numChar, _id, title, content_long, content_short, status, image_large,
             image, time_up, type, type_code, tags, listTagOld,
             displayAddNew, url, levels, atr7, atr5, atr6, atr8, atr9, atr10 } = objData
@@ -392,9 +418,9 @@ class BlogDetailFormView extends React.Component {
                                         <div key={i} className="form-group">
                                             <label className="checkbox">
                                                 <input type="checkbox"
-                                                    id={item.type}
-                                                    name={item.type} key={item.type}
-                                                    defaultChecked={item.value}
+                                                    id={item.value}
+                                                    name={item.value} key={item.value}
+                                                    defaultChecked={item.checked}
                                                     onChange={() => this.onClickType(i)} />
                                                 <span></span>
                                                 <span style={{ "marginLeft": "5px" }}>{item.text}</span>
@@ -404,7 +430,31 @@ class BlogDetailFormView extends React.Component {
                                     ))}
                                 </div>
                             </div>
-
+                            <label>Version download</label>
+                            <div className="input-group">
+                                <input ref="version" type="text" className="form-control" />
+                                <span className="input-group-btn">
+                                    <button onClick={() => this.AddVersion()} className="btn btn-secondary" type="button">Add</button>
+                                </span>
+                            </div>
+                            <div className="card">
+                                <div className="card-block" style={{ "height": "150px", "overflow": "auto", "margin": "5px" }}>
+                                    {listVersionDefault && listVersionDefault.map((item, i) => (
+                                        <div key={i} className="form-group">
+                                            <label className="checkbox">
+                                                <input type="checkbox"
+                                                    id={item.value}
+                                                    name={item.value} key={item.value}
+                                                    checked={item.checked}
+                                                    onChange={() => this.onClickVersion(item.value, !item.checked)} />
+                                                <span></span>
+                                                <span style={{ "marginLeft": "5px" }}>{item.value}</span>
+                                            </label>
+                                            <i id={item.value} onClick={(e) => this.removeCategory(e)} className="fa fa-remove"></i>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                             <label>Tags</label>
                             <div className="input-group">
                                 <input ref="tag" type="text" className="form-control" />
