@@ -211,6 +211,12 @@ class BlogDetailFormView extends React.Component {
             })
         }
     }
+    removeVersion(item) {
+        let { listVersionDefault } = this.props.post
+        let dataTemp = _.clone(listVersionDefault, true)
+        dataTemp = dataTemp.filter(x => x.value != item.value)
+        this.props.checkedListVersion(dataTemp)
+    }
     removeCategory(e) {
         let typecode = e.target.getAttribute('id');
         let obj = {
@@ -425,7 +431,7 @@ class BlogDetailFormView extends React.Component {
                                                 <span></span>
                                                 <span style={{ "marginLeft": "5px" }}>{item.text}</span>
                                             </label>
-                                            <i id={item.type} onClick={(e) => this.removeCategory(e)} className="fa fa-remove"></i>
+                                            <i id={item.value} onClick={(e) => this.removeCategory(e)} className="fa fa-times" ></i>
                                         </div>
                                     ))}
                                 </div>
@@ -450,7 +456,7 @@ class BlogDetailFormView extends React.Component {
                                                 <span></span>
                                                 <span style={{ "marginLeft": "5px" }}>{item.value}</span>
                                             </label>
-                                            <i id={item.value} onClick={(e) => this.removeCategory(e)} className="fa fa-remove"></i>
+                                            <i id={item.value} onClick={(e) => this.removeVersion(item)} className="fa fa-times"></i>
                                         </div>
                                     ))}
                                 </div>
