@@ -426,7 +426,7 @@ class BlogDetailFormView extends React.Component {
                                                 <input type="checkbox"
                                                     id={item.value}
                                                     name={item.value} key={item.value}
-                                                    defaultChecked={item.checked}
+                                                    checked={item.value}
                                                     onChange={() => this.onClickType(i)} />
                                                 <span></span>
                                                 <span style={{ "marginLeft": "5px" }}>{item.text}</span>
