@@ -465,7 +465,7 @@ export const updatePost = () => {
             strVersion = strVersion.substr(0, strVersion.length - 1)
         }
         objData_temp['listversion'] = strVersion
-        objData_temp['atr2'] = ''
+        objData_temp['atr2'] = 'test'
         dispatch(uploadListImageNew())
         return new Promise((resolve, reject) => {
             axios.post(`${Config.API_URL}post/add`, objData_temp)
