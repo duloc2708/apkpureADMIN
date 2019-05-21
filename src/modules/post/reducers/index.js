@@ -43,7 +43,8 @@ const INITIAL_STATE = {
         atr9: '', // SEO description,
         atr10: '', // link down apk pure,
         atr11: '', // slide image firts,
-        listversion: ''
+        listversion: '',
+        url:''
 
     },
     is_edit: false,
