@@ -446,7 +446,10 @@ export const updatePost = () => {
                 str = str.substr(0, str.length - 1)
             }
             objData_temp['atr7'] = str
+        }else{
+            objData_temp['atr7'] = ''
         }
+        
         if (!objData_temp.atr4) {
             objData_temp['atr4'] = slide_image_default
         }
