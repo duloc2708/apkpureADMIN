@@ -3,7 +3,7 @@ class FormUploadSlide extends React.Component {
     componentDidMount() {
         let that = this
         $("#imgInpSlide").change(function () {
-            let { objData } = that.props.blog
+            let { objData } = that.props.post
             if (objData.title) {
                 that.readURL(this);
             } else {
