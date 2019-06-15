@@ -1,19 +1,26 @@
 import {
     GET_LINK_GAME,
     CHANGE_LINK_GAME,
-    RESET_LEECH
+    RESET_LEECH,
+    IS_SEARCH
 } from '../types'
 
 const INITIAL_STATE = {
     url: '',
     data: '',
-    isDisplay: false
+    isDisplay: false,
+    isSearch: false
 }
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case RESET_LEECH:
             return {
                 ...INITIAL_STATE
+            }
+        case IS_SEARCH:
+            return {
+                ...state,
+                ...action.payload
             }
         case CHANGE_LINK_GAME:
             return {

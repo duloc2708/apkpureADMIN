@@ -10,21 +10,24 @@ class LeecherApkFormView extends React.Component {
         this.props.resetLeech()
     }
     _onGetLink() {
-        let { url } = this.props.leecherapk
-        if (url) {
-            this.props.getListGame()
+        let { url, isSearch } = this.props.leecherapk
+        if (isSearch) {
+            alert('Đang tìm ...')
         } else {
-            alert('Vui lòng nhập url ...')
+            if (url) {
+                this.props.getListGame()
+            } else {
+                alert('Vui lòng nhập url ...')
+            }
         }
+
     }
     _onChangeUrl(e) {
         this.props.changeUrl(e.target.value)
     }
     render() {
-        let { url, isDisplay, data } = this.props.leecherapk
+        let { url, isDisplay, data, isSearch } = this.props.leecherapk
         let { title, content_long, atr4, type, title_slug } = data
-        console.log('data>>>>>>', data);
-
         return (
             <div style={{ "margin": "10px", "marginBottom": "50px", "height": "500px" }} >
                 <div className="row">
@@ -51,15 +54,27 @@ class LeecherApkFormView extends React.Component {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="row">
-                            <div className="col-md-12">
-                                <label>Tiêu đề</label>
-                                <input type="text"
-                                    className="form-control"
-                                    defaultValue={title || ''}
-                                    name="title"
-                                    id="title"
-                                />
-                            </div>
+                            {isSearch ?
+                                <div className="col-md-12">
+                                    <label>Searching and downloading APK...<br />It may take up to 3 minutes, depending on file size</label>
+                                </div>
+                                : ''
+                            }
+                            {data.status == 'error' && !isSearch ?
+                                <div className="col-md-12">
+                                    <label>{data && data.data}</label>
+                                </div>
+                                : ''
+                            }
+                            {data.status == 'success' && !isSearch ?
+                                <div className="col-md-12">
+                                    <label>url {data.url}</label><br />
+                                    <label>filesize {data.filesize}</label><br />
+                                    <label>version {data.version}</label>
+                                </div>
+                                : ''
+                            }
+
                         </div>
                     </div>
                 </div>
