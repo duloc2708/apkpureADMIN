@@ -5,8 +5,9 @@ import post from 'modules/post/reducers'
 import leecher from 'modules/leecher/reducers'
 import users from 'modules/users/reducers'
 import pageservice from 'modules/pageservice/reducers'
-
+import leecherapk from 'modules/leecher.apk/reducers'
 const rootReducer = Redux.combineReducers({
+    leecherapk: leecherapk,
     pageservice: pageservice,
     leecher: leecher,
     routing: ReactRouterRedux.routerReducer,

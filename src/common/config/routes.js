@@ -23,6 +23,9 @@ const Routes = {
     leecher: {
         view: '/leecher'
     },
+    leecherapk: {
+        view: '/leecher-apk'
+    },
     users: {
         view: '/users'
     },

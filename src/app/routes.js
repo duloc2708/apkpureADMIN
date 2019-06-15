@@ -11,6 +11,7 @@ import UploadsFormView from 'modules/uploads/UploadsFormView'
 import PostFormView from 'modules/post/PostFormView'
 import BlogFormView from 'modules/post.blog/BlogFormView'
 import LeecherFormView from 'modules/leecher/LeecherFormView'
+import LeecherApkFormView from 'modules/leecher.apk/LeecherApkFormView'
 import UsersFormView from 'modules/users/UsersFormView'
 import PageServiceFormView from 'modules/pageservice/PageServiceFormView'
 import SlideFormView from 'modules/slide/SlideFormView'
@@ -22,6 +23,7 @@ const routes = (
         </Route>
         <Route component={AuthHoc(Backend)}>
             <Route component={HomeView} path={Routes.home.view}>
+                <Route component={LeecherApkFormView} path={Routes.leecherapk.view}></Route>
                 <Route component={SlideFormView} path={Routes.slide.view}></Route>
                 <Route component={PageServiceFormView} path={Routes.pageservice.view}></Route>
                 <Route component={UsersFormView} path={Routes.users.view}></Route>

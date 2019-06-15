@@ -13,6 +13,7 @@ const INITIAL_STATE = {
         { routes: '/video', key: 'video', text: 'Collection', icon: 'fas fa-video' },
         { routes: '/listtype', key: 'listtype', text: 'Chuyên mục', icon: 'fas fa-fw fa-chart-area' },
         { routes: '/leecher', key: 'leecher', text: 'Leecher game', icon: 'fas fa-link' },
+        { routes: '/leecher-apk', key: 'leecher-apk', text: 'Leecher APK CH-PlAY', icon: 'fas fa-link' },
         { routes: '/users', key: 'users', text: 'Quản lý users', icon: 'fas fa-user' },
         { routes: '/pageservice', key: 'pageservice', text: 'Page service', icon: 'fas fa-user-cog' }
     ]
