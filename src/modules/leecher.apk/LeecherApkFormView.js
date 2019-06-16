@@ -14,10 +14,16 @@ class LeecherApkFormView extends React.Component {
         if (isSearch) {
             alert('Đang tìm ...')
         } else {
-            if (url) {
-                this.props.getListGame()
+            if (url.indexOf('http') != -1) {
+                var urlNew = new URL(url);
+                var c = urlNew.searchParams.get("id");
+                if (c) {
+                    this.props.getListGame()
+                } else {
+                    alert('Id game không tồn tại')
+                }
             } else {
-                alert('Vui lòng nhập url ...')
+                this.props.getListGame()
             }
         }
 
@@ -62,15 +68,18 @@ class LeecherApkFormView extends React.Component {
                             }
                             {data.status == 'error' && !isSearch ?
                                 <div className="col-md-12">
-                                    <label>{data && data.data}</label>
+                                    {data && data.data && data && data.data.indexOf('Invalid URL / Package Name') != -1 ?
+                                        'The requested app is not found or invalid. Please make sure the app exist on Play Store' :
+                                        <label>{data && data.data}</label>
+                                    }
                                 </div>
                                 : ''
                             }
                             {data.status == 'success' && !isSearch ?
                                 <div className="col-md-12">
-                                    <label>url {data.url}</label><br />
-                                    <label>filesize {data.filesize}</label><br />
-                                    <label>version {data.version}</label>
+                                    url:  <a href={data.url}>{data.url}</a><br />
+                                    <label>filesize: {data.filesize}</label><br />
+                                    <label>version: {data.version}</label>
                                 </div>
                                 : ''
                             }
