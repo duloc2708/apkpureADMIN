@@ -40,10 +40,10 @@ export const changeUrl = (value) => {
         })
     }
 }
-export const getListGame = () => {
+export const getListGame = (idgame = '') => {
     return (dispatch, getState) => {
         let { url } = getState().leecher
-        let id = url
+        let id = idgame ? idgame : url
         dispatch(searchGame(true))
         return new Promise((resolve, reject) => {
             axios.post(`http://61.28.230.226:3001/api/test/getlink`, { id: id })

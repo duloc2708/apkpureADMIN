@@ -18,7 +18,7 @@ class LeecherApkFormView extends React.Component {
                 var urlNew = new URL(url);
                 var c = urlNew.searchParams.get("id");
                 if (c) {
-                    this.props.getListGame()
+                    this.props.getListGame(c)
                 } else {
                     alert('Id game không tồn tại')
                 }
