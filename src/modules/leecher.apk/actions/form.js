@@ -46,13 +46,13 @@ export const getListGame = (idgame = '') => {
         let id = idgame ? idgame : url
         dispatch(searchGame(true))
         return new Promise((resolve, reject) => {
-            axios.post(`http://61.28.230.226:3001/api/test/getlink`, { id: id })
+            axios.post(`${Config.API_URL}getapk`, { id: id })
                 .then(function (response) {
-                    let { data } = response.data
+                    let { Data } = response.data
                     axios({
                         method: 'post',
                         url: `https://api-apk.evozi.com/download`,
-                        data: data,
+                        data: Data,
                         config: { headers: { 'Content-Type': 'multipart/form-data' } }
                     })
                         .then(function (response2) {
