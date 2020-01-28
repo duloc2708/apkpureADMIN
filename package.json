@@ -104,6 +104,7 @@
         "react-dropzone": "^8.1.0",
         "react-modal-bootstrap": "^1.1.1",
         "react-select": "^1.2.1",
-        "react-tinymce-input": "^2.1.0"
+        "react-tinymce-input": "^2.1.0",
+        "uglifyjs-webpack-plugin": "^2.2.0"
     }
 }

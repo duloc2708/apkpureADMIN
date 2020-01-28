@@ -17,7 +17,8 @@ module.exports = {
             "decimal.js-light",
             "keyboardjs",
             "immutable",
-            "prop-types"
+            "prop-types",
+            "react-notification-system"
         ]
     },
     output: {
@@ -72,7 +73,7 @@ module.exports = {
             ComboboxMultiple$: path.resolve(
                 __dirname,
                 "src/common/components/ComboboxMultiple.js"
-            ),
+            )
             //end component
         }
     },
@@ -114,6 +115,7 @@ module.exports = {
             queryString: "query-string",
             uuidv4: "uuid/v4",
             PropTypes: "prop-types",
+            ReactNotif: "react-notification-system",
             //end plugin
 
             //conf

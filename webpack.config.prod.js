@@ -17,7 +17,8 @@ module.exports = {
             "decimal.js-light",
             "keyboardjs",
             "immutable",
-            "prop-types"
+            "prop-types",
+            "react-notification-system"
         ]
     },
     output: {
@@ -57,21 +58,6 @@ module.exports = {
             Routes$: path.resolve(__dirname, "src/common/config/routes.js"),
             ScriptHOC$: path.resolve(__dirname, "src/common/hoc/Script.js"),
             //component
-            Loader$: path.resolve(__dirname, "src/common/components/Loader.js"),
-            LoaderSidebar$: path.resolve(
-                __dirname,
-                "src/common/components/LoaderSidebar.js"
-            ),
-            Single$: path.resolve(__dirname, "src/common/components/Single.js"),
-            Double$: path.resolve(__dirname, "src/common/components/Double.js"),
-            SingleTicket$: path.resolve(
-                __dirname,
-                "src/common/components/SingleTicket.js"
-            ),
-            ComponentResetSidebar$: path.resolve(
-                __dirname,
-                "src/common/components/ComponentResetSidebar.js"
-            ),
             ButtonAddNew$: path.resolve(
                 __dirname,
                 "src/common/components/ButtonAddNew.js"
@@ -83,6 +69,10 @@ module.exports = {
             Combobox: path.resolve(
                 __dirname,
                 "src/common/components/Combobox.js"
+            ),
+            ComboboxMultiple$: path.resolve(
+                __dirname,
+                "src/common/components/ComboboxMultiple.js"
             )
             //end component
         }
@@ -97,12 +87,9 @@ module.exports = {
                 API_DOWNLOAD_FILE: JSON.stringify(
                     "http://apkverified.com/api/"
                 ),
-                API_URL: JSON.stringify("http://api.apksafety.com/api/"),
+                API_URL: JSON.stringify("http://149.28.159.138:8080/"),
                 API_IMAGE: JSON.stringify("https://api.apksafety.com/api/image")
             }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: { warnings: false }
         }),
         new OptimizeJsPlugin({
             sourceMap: false
@@ -120,7 +107,6 @@ module.exports = {
             ReactRedux: "react-redux",
             ReactRouter: "react-router",
             ReactRouterRedux: "react-router-redux",
-            Numeral: "numeral",
             axios: "axios",
             moment: "moment-timezone",
             Decimal: "decimal.js-light",
@@ -131,24 +117,22 @@ module.exports = {
             queryString: "query-string",
             uuidv4: "uuid/v4",
             PropTypes: "prop-types",
+            ReactNotif: "react-notification-system",
             //end plugin
+
             //conf
             Config: "Config",
-            SportConfig: "SportConfig",
             Check: "Check",
             Helper: "Helper",
             Routes: "Routes",
+            BugsnagClient: "BugsnagClient",
             //end conf
+
             //component
-            Loader: "Loader",
-            LoaderSidebar: "LoaderSidebar",
-            Single: "Single",
-            Double: "Double",
-            SingleTicket: "SingleTicket",
-            ComponentResetSidebar: "ComponentResetSidebar",
             ButtonAddNew: "ButtonAddNew",
             AlertCustom: "AlertCustom",
-            Combobox: "Combobox"
+            Combobox: "Combobox",
+            ComboboxMultiple: "ComboboxMultiple"
             //end component
         })
     ]
