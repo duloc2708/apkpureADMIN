@@ -7,50 +7,61 @@ import {
     USER_LOGOUT,
     SET_TOKEN,
     GET_BET_SETTING
-} from '../types'
-const requestLogin = (params) => {
-    return (dispatch) => {
+} from "../types";
+const requestLogin = params => {
+    return dispatch => {
         return new Promise((resolve, reject) => {
-            axios.post(`${Config.API_URL}users/login`, params) //param !=0(user bet !admin)
-                .then((response) => {
+            axios.post(`${Config.API_URL}users/login`, params).then(
+                response => {
                     dispatch({
                         type: LOGIN_RESET,
-                        payload: { username: params.username, password: '' }
-                    })
-                    let { Data, Message, StatusCode } = response.data
-                    if (StatusCode == 0 && Data) {
-                        let { token, userInfo } = Data
-                        Helper._setCookie('token', token)
-                        Helper._setCookie('userInfo', Helper._base64.encode(JSON.stringify(userInfo)))
+                        payload: { username: params.username, password: "" }
+                    });
+                    let { data } = response.data;
+                    if (data && data.token) {
+                        let { token } = data;
+                        Helper._setCookie("token", token);
+                        Helper._setCookie(
+                            "userInfo",
+                            Helper._base64.encode(
+                                JSON.stringify({
+                                    username: params.username,
+                                    password: ""
+                                })
+                            )
+                        );
                         dispatch({
                             type: LOGIN_SUCCESS,
                             payload: {
                                 token: token
                             }
-                        })
+                        });
                     } else {
                         dispatch({
                             type: LOGIN_FAILURE,
                             payload: {
-                                validate: 'validate'
+                                validate: "validate"
                             }
-                        })
+                        });
                     }
-                    resolve(response)
-                }, (err) => {
+                    resolve(response);
+                },
+                err => {
                     dispatch({
                         type: LOGIN_RESET,
-                        payload: { username: params.Username, password: '' }
-                    })
+                        payload: { username: params.Username, password: "" }
+                    });
                     dispatch({
                         type: LOGIN_FAILURE,
                         payload: {
-                            validate: 'validate'
+                            validate: "validate"
                         }
-                    })
-                    reject(err)
-                })
-        })
-    }
-}
-module.exports = requestLogin
+                    });
+                    reject(err);
+                }
+            );
+        });
+    };
+};
+
+module.exports = requestLogin;

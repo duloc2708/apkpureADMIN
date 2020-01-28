@@ -1,160 +1,154 @@
 import {
-    CHANGE_INPUT_CONTENT,
-    EDIT_POST,
-    OPEN_CALENDAR,
+    UPDATE_INPUT_VIDEO,
+    CHANGE_TAB,
+    UPDATE_LIST_VIDEO,
+    SHOW_MODAL_VIDEOS,
+    UPDATE_LIST_CHAPTER,
     UPDATE_INPUT_DATA,
-    CONVERT_LIST_CHECK_TYPE,
-    OPEN_MODAL_DETAIL_POST,
-    ADD_NEW_POST,
-    GET_LIST_DATA_POST,
-    CLEAR_DATA_POST,
-    INIT_DATA_LISTTYPE,
-    CHECKED_LIST_TYPE,
-    INSERT_TAGS,
-    UPDATE_DATEIME_UP,
-    INSERT_VERSION
-} from '../types'
-const timeDefault = new Date()
+    CHANGE_STATUS_TOOLBAR,
+    GET_LIST_DATA_ARTICLE,
+    UPDATE_INPUT_CHAPTER
+} from "../types";
+const timeDefault = new Date();
 const INITIAL_STATE = {
     loadlisttype: [],
     list_data: [],
     list_data_default: [],
     itemDetail: {},
     isOpen: false,
-    objData: {
-        id: '',
-        title: '',
-        title_slug: '',
-        content_long: '',
-        content_short: '',
-        status: 'active',
-        thumbnail: '',
-        source: 'test',
-        type: '',
-        tags: '',
-        numWord: 0,
-        numChar: 0,
-        atr2: '',
-        created_by: '',
-        time_up: '',
-        createdAt: timeDefault.getTime(),
-        updatedAt: timeDefault.getTime(),
-        atr8: '', //SEO title
-        atr9: '', // SEO description,
-        atr10: '', // link down apk pure,
-        atr11: '', // slide image firts,
-        listversion: '',
-        url:''
-
-    },
     is_edit: false,
     isdisplayCalendar: false,
     listTypeDefault: [],
     listTagsDefault: [],
     listVersionDefault: [],
     dateTimeUp: new Date(),
-    objImageUpload: '',
-    objImageSlideUpload: '',
+    objImageUpload: "",
+    objImageSlideUpload: "",
     listHeader: [
-        { key: 'THUMB', title: 'Hình đại diện', type: 'text', class: '' },
-        { key: 'TITLE', title: 'Tiêu đề', type: 'text', class: '' },
-        { key: 'TAGS', title: 'Tags', type: 'text', class: '' },
-        { key: 'TYPE', title: 'Chuyên mục', type: 'text', class: '' },
-        { key: 'CREATE_ID', title: 'Người tạo', type: 'text', class: '' },
-        { key: 'SLIDE', title: 'Slide', type: 'text', class: '' },
-        { key: 'STATUS', title: 'Trạng thái', type: 'text', class: '' },
-        { key: 'DOWWFILE', title: 'Tải file', type: 'text', class: '' },
-        { key: 'EDIT', title: 'Cập nhật', type: 'text', class: '' },
-        { key: 'DELETE', title: 'Xoá', type: 'text', class: '' },
-    ],
-    listHeaderBlogs: [
-        { key: 'THUMB', title: 'Hình đại diện', type: 'text', class: '' },
-        { key: 'TITLE', title: 'Tiêu đề', type: 'text', class: '' },
-        { key: 'TAGS', title: 'Tags', type: 'text', class: '' },
-        { key: 'CREATE_ID', title: 'Người tạo', type: 'text', class: '' },
-        { key: 'STATUS', title: 'Trạng thái', type: 'text', class: '' },
-        { key: 'EDIT', title: 'Cập nhật', type: 'text', class: '' },
-        { key: 'DELETE', title: 'Xoá', type: 'text', class: '' },
+        { key: "THUMB", title: "Hình đại diện", type: "text", class: "" },
+        { key: "TITLE", title: "Tiêu đề", type: "text", class: "" },
+        { key: "TYPE", title: "Chuyên mục", type: "text", class: "" },
+        { key: "CREATE_ID", title: "Người tạo", type: "text", class: "" },
+        { key: "STATUS", title: "Trạng thái", type: "text", class: "" },
+        { key: "EDIT", title: "Cập nhật", type: "text", class: "" },
+        { key: "DELETE", title: "Xoá", type: "text", class: "" }
     ],
     lengthSlide: 0,
     listSlide: [],
-    fieldSearch: '',
-    typeUpload: ''
-}
+    fieldSearch: "",
+    typeUpload: "",
+    listTab: [
+        {
+            key: "tab1",
+            title: "Thông tin chung"
+        },
+        {
+            key: "tab2",
+            title: "Giáo trình"
+        }
+    ],
+    tabActive: "tab1",
+    listHeaderChapter: [
+        { key: "NAME", title: "Tên", type: "text", class: "" },
+        { key: "TOTAL", title: "Tổng số bài", type: "text", class: "" },
+        { key: "DURATION", title: "Thời lượng", type: "text", class: "" },
+        {
+            key: "CHAPTERS",
+            title: "Danhh sách bài học ",
+            type: "text",
+            class: ""
+        },
+        { key: "DELETE", title: "Xoá", type: "text", class: "" }
+    ],
+    listHeaderVideo: [
+        { key: "NAME", title: "Tên bài học", type: "text", class: "" },
+        { key: "TOTAL", title: "Dung lượng", type: "text", class: "" },
+        { key: "DURATION", title: "Url", type: "text", class: "" },
+        { key: "NOTE", title: "Mô tả", type: "text", class: "" },
+        { key: "DELETE", title: "Xoá", type: "text", class: "" }
+    ],
+    listDataChapter: [],
+    listDataVideos: [],
+    isModalVideo: false,
+    objChapter: {
+        id: "",
+        name: "",
+        totalDuration: "",
+        articleId: "",
+        orderBy: 0
+    },
+    objVideo: {
+        id: "",
+        name: "",
+        duration: "",
+        url: "",
+        description: "",
+        Id: "",
+        orderBy: 0
+    },
+    objArticle: {
+        id: "",
+        orderBy: 0,
+        name: "",
+        notes: "",
+        typeId: "",
+        teacherId: "chubao",
+        price: "",
+        numWord: "",
+        numChar: ""
+    }
+};
+
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case INSERT_VERSION:
+        case UPDATE_INPUT_CHAPTER:
             return {
                 ...state,
                 ...action.payload
-            }
-        case UPDATE_DATEIME_UP:
+            };
+        case GET_LIST_DATA_ARTICLE:
             return {
                 ...state,
                 ...action.payload
-            }
-        case INSERT_TAGS:
+            };
+        case CHANGE_STATUS_TOOLBAR:
             return {
                 ...state,
                 ...action.payload
-            }
-        case CHECKED_LIST_TYPE:
-            return {
-                ...state,
-                ...action.payload
-            }
-        case INIT_DATA_LISTTYPE:
-            return {
-                ...state,
-                ...action.payload
-            }
-        case CLEAR_DATA_POST:
-            return {
-                ...INITIAL_STATE
-            }
-        case GET_LIST_DATA_POST:
-            return {
-                ...state,
-                ...action.payload
-            }
-        case ADD_NEW_POST:
-            return {
-                ...state,
-                ...action.payload
-            }
-        case OPEN_MODAL_DETAIL_POST:
-            return {
-                ...state,
-                ...action.payload
-            }
-        case CONVERT_LIST_CHECK_TYPE:
-            return {
-                ...state,
-                ...action.payload
-            }
+            };
         case UPDATE_INPUT_DATA:
             return {
                 ...state,
                 ...action.payload
-            }
-        case OPEN_CALENDAR:
+            };
+        case UPDATE_LIST_CHAPTER:
             return {
                 ...state,
                 ...action.payload
-            }
-        case EDIT_POST:
+            };
+        case UPDATE_INPUT_VIDEO:
             return {
                 ...state,
                 ...action.payload
-            }
-        case CHANGE_INPUT_CONTENT:
+            };
+        case SHOW_MODAL_VIDEOS:
             return {
                 ...state,
                 ...action.payload
-            }
+            };
+        case CHANGE_TAB:
+            return {
+                ...state,
+                ...action.payload
+            };
+        case UPDATE_LIST_VIDEO:
+            return {
+                ...state,
+                ...action.payload
+            };
         default:
-            return state
+            return state;
     }
-    return state
-}
-export default Reducer
+    return state;
+};
+export default Reducer;
