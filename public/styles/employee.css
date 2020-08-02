@@ -1,0 +1,231 @@
+.employee .main__content{
+	margin: 10px 0;
+}
+.employee .main__content .list__function{
+	margin: 10px 0;
+	background: #1a6d96
+}
+.employee .main__content .list__function li{
+	display: inline-block;
+}
+.employee .main__content .list__function li span{
+	padding-right: 6px;
+}
+.employee .main__content .list__function li span i{
+    color: #ffffff;
+}
+.employee .main__content .list__function li span i:hover{
+    color: #ffffff;
+}
+.employee .main__content .list__function li a{
+  color: #ffffff;
+	text-decoration: none;
+	text-transform: capitalize;
+	font-weight: bold;
+  padding: 10px;
+  display: block;
+}
+.employee .main__content .list__function li .active{
+	color: #000000;
+  background: #4ea6d2;
+}
+.employee .main__content .list__function li .disable{
+  background: #4ea6d2;
+  opacity: 0.4;
+}
+.main__content__left{
+    border: 1px solid #ebe6e6;
+}
+.employee .main__content__left .img_user img{
+	width: 100%;
+}
+.list__employee p{
+    background: #ddd;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 16px;
+    margin: 10px 0;
+}
+.list__employee ul{
+	margin-left: 10px;
+}
+.form__employee .form-group>div{
+    display: inline-block;
+    vertical-align: middle;
+}
+.form__employee .form-group .left{
+    width: 42%;
+}
+.form__employee .form-group .right{
+    width: 55%;
+}
+.file-upload {
+	position: relative;
+	display: inline-block;
+	display: block;
+    text-align: center;
+    width: 100%;
+}
+
+.file-upload__label {
+  padding: 10px;
+  color: #fff;
+  background: #939191;
+  border-radius: .4em;
+  transition: background .3s;
+  
+  &:hover {
+     cursor: pointer;
+     background: #000;
+  }
+}
+    
+.file-upload__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1;
+    width:0;
+    height: 100%;
+    opacity: 0;
+}
+[type="date"] {
+  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+}
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+.form__employee input {
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 3px 5px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  width: 190px;
+}
+.employee .col-md-3,.col-md-4,.col-md-6{
+	margin-bottom: 10px;
+}
+.select-hidden {
+  display: none;
+  visibility: hidden;
+  padding-right: 10px;
+}
+
+.employee .select {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  font-size: 16px;
+  color: #fff;
+  width: 220px;
+  height: 32px;
+  vertical-align: middle;
+}
+
+.employee .select-styled {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  padding: 8px 15px;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+.employee .select-styled:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  border-color: #000 transparent transparent transparent;
+  position: absolute;
+  top: 16px;
+  right: 10px;
+}
+.employee .select-styled:hover {
+  background-color: #fff;
+}
+.employee .select-styled:active, .select-styled.active {
+  background-color: #fff;
+}
+.employee .select-styled:active:after, .select-styled.active:after {
+  top: 9px;
+  border-color: transparent transparent #fff transparent;
+}
+
+.employee .select-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: #ab3326;
+}
+.employee .select-options li {
+  margin: 0;
+  padding: 12px 0;
+  text-indent: 15px;
+  border-top: 1px solid #cecece;
+  -moz-transition: all 0.15s ease-in;
+  -o-transition: all 0.15s ease-in;
+  -webkit-transition: all 0.15s ease-in;
+  transition: all 0.15s ease-in;
+}
+.employee .select-options li:hover {
+  color: #cecece;
+  background: #fff;
+}
+.employee .select-options li[rel="hide"] {
+  display: none;
+}
+.employee .form__employee .left{
+	display: inline-block;
+	width: 52%;
+}
+.employee .form__employee .right{
+	display: inline-block;
+	width: 46%;
+}
+.employee input[type="radio"]{
+	 width: auto;
+	 margin-left: 6px;
+}
+.employee .list__file{
+    margin: 20px 0;
+    border-bottom: 1px solid #cdcdcd;
+    padding-bottom: 10px;
+}
+
+.employee .list__pagination{
+  margin-top: 30px;
+  text-align: center;
+}
+.employee .list__pagination .pagination{
+  display: inline-flex;
+}
+.employee .date_company .btn-2{
+  cursor: pointer;
+  cursor: pointer;
+  background: #93c6fa;
+  border: 1px solid #5da3ec;
+  border-radius: 2px;
+}
+.employee .date_company .btn-2:hover{
+  background: #449bf4;
+}

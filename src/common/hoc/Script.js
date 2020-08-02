@@ -19,7 +19,7 @@ const ScriptParams = (LoadScripts) => {
 					isLoaded: false
 				}
 			}
-			render() {
+			render(){
 				const newProps = {
 					isLoaded: this.state.isLoaded
 				}

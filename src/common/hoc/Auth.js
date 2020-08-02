@@ -1,73 +1,80 @@
-// import { changeLang } from '../../modules/language/actions/form'
-// import {logout} from 'modules/header.login/actions'
+import { /*getMaxMinBetSetting, */setToken } from '../../modules/login/actions/form'
+import { changeLang } from '../../modules/language/actions/form'
 const Auth = ComposedComponent => {
     class Authentication extends React.Component {
         componentDidMount() {
-            return this._checkBeforeGoRoute()
+            // this.props.getMaxMinBetSetting();
+            this._checkBeforeGoRoute();
         }
         componentDidUpdate() {
-            return this._checkBeforeGoRoute()
-            this._scale()
-        }
-        _scale(){
-            //set meta viewport
-            setTimeout(() => {
-                let siteWidth = Config.siteWidth
-                let scale = screen.width / siteWidth
-                document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=' + siteWidth + ', initial-scale=' + scale + '');
-            }, 0)
-        }
-        checkURLParams() {
-            const { href, search, pathname } = window.location || {}
-            const bf = Helper._getCookie('__bf')
-            const c = Helper._getParams(href,'c')
-            let jsonParams = queryString.parse(search)
-            delete jsonParams['c']
-            jsonParams = queryString.stringify(jsonParams)
-            if(bf != c && c && bf){
-                //  return this.props.logout()
-            }
-            else if(bf!=c && !c){
-                return this.context.router.push({
-                    pathname: Routes.login.view,
-                    search: jsonParams
-                })
-            }
+            this._checkBeforeGoRoute();
         }
         _checkBeforeGoRoute() {
-            const { href, pathname: pathCurr } = window.location || {}
-            let token = Helper._getCookie('token');            
-            if (token) {
-                // return this.checkURLParams()
-            } else if(pathCurr != '/login'){
-                 return this.context.router.push(Routes.login.view)
+            const { location } = this.props.ownProps || {}
+            if (SportConfig._getCookie('token')) {
+                $("#admincss").attr("href", "");
+            } else {
+                let tk = localStorage.getItem('token');
+                if (tk) {
+                    // this.props.setToken(decodeURI(location.query.Token))
+                    SportConfig._setCookie('token', decodeURI(tk))
+                    setTimeout(() => {
+                        this.props.push({
+                            pathname: location.pathname,
+                            search: location ? location.search : ''
+                        })
+                        // window.location.reload()
+                    }, 0)
+                }
+                else {
+                    this.props.push({
+                        pathname: Routes.login.view,
+                        search: location ? location.search : ''
+                    })
+                    // const {hostname} = window.location || {}
+                    // const subDM = SportConfig._getSubdomain(hostname)
+                    // if(subDM!=Config.SUBDOMAIN_ASIA){
+                    //     // this.props.push(Routes.login.view)
+                    //     this.props.push({
+                    //         pathname: Routes.login.view,
+                    //         search: location ? location.search : ''
+                    //     })
+                    // }
+                    // else {
+                    //     this.props.push({
+                    //         pathname: Routes.home.view,
+                    //         search: location ? location.search : ''
+                    //     })
+                    // }
+                }
             }
-            else {
-                return true
+            //check change language
+            if (location &&
+                location.query &&
+                location.query.Lang) {
+                const { Lang } = location.query || {}
+                this.props.changeLang(Lang)
             }
-    
         }
         render() {
-            return <ComposedComponent { ...this.props } />
+            return <ComposedComponent {...this.props} />
         };
     };
 
-    Authentication.contextTypes = {
-        router: PropTypes.object.isRequired
-    }
-
-    const mapStateToProps = ( ownProps) => {
-        return { ownProps }
+    const mapStateToProps = ({ userAuth }, ownProps) => {
+        return { userAuth, ownProps };
     };
 
     const mapDispatchToProps = (dispatch) => {
         return Redux.bindActionCreators({
-            // logout
-            //changeLang
-        }, dispatch)
-    }
+            ...ReactRouterRedux.routerActions,
+            // getMaxMinBetSetting,
+            setToken,
+            changeLang
+        }, dispatch);
+    };
 
-    return ReactRedux.connect(null, mapDispatchToProps)(Authentication)
-}
+    return ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Authentication);
+};
 
-export default Auth
+export default Auth;

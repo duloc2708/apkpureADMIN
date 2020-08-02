@@ -1,0 +1,19 @@
+export const STATUS_PROCESS_INIT = "STATUS_TF_TRANS_01";
+export const STATUS_PROCESS_ACCEPT = "STATUS_TF_TRANS_02";
+export const STATUS_PROCESS_FINISH = "STATUS_TF_TRANS_04";
+export const FULL_STONE = "Đã gắn đủ đá";
+export const PARTIAL_STONE = "Gắn 1 phần đá";
+export const NONE_STONE = "Không có ";
+export const LIST_PROCESS_PREV_SPURE = ["WAX_SETTING", "SKELETON", "CASTING"];
+export const STATUS_TF_TRANS_01_CODE = "STATUS_TF_TRANS_01";
+export const STATUS_TF_TRANS_02_CODE = "STATUS_TF_TRANS_02";
+export const STATUS_TF_TRANS_04_CODE = "STATUS_TF_TRANS_04";
+export const STATUS_TF_TRANS_01_NAME = "Chờ XN";
+export const STATUS_TF_TRANS_02_NAME = "Xác nhận đi";
+export const STATUS_TF_TRANS_04_NAME = "Xác nhận về";
+export const FIELDS_MODAL = {
+	ASSIGN_WORKERS: "ASSIGN_WORKERS",
+	BROKEN_STONES: "BROKEN_STONES",
+	CANCEL_PRODUCTS: "CANCEL_PRODUCTS"
+};
+export const STATUS_PRODUCT_CANCEL = "X/N";

@@ -1,0 +1,10 @@
+body{
+    overflow: hidden;
+}
+.homepage .main__content{
+	background: url('../images/homepage/background.jpeg') no-repeat 0px 0px;
+    background-size: cover;
+    height: 100vh;
+    position: relative;
+    border-top: 1px solid #007bff;
+}

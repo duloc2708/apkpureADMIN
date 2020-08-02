@@ -1,0 +1,301 @@
+body{
+	font-size: 13px !important
+}
+.has-error{
+    border-color: red
+}
+select:disabled {
+    color: #8e8989;
+}
+.you_css_selector {pointer-events:none;}
+div.scrollmenu {
+    background-color:#586e82;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+    background-color: #777;
+}
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold
+}
+
+.list__file{
+    margin: 20px 0;
+    border-bottom: 1px solid #cdcdcd;
+    padding-bottom: 10px;
+}
+ .list__pagination{
+    margin-top: 30px;
+    text-align: center;
+  }
+.list__pagination .pagination{
+    display: inline-flex;
+  }
+table, tr, td {
+    color: #000;
+}
+
+#primary_nav_wrap
+{
+	margin-top:15px
+}
+
+#primary_nav_wrap ul
+{
+	list-style:none;
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0
+}
+
+#primary_nav_wrap ul a
+{
+	display:block;
+	color:#333;
+	text-decoration:none;
+	font-weight:700;
+	font-size:12px;
+	line-height:32px;
+	padding:0 15px;
+	font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif
+}
+
+#primary_nav_wrap ul li
+{
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0
+}
+
+#primary_nav_wrap ul li.current-menu-item
+{
+	background:#ddd
+}
+
+#primary_nav_wrap ul li:hover
+{
+	background:#f6f6f6
+}
+
+#primary_nav_wrap ul ul
+{
+	visibility: hidden;
+	position:absolute;
+	top:100%;
+	left:0;
+	background:#fff;
+	padding:0
+}
+#primary_nav_wrap:not(:hover)  ul
+{
+    transition: all 0.1s;
+    transition-delay:1s;
+}
+#primary_nav_wrap:hover > ul:not(:hover)
+{
+    transition: all 0s!important;
+    transition-delay:0s!important;
+    display:none!important;
+}
+   
+#primary_nav_wrap ul ul li
+{
+	float:none;
+	width:200px
+}
+
+#primary_nav_wrap ul ul a
+{
+	line-height:120%;
+	padding:10px 15px
+}
+
+#primary_nav_wrap ul ul ul
+{
+	top:0;
+	left:100%
+}
+
+#primary_nav_wrap ul li:hover > ul
+{
+	visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Style the active class, and buttons on mouse-over */
+.activeMenu {
+    background-color: #2C86C1;
+	color: white;
+	cursor: pointer;
+}
+a:hover {
+	cursor: pointer;
+}
+.pointer {cursor: pointer;}
+.container {
+	width: 1400px !important;
+}
+input[type='checkbox']{
+    cursor: pointer;
+}
+/* body{
+	color:black;
+    background-color: black;
+    background-image: url('../images/mockup_register.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+} */
+	.block {
+		height: 400px;
+	}
+
+  .list ul li {
+	display: inline-block;
+	margin-left: 0px;
+	margin-right: 3%;
+  }
+
+  .borders {
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	/* adjust the div transparency here*/
+  }
+
+.profile-pic {
+	position: relative;
+	/* display: inline-block; */
+}
+
+.profile-pic:hover .edit {
+	display: block;
+}
+
+.edit {
+	padding-top: 7px;	
+	padding-right: 15px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: none;
+}
+
+
+
+.edit-button{
+    padding-right: 25px;
+    /* position: absolute; */
+    right: 0;
+    top: 0;
+	display: none;
+}
+
+.edit a {
+	color: #000;
+    padding-right: 5px;
+}
+
+.row_data:hover {
+    cursor: pointer;
+}
+
+.ul-control {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+  }
+  
+  .ul-control li {
+	float: left;
+	cursor: pointer;
+  }
+  
+  .ul-control li span {
+	display: block;
+	text-align: center;
+	padding: 5px;
+	text-decoration: none;
+	margin: 5px;
+	border: 1px solid
+  }
+  
+  .droptarget {
+	float: left; 
+	width: 100%; 
+	height: 60px;
+	margin: 15px;
+	padding: 10px;
+	border: 1px solid #aaaaaa;
+  }
+  input[type="checkbox"]
+{
+    vertical-align:middle;
+}
+.video_post {
+}
+.listimage{
+	margin-left: 50px;
+    margin-right: 5px;
+}
+
+.video_post .inner img {
+    width: 100%;
+	height: 100%;
+	padding-right: 40px;
+	padding-bottom: 10px;
+    max-height: 220px;
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+.top-right {
+	position: absolute;
+  }
+ #cd_turn_inout_search{
+ 	margin-left: 5px
+ }
+ .table-fixed tbody {
+height: 200px;
+overflow-y: auto;
+width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+display: block;
+}
+.table-fixed tr:after {
+content: "";
+display: block;
+visibility: hidden;
+clear: both;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr > th {
+float: left;
+}
+.table-fixed>thead>tr>th {
+    vertical-align: bottom;
+   border-bottom:none !important
+}
+
+
+  

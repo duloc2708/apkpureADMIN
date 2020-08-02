@@ -1,9 +1,20 @@
 export const DEFAULT_FOLDER = '/';
-export const DEFAULT_URL = 'http://localhost:1337';
-export const API_URL = process.env.API_URL
-export const API_DOWNLOAD_FILE = process.env.API_DOWNLOAD_FILE
-export const API_URL_USER = 'https://apksafety.com/'
-export const API_IMAGE = process.env.API_IMAGE
+export const DEFAULT_URL = 'http://61.28.230.226:1337';
+
+export const API_URL = 'http://localhost:3001/api/' 
+export const API_URL_USER = 'http://localhost:3001/api/' 
+export const API_URL_SSL = 'http://localhost:3001/api/' 
+export const API_URL_USER_SSL = 'http://localhost:3001/api/' 
+export const SUBDOMAIN_ASIA = 'dev-asianbetonline' 
+export const API_URL_IMAGE = 'http://localhost:3001/' 
+
+// export const API_URL = 'http://61.28.230.226:3001/api/' 
+// export const API_URL_USER = 'http://61.28.230.226:3001/api/' 
+// export const API_URL_SSL = 'http://61.28.230.226:3001/api/' 
+// export const API_URL_USER_SSL = 'http://61.28.230.226:3001/api/' 
+// export const SUBDOMAIN_ASIA = 'dev-asianbetonline' 
+// export const API_URL_IMAGE = 'http://61.28.230.226:3001/' 
+
 export const DEFAULT_DATE = '1900-01-01 00:00:00';
 export const TIMEOUT = 0;
 export const DATA_LIMIT = 10;
@@ -13,7 +24,7 @@ export const COLS_NAME = {
     '2': 'two',
     '3': 'three',
     '4': 'four',
-    '5': 'five',
+    '5': 'five'
 };
 export const EMPTY_ROW = { id: -1 };
 export const TIME_COUNT_DOWN_REFRESH = {
@@ -22,7 +33,5 @@ export const TIME_COUNT_DOWN_REFRESH = {
     2: 75,
     5: 75
 }
-
-export const zoneLocal = moment().format('Z') //'+08:00'
-export const domainID = 1
-export const LOCALHOST_PHOTO = process.env.LOCALHOST_PHOTO
+export const v1 = 'get'
+export const v2 = 'getV2'

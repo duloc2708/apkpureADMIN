@@ -1,38 +1,46 @@
-var version = '1.0.0';
-const fs = require('fs');
-var _ = require('lodash');
+var version = "1.0.0";
+const fs = require("fs");
+var _ = require("lodash");
 try {
-    const rawSettingVer = fs.readFileSync(__dirname + '/settingVer.json');
+    const rawSettingVer = fs.readFileSync(__dirname + "/settingVer.json");
     const settingVer = JSON.parse(rawSettingVer);
     version = settingVer ? settingVer.version : version;
 } catch (err) {
-    version = version
+    version = version;
 }
 module.exports = {
     checkStatusMaintaince: function() {
-        const moment = require('moment');
+        const moment = require("moment");
         var isMaintaince = false;
-        const now = moment().format('YYYY-MM-DD HH:mm:ss Z');
+        const now = moment().format("YYYY-MM-DD HH:mm:ss Z");
         var fromDate = null;
         var toDate = null;
         try {
-            const rawSetting = fs.readFileSync(__dirname + '/setting.json');
+            const rawSetting = fs.readFileSync(__dirname + "/setting.json");
             const setting = JSON.parse(rawSetting);
             const maintaince = setting ? setting.maintaince : {};
             const data = maintaince ? maintaince.data : {};
             if (data) {
                 data.map(function(item, index) {
-                    if (now >= moment(item.from, 'YYYY-MM-DD HH:mm:ss Z').format('YYYY-MM-DD HH:mm:ss Z') &&
-                        now <= moment(item.to, 'YYYY-MM-DD HH:mm:ss Z').format('YYYY-MM-DD HH:mm:ss Z') &&
-                        item.status) {
+                    if (
+                        now >=
+                            moment(item.from, "YYYY-MM-DD HH:mm:ss Z").format(
+                                "YYYY-MM-DD HH:mm:ss Z"
+                            ) &&
+                        now <=
+                            moment(item.to, "YYYY-MM-DD HH:mm:ss Z").format(
+                                "YYYY-MM-DD HH:mm:ss Z"
+                            ) &&
+                        item.status
+                    ) {
                         isMaintaince = true;
                         fromDate = item.from;
                         toDate = item.to;
                     }
-                })
+                });
             }
         } catch (err) {
-            isMaintaince = false
+            isMaintaince = false;
         }
         return { status: isMaintaince, from: fromDate, to: toDate };
     },
@@ -41,20 +49,23 @@ module.exports = {
             var parts = h.split(".");
             if (parts.length == 2) return "www";
             return parts[0];
-        };
-        const moment = require('moment');
+        }
+        const moment = require("moment");
 
         const subDomain = getSubdomain(req.headers.host);
-        var MobileDetect = require('mobile-detect');
-        var md = new MobileDetect(req.headers['user-agent']);
+        var MobileDetect = require("mobile-detect");
+        var md = new MobileDetect(req.headers["user-agent"]);
         const query = req.query || {};
-        const fromMode = (query && query.fromMode) ? query.fromMode : null;
+        const fromMode = query && query.fromMode ? query.fromMode : null;
         const host = req.headers.host;
         var origin = host;
-        if (origin.indexOf('m.') != -1) {
-            origin = host.substring(host.indexOf('m.') + 2, host.length);
+        if (origin.indexOf("m.") != -1) {
+            origin = host.substring(host.indexOf("m.") + 2, host.length);
         }
-        const originalUrl = req.originalUrl.substring(0, req.originalUrl.indexOf('?'));
+        const originalUrl = req.originalUrl.substring(
+            0,
+            req.originalUrl.indexOf("?")
+        );
         // if (fromMode == 2 && origin && origin.indexOf('m.') == -1) {
         //     // var fullUrl = req.protocol + '://m.' + origin + (originalUrl != '/' ? originalUrl : '') + '?fromMode=' + fromMode; //prod
         //     // var fullUrl = req.protocol + '://m7sdev.kolabs.co/?fromMode=2'; //dev
@@ -71,13 +82,13 @@ module.exports = {
         // if (req.protocol == 'https') {
         //     res.redirect('http://' + req.headers.host + req.url);
         // } else {
-        if (subDomain == 'zzb8') {
-            res.render('index', {
+        if (subDomain == "zzb8") {
+            res.render("index", {
                 locals: {
                     moment: moment,
                     objStatus: objStatus,
                     // title: origin.indexOf('localhost') != -1 ? 'ZZB8' : origin,
-                    title: 'ZZB8', 
+                    title: "ZZB8",
                     version: version
                 }
             });
@@ -87,7 +98,7 @@ module.exports = {
                     moment: moment,
                     objStatus: objStatus,
                     // title: origin.indexOf('localhost') != -1 ? 'ZZB8' : origin,
-                    title: 'ZZB8', 
+                    title: "ZZB8",
                     version: version
                 }
             });
@@ -95,4 +106,4 @@ module.exports = {
         // }
         // }
     }
-}
+};

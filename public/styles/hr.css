@@ -1,0 +1,69 @@
+.personnal .main__content .list__function{
+	margin: 10px 0;
+	background: #1a6d96;
+}
+.personnal .main__content .list__function li{
+	display: inline-block;
+}
+/* .personnal .main__content .list__function li:last-child{
+	float: right;
+} */
+.personnal .main__content .list__function li span{
+	padding-right: 10px;
+}
+.personnal .main__content .list__function li span i{
+    color: #ffffff;
+}
+.personnal .main__content .list__function li span i:hover{
+    color: #ffffff;
+}
+.personnal .main__content .list__function li a{
+    color: #ffffff;
+	text-decoration: none;
+	text-transform: capitalize;
+	font-weight: bold;
+    padding: 20px;
+    display: block;
+}
+.personnal .main__content .list__function li .active{
+	color: #000000;
+	background: #4ea6d2;
+}
+.personnal .main__content .list__function li .disable{
+    color: #000000;
+    background: #4ea6d2;
+    opacity: 0.4;
+}
+.personnal .main__content .form__personnal .form-group>div{
+    display: inline-block;
+    vertical-align: middle;
+}
+.personnal .main__content .form__personnal .form-group .left{
+    width: 42%;
+}
+.personnal .main__content .form__personnal .form-group .right{
+    width: 52%;
+}
+
+.main__content table thead th {
+    vertical-align: middle;
+    text-align: center;
+    text-transform: capitalize;
+    padding-right: 3px;
+}
+.personnal .table .scroll-table{
+    height:60px;
+    overflow:auto;
+}
+.personnal .table-striped tr:hover{
+    background: #337ab7;
+    color: #ffffff;
+}
+.personnal .table-striped tbody tr:first-of-type,
+.personnal .table-striped thead tr:hover{
+    background: none;
+    color: #000000;
+}
+.new-line {
+    white-space: pre-wrap !important
+  }
