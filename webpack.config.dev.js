@@ -2,13 +2,13 @@ var path = require("path");
 var webpack = require("webpack");
 module.exports = {
     cache: {
-      type: 'memory'
+        type: 'memory'
     },
     watchOptions: {
-      ignored: /node_modules/,
-      watch: false,
-      hot: false,
-      poll:2000
+        ignored: /node_modules/,
+        watch: false,
+        hot: false,
+        poll: 2000
     },
     entry: {
         "bootstrap.min": "./src/app/bootstrap",

@@ -23,7 +23,7 @@ class AlertCustom extends React.Component {
 		return (
 			<div>
 				<NotificationSystem ref="notificationSystem" />
-			</div>
+			</div >
 		);
 	}
 }

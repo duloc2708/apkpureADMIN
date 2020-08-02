@@ -101,9 +101,6 @@ module.exports = {
                 API_IMAGE: JSON.stringify("https://api.apksafety.com/api/image")
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: { warnings: false }
-        }),
         new OptimizeJsPlugin({
             sourceMap: false
         }),
@@ -132,6 +129,7 @@ module.exports = {
             uuidv4: "uuid/v4",
             PropTypes: "prop-types",
             //end plugin
+
             //conf
             Config: "Config",
             SportConfig: "SportConfig",
@@ -139,6 +137,7 @@ module.exports = {
             Helper: "Helper",
             Routes: "Routes",
             //end conf
+
             //component
             Loader: "Loader",
             LoaderSidebar: "LoaderSidebar",

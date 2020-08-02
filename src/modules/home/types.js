@@ -1,0 +1,1 @@
+export const IS_RENDER_CONTENT= "IS_RENDER_CONTENT"
