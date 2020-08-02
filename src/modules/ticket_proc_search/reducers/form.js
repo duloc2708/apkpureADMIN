@@ -81,8 +81,8 @@ const INITIAL_STATE = {
         {
             key: "created_date",
             title: "Ngày thực hiện",
-            type: "text",
-            format: "Date",
+            type: "date",
+            format: "DD/MM/YYYY",
             class: "",
             icon: "",
             sort: true,
