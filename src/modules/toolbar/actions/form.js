@@ -29,7 +29,7 @@ export const perMissionToolbar = () => {
                 if (item.code == page) {
                     let arrBtn = item && item.strListBtn.split(',') || []
                     listButtonPer = arrBtn
-                    arrBtn.map(itemBtn => {
+                    arrBtn.foreach(itemBtn => {
                         let checkExists = listButton_temp.filter(x => x.code == itemBtn)
                         if (checkExists.length > 0) {
                             filData.push(checkExists[0])

@@ -42,15 +42,14 @@ class ListCastingProcFormView extends React.Component {
     }
   }
   componentDidMount() {
+    // get list type
+    const list = ["LV", "LD", "LH"];
     this.props.getConfigProcess().then(() => {
       this.props.getDataWoker("EMPLOYEE").then(() => {
         this.props.getListBagInTicket();
         this.props.getListHeaderTable();
       });
     });
-    // get list type
-    let list = ["LV", "LD", "LH"];
-    this.props.getListTypeByListCode(list);
 
     // focus ô input đầu tiên
     $(":input[type='text']:enabled:visible:first").focus();
@@ -64,16 +63,21 @@ class ListCastingProcFormView extends React.Component {
 
     // link tu man hinh tim kiem bag
     const referId = Helper.getParam(window.location.href, "referId");
-    if(referId){
-      this.props.updateButtonToolbar("EDIT");
-      this.props.isEditCasting(true);
-      this.props.getTicketProcDetail(referId).then((data)=>{
-        this.props.clickCheckRowCasting(data, true).then(() => {
-          this.props.getDataDetailByCode();
-          this.props.getDataDetailStoneByCode(referId);
-        });
-      })
-    }else {
+    if (referId) {
+      this.props.getListTypeByListCode(list).then(() => {
+        this.props.updateButtonToolbar("EDIT");
+        this.props.isEditCasting(true);
+        this.props.getTicketProcDetail(referId).then((data) => {
+          this.props.clickCheckRowCasting(data, true).then(() => {
+            this.props.getDataDetailByCode();
+            this.props.getDataDetailStoneByCode(referId);
+          });
+        })
+      });
+
+
+    } else {
+      this.props.getListTypeByListCode(list)
       this.props.getListDataTicketProc("");
     }
   }
@@ -223,7 +227,7 @@ class ListCastingProcFormView extends React.Component {
   render() {
     let { list_data, listHeaderTable, objConfig } = this.props.ticket_proc;
     let { IsIncludeInOut, WorkerInTicket } = objConfig;
-    IsIncludeInOut=0
+    IsIncludeInOut = 0
     return (
       <div>
         <ConfigKeyCode parentObject={this} />
@@ -253,7 +257,7 @@ class ListCastingProcFormView extends React.Component {
               <div className="form-group">
                 <div
                   className="left"
-                  // onClick={() => this._onSearch()}
+                // onClick={() => this._onSearch()}
                 >
                   <button className="btn btn-primary">Tìm kiếm</button>
                 </div>
@@ -335,7 +339,7 @@ class ListCastingProcFormView extends React.Component {
                   <tr
                     tabIndex={i}
                     key={`data_${IdTicket}`}
-                    // onDoubleClick={() => this._onClickRowDouble(item, !checked)}
+                  // onDoubleClick={() => this._onClickRowDouble(item, !checked)}
                   >
                     {/* <th scope="row">
                       <label>

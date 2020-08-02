@@ -24,6 +24,17 @@ const INITIAL_STATE = {
             filter: false
         },
         {
+            key: "nameProcess",
+            title: "Process",
+            type: "text",
+            format: "",
+            class: "",
+            icon: "",
+            sort: true,
+            sortBy: "",
+            filter: true
+        },
+        {
             key: "IdBag",
             title: "Mã Bag",
             type: "text",
@@ -89,17 +100,17 @@ const INITIAL_STATE = {
             filter: true
         },
     ],
-    objSearch:{
-      input:''
+    objSearch: {
+        input: ''
     }
 };
 const Reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-      case CHANGE_INPUT_SEARCH:
-          return {
-              ...state,
-              ...action.payload
-          };
+        case CHANGE_INPUT_SEARCH:
+            return {
+                ...state,
+                ...action.payload
+            };
         case GET_LIST_BAG_TICKET_PROC:
             return {
                 ...state,
