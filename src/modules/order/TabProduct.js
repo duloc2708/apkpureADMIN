@@ -311,9 +311,10 @@ class TabProduct extends React.Component {
     return (
       <div>
         <AlertCustom onRef={ref => (this.child = ref)} />
-        <button onClick={() => this._onButtonAddProduct()}>
+        <button disable={isEditProducts == "block" ? true : false} onClick={() => this._onButtonAddProduct()}>
           Thêm sản phẩm
         </button>
+
         {/* <ComboboxProducts disable={checkbag} type={"stone"} list_data={list_products} /> */}
         <table className="table table-striped">
           <thead>
@@ -356,7 +357,8 @@ class TabProduct extends React.Component {
                   isExists,
                   index,
                   remark,
-                  Image
+                  Image,
+                  GiaTT
                 } = item;
                 let IdProductParent = value;
                 // if (value && value.length > 0) {

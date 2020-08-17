@@ -77,7 +77,7 @@ class ListCastingProcFormView extends React.Component {
 
 
     } else {
-      this.props.getListTypeByListCode(list)
+      this.props.getListTypeByListCode(list);
       this.props.getListDataTicketProc("");
     }
   }

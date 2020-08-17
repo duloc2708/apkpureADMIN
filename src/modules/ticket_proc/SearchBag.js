@@ -33,6 +33,7 @@ class SearchBag extends React.Component {
     item.Id = item.IdBag;
     item.isSearch = true;
 
+
     const finData = listBagInProcess.find(
       x => x.CodeProcess == typeProcess && x.IdBag == item.IdBag
     );
@@ -40,19 +41,34 @@ class SearchBag extends React.Component {
       alert(`Bag ${item.IdBag} đã được tạo ở quy trình này!`);
       return;
     }
-    const objBag = validateAddBag(
-      item.IdBag,
-      objData,
-      objConfig,
-      listBagInProcess,
-      listBagSelected,
-      item
-    );
 
-    if (objBag)
-      this.props.updateExistBag(objBag).then(() => {
-        this.props.getProductsByTicket(objBag.CodeTicket);
-      });
+    this.props.findBagDefault(item.IdBag).then(data => {
+      if (data && data.length==0) {
+        alert("Bag này không tìm thấy!");
+        return;
+      }
+      let objReturn = data[0];
+      if (objReturn.Msg != "OK") {
+        alert(objReturn.Msg);
+        return;
+      }
+
+
+      const objBag = validateAddBag(
+        item.IdBag,
+        objData,
+        objConfig,
+        listBagInProcess,
+        listBagSelected,
+        item
+      );
+
+      if (objBag)
+        this.props.updateExistBag(objBag).then(() => {
+          this.props.getProductsByTicket(objBag.CodeTicket);
+        });
+    })
+
   }
   _onAddAllBag() {
     let {

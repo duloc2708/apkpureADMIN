@@ -92,6 +92,28 @@ class HeaderFormView extends React.Component {
       window.location.reload();
     }, 200);
   }
+  parseMenu(data){
+    let listMenu =[];
+    let listChildren =[]
+    data.forEach(item=>{
+      let newItem={};
+      let groupName=item.groupMenu || item.name;
+      if(!listMenu.find(x=>x.groupName===groupName)){
+        newItem.code=item.code;
+        newItem.groupName=groupName;
+        newItem.children=[item];
+        listMenu.push(newItem);
+      }else {
+        listMenu=listMenu.map(itemMenu=>{
+          if(itemMenu.groupName===groupName){
+            itemMenu.children.push(item)
+          }
+          return itemMenu
+        })
+      }
+    });
+    return listMenu
+  }
   render() {
     let { list, list_function, list_config_process } = this.props.header;
     const { location } = this.props.ownProps || {};
@@ -109,6 +131,7 @@ class HeaderFormView extends React.Component {
       userInfo = null;
     }
     let checkRenderPT = false;
+    list_function=this.parseMenu(list_function)
     return (
       <header>
         <nav className="navbar2 menu navbar navbar-inverse navbar-static-top">
@@ -131,8 +154,30 @@ class HeaderFormView extends React.Component {
           <div id="navbar3" className="navbar-collapse collapse">
             <ul className="nav navbar-nav">
               {list_function.map(item => {
-                let { id, code, name, parent } = item;
-                if (code == "list") {
+                let {code, id, groupName, name, parent, groupMenu, children } = item;
+                 if(code == 'ticket_proc'){
+                  return (
+                    <li
+                      key={"997"}
+                      className={`${page == "name" ? "activeMenu" : ""}`}
+                    >
+                      <a>{groupName}</a>
+                      <ul className="sub-menu list-unstyled">
+                        {list_config_process.map(item => {
+                          if (item.IsApply == 1) {
+                            return (
+                              <li key={`process_${item.Id}`}>
+                                <a href={`/ticket_proc?type=${item.Code}`}>
+                                  {item.Name}
+                                </a>
+                              </li>
+                            );
+                          }
+                        })}
+                      </ul>
+                    </li>
+                  );
+                }else if((code == "list")){
                   return (
                     <li
                       key={-1}
@@ -157,101 +202,43 @@ class HeaderFormView extends React.Component {
                       </ul>
                     </li>
                   );
-                } else if (code.indexOf("cd_trans") != -1) {
-                  if (!checkRenderPT) {
-                    checkRenderPT = true;
-                    return (
-                      <li
-                        key={"998" + code}
-                        className={`${page == "name" ? "activeMenu" : ""}`}
-                      >
-                        <a>{name}</a>
-                        <ul className="sub-menu list-unstyled">
-                          <li key={`cd_trans_1`}>
-                            <a href={`/cd_trans_cash`}>Công nợ tiền</a>
-                          </li>
-                          <li key={`cd_trans_3`}>
-                            <a href={`/cd_trans_cash_gold`}>
-                              Phiếu thu vàng bằng tiền
-                            </a>
-                          </li>
-                          <li key={`cd_trans_2`}>
-                            <a href={`/cd_trans_gold`}>Công nợ vàng </a>
-                          </li>
-                        </ul>
-                      </li>
-                    );
-                  }
-                } else if (code == "cd_turn_in_out") {
-                  return (
-                    <li
-                      key={"996"}
-                      className={`${page == "name" ? "activeMenu" : ""}`}
-                    >
-                      <a>{name}</a>
-                      <ul className="sub-menu list-unstyled">
-                        <li key={`cd_turn_in`}>
-                          <a href={`/cd_turn_in_out?type=0`}>Phiếu trả hàng</a>
-                        </li>
-                        <li key={`cd_turn_out`}>
-                          <a href={`/cd_turn_in_out?type=1`}>Phiếu tái xuất </a>
-                        </li>
-                      </ul>
-                    </li>
-                  );
-                } else if (code == "transfer") {
-                  return (
-                    <li
-                      key={"991"}
-                      className={`${page == "name" ? "activeMenu" : ""}`}
-                    >
-                      <a>{name}</a>
-                      <ul className="sub-menu list-unstyled">
-                        <li key={`transfer_0`}>
-                          <a href={`/transfer?type=0`}>Chuyển kho</a>
-                        </li>
-                        <li key={`transfer_1`}>
-                          <a href={`/transfer?type=1`}>Nấu heo </a>
-                        </li>
-                      </ul>
-                    </li>
-                  )
-                }else if (code == "ticket_proc") {
-                  return (
-                    <li
-                      key={"997"}
-                      className={`${page == "name" ? "activeMenu" : ""}`}
-                    >
-                      <a>{name}</a>
-                      <ul className="sub-menu list-unstyled">
-                        {list_config_process.map(item => {
-                          if (item.IsApply == 1) {
-                            return (
-                              <li key={`process_${item.Id}`}>
-                                <a href={`/ticket_proc?type=${item.Code}`}>
-                                  {item.Name}
-                                </a>
-                              </li>
-                            );
-                          }
-                        })}
-                      </ul>
-                    </li>
-                  );
-                } else if (
+                }
+                 else if(
                   code != "bagdetail" &&
                   code != "productDetail" &&
                   code != "changepassword"
-                ) {
-                  return (
-                    <li
-                      key={id}
-                      className={`${page == code ? "activeMenu" : ""}`}
-                    >
-                      <a onClick={() => this.onClickData(code)}>{name}</a>
-                    </li>
-                  );
+                ){
+                  if(children.length==1){
+                    return (
+                      <li
+                        key={code}
+                        className={`${page == code ? "activeMenu" : ""}`}
+                      >
+                        <a onClick={() => this.onClickData(code)}>{groupName}</a>
+                      </li>
+                    )
+                  }else {
+                    return (
+                      <li
+                        key={code}
+                        className={`${page == code ? "activeMenu" : ""}`}
+                      >
+                        <a>{groupName}</a>
+                        <ul className="sub-menu list-unstyled">
+                          {children.map(item=>{
+                            return (
+                              <li key={item.code}>
+                                <a href={`/${item.code}`}>{item.name}</a>
+                              </li>
+                            )
+                          })
+                          }
+                        </ul>
+                      </li>
+                    )
+                  }
                 }
+
               })}
               {userInfo && userInfo.user_name.toUpperCase() == "ADMIN" ? (
                 <li

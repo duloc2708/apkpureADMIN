@@ -82,7 +82,7 @@ const INITIAL_STATE = {
   listHeaderTableOrder: [
     { key: "IdOrder", title: "Mã đơn hàng", type: "text", class: "" },
     { key: "IdCustomer", title: "Loại vàng/Sale", type: "text", class: "" },
-    { key: "DPCode", title: "KM", type: "text", class: "" },
+    // { key: "DPCode", title: "KM", type: "text", class: "" },
     { key: "DayMake", title: "Ngày nhập", type: "text", class: "" },
     { key: "StatusOrder", title: "TT đơn hàng", type: "text", class: "" },
     { key: "StatusBag", title: "TT bag", type: "text", class: "" },
@@ -175,7 +175,8 @@ const INITIAL_STATE = {
     sum: 0,
     list_set: [],
     isExists: false,
-    remark: ""
+    remark: "",
+    GiaTT:0
   },
   list_status_order: [],
   infoStone: {},

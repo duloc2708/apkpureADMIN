@@ -1445,6 +1445,7 @@ const mappingListDataGoldCook =(list_gold, objData)=>{
   let objData_temp =_.clone(objData,true);
   objData_temp.IdStore_From='SAJIHH';
   objData_temp.IdStore_To='SAJIKO';
+  objData_temp.TotalWeightBeforeCook=Helper.round(objData_temp.TotalWeightBeforeCook,4);
   objData_temp={
     ...objData_temp,
     Gold_Lost_T:Helper.round(objData_temp.TotalWeightBeforeCook-objData.TotalWeightAfterWarm ||0,4)

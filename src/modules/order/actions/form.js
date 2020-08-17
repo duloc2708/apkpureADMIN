@@ -953,6 +953,7 @@ export const printOrderDetail = (item, type) => {
     return new Promise((resolve, reject) => {
       dispatch(getListProductByOrderReport(item)).then(res => {
         let listProduct = res.data.data;
+        console.log(listProduct)
         axios
           .post(
             `${Config.API_URL_USER}bag/print_detail_bag`,

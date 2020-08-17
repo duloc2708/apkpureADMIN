@@ -349,6 +349,21 @@ const indexColor=(data)=>{
   });
   return  dataNew
 }
+export const clearListStoneByBag = IdBag => {
+  return (dispatch, getState) => {
+    const {listStoneWaxset} =getState().ticket_proc
+    let listStoneWaxsetTemp =_.clone(listStoneWaxset,true);
+    listStoneWaxsetTemp=listStoneWaxsetTemp.map(item=>{
+      return {...item,BrokenQty:'',BrokenWeight:'',BrokenRate:''};
+    })
+    dispatch({
+      type: GET_LIST_WAXSET_BY_BAG,
+      payload: {
+        listStoneWaxset: listStoneWaxsetTemp
+      }
+    });;
+  };
+};
 export const getListStoneWaxsetByIdBag = IdBag => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
@@ -787,6 +802,11 @@ const parseListBag = (data, listProductCancel, objConfig) => {
     item.created_date = new Date();
     item.created_by = username;
 
+    item.Origin_Handset_Weight = item.Origin_Handset_Weight || item.Handset_Weight;
+    item.Origin_Waxset_Weight = item.Origin_Handset_Weight || item.Waxset_Weight;
+    item.Custom_Handset_Weight = item.Custom_Handset_Weight||  item.Handset_Weight;
+    item.Custom_Waxset_Weight = item.Custom_Waxset_Weigh || item.Waxset_Weight;
+
     if (objConfig.IsIncludeHandset === 1) {
       item.Gold_Weight_OUT = Helper.round(
         parseFloat(item.Product_Weight_OUT || 0) +
@@ -982,6 +1002,25 @@ export const initAddCastingProc = () => {
       }
     });
     dispatch(getNumberAutoTicketProc());
+  };
+};
+export const changeListBagSelected = (objNew) => {
+  return (dispatch, getState) => {
+    const {listBagSelected} =getState().ticket_proc;
+    let listBagSelectedTemp  = _.clone(listBagSelected,true);
+    listBagSelectedTemp=listBagSelectedTemp.map(item=>{
+      if(item.orderby===objNew.orderby){
+        console.log('objNew>>>',objNew)
+        return objNew
+      }
+      return item;
+    })
+    dispatch({
+      type: UPDATE_BAG_DETAIL,
+      payload: {
+        listBagSelected: listBagSelectedTemp
+      }
+    });
   };
 };
 export const updateCellWorkerInStone = obj => {
@@ -1405,6 +1444,12 @@ export const updateExistBag2 = objBag => {
       itemBagNew.orderby = objBag.orderby;
       itemBagNew.CodeProcess = objData.CodeProcess;
       itemBagNew.CodeTicket = objData.CodeTicket;
+
+      itemBagNew.Custom_Waxset_Weight = '';
+      itemBagNew.Origin_Waxset_Weight = itemBagNew.Waxset_Weight;
+      itemBagNew.Custom_Handset_Weight = '';
+      itemBagNew.Origin_Handset_Weight = itemBagNew.Handset_Weight;
+
       listBagSelectedConvert.push(itemBagNew);
 
       // sum total Weight Waxset
@@ -1429,7 +1474,6 @@ export const updateExistBag2 = objBag => {
 };
 
 export const getStonesByBag = objBag => {
-  alert('aaa')
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios
@@ -1963,6 +2007,8 @@ export const getDataDetailByCode = (value = "") => {
                 item.Qty_Product_RemainTemp =
                   item.Qty_Product_Remain + item.Qty_Product_Cancel;
               }
+              item.Temp_Waxset_Weight=item.Waxset_Weight;
+              item.Temp_Handset_Weight=item.Handset_Weight
               return item;
             });
             dispatch({
@@ -1980,6 +2026,7 @@ export const getDataDetailByCode = (value = "") => {
     });
   };
 };
+
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';
@@ -2052,6 +2099,7 @@ export const updateBagDetail = obj => {
     });
   };
 };
+
 export const getProductsByBag = IdBag => {
   return (dispatch, getState) => {
     let { listProductCancel, objData } = getState().ticket_proc;
@@ -2093,6 +2141,7 @@ export const getProductsByBag = IdBag => {
     });
   };
 };
+
 export const getProductsByTicket = CodeTicket => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {

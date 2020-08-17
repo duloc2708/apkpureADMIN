@@ -135,7 +135,7 @@ class ListBag extends React.Component {
       that.props.updateCellBag(obj).then(() => {
         let { listBagSelected, objConfig, objData } = this.props.ticket_proc;
         that.props.findBagDefault(IdBagTemp).then(data => {
-          if (data.value == 0) {
+          if (data && data.length==0) {
             alert("Bag này không tìm thấy!");
             return;
           }
@@ -518,6 +518,40 @@ class ListBag extends React.Component {
   _showTooltip(item, status) {
     this.props.updateActiveToolTipBag(item, status);
   }
+
+  _changeLabelWaxsetHandset(e,item) {
+    if(item.TotalWeightGoldCancel) return;
+    this.props.changeListBagSelected({...item,[`is_${e.target.id}`]:true})
+  }
+  _onChangeInputWaxsetHandset(e,item) {
+      this.props.changeListBagSelected({
+        ...item,
+        [e.target.name]: parseFloat(e.target.value),
+        [`Custom_${e.target.name}`]:  parseFloat(e.target.value),
+      })
+  }
+  handleMouseOutFocus(e,item){
+    if(item[`Custom_${e.target.name}`]
+      && item[e.target.name]!==item[`Temp_${e.target.name}`]){
+      var r = confirm("Hệ thống sẽ reset các giá trị khác,  Bạn có muốn thay đổi trọng lượng không?");
+      if (r == true) {
+        this.props.changeListBagSelected({
+          ...item,
+          Broken_Weight_OUT:'',
+          Product_Weight_OUT:'',
+          Gold_Weight_OUT:'',
+          [`is_${e.target.name}`]:false
+        })
+        this.props.clearListStoneByBag(item.IdBag)
+      }
+    }else {
+      this.props.changeListBagSelected({
+        ...item,
+        [`is_${e.target.name}`]:false
+      })
+    }
+
+  }
   render() {
     let { status } = this.props.toolbar;
     let {
@@ -643,7 +677,9 @@ class ListBag extends React.Component {
                   Gold_Weight_Pay,
                   TotalWeightGoldCancel,
                   isActive,
-                  AddGoldWeight
+                  AddGoldWeight,
+                  is_Waxset_Weight,
+                  is_Handset_Weight
                 } = item;
                 total_Waxset_Weight = total_Waxset_Weight + Waxset_Weight;
                 total_Product_Weight_IN =
@@ -823,12 +859,45 @@ class ListBag extends React.Component {
                 }
                 renderCols.push(
                   <td width="90px">
+                  {is_Waxset_Weight?
+                    <input
+                      onBlur={(e)=>this.handleMouseOutFocus(e,item)}
+                      // onKeyDown={(e)=>this.handleMouseOutFocus(e,item)}
+                      readOnly={isBlock}
+                      id={orderby}
+                      className={`name form-control`}
+                      type="text"
+                      value={Waxset_Weight}
+                      onChange={e => this._onChangeInputWaxsetHandset(e,item)}
+                      name="Waxset_Weight"
+                    />
+                    :
+                  <span id="Waxset_Weight" onDoubleClick={(e)=>this._changeLabelWaxsetHandset(e,item)}>
                     {Helper.round(Waxset_Weight || 0, 4) || ""}
+                  </span>
+                  }
+
                   </td>,
                   <td width="90px">
-                    {IsIncludeHandset == 1
-                      ? Helper.round(Handset_Weight || 0, 4) || ""
-                      : ""}
+                  {is_Handset_Weight ?
+                    <input
+                      onBlur={(e)=>this.handleMouseOutFocus(e,item)}
+                      onKeyDown={(e)=>this.handleMouseOutFocus(e,item)}
+                      readOnly={isBlock}
+                      id={orderby}
+                      className={`name form-control`}
+                      type="text"
+                      value={Handset_Weight}
+                      onChange={e => this._onChangeInputWaxsetHandset(e,item)}
+                      name="Handset_Weight"
+                    />
+                    :
+                  <span id="Handset_Weight" onDoubleClick={(e)=>this._changeLabelWaxsetHandset(e,item)}>
+                  {IsIncludeHandset == 1
+                    ? Helper.round(Handset_Weight || 0, 4) || ""
+                    : ""}
+                  </span>
+                  }
                   </td>,
                   <td>{IdOrder}</td>
                   // <td>{moment.utc(DateOrder).format("DD/MM/YYYY")}</td>

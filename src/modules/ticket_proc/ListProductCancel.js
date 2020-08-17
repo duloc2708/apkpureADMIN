@@ -54,6 +54,7 @@ class ListProductCancel extends React.Component {
     let totalWeightGoldReturn = _.sumBy(listProductCancel, function(item) {
       return parseFloat(item.WeightGoldReturn || 0);
     });
+    console.log('totalWeightGoldReturn>>>',totalWeightGoldReturn, itemDetail.Gold_Weight_IN_T)
     if (totalWeightGoldReturn > parseFloat(itemDetail.Gold_Weight_IN_T)) {
       this.child._addNotification(
         "Tổng TL Vàng Nhập Kho đang vượt TL Vàng Ra",

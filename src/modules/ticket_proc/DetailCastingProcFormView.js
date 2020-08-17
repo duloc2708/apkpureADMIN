@@ -5,7 +5,11 @@ import ComboboxByTable from "../common/ComboboxByTable";
 import * as castingProcActions from "modules/ticket_proc/actions/form";
 const typeProcess = Helper.getParam(window.location.href, "type");
 import SearchBag from "./SearchBag";
-const { STATUS_PROCESS_ACCEPT } = require("./Constant");
+const {
+   LIST_PROCESS_PREV_SPURE,
+  STATUS_PROCESS_ACCEPT,
+  STATUS_PROCESS_FINISH
+ } = require("./Constant");
 
 import ModalGoldWeightFormView from "./ModalGoldWeightFormView";
 const customStyles = {
@@ -186,6 +190,11 @@ class DetailFormView extends React.Component {
     } = objConfig;
     let listControlWeight = [];
     let { status: Satustoolbar } = this.props.toolbar;
+
+    let isBlock =
+      [STATUS_PROCESS_FINISH, STATUS_PROCESS_ACCEPT].indexOf(Status) !== -1 ? true : false;
+
+
     let listControls = [];
     if (CodeLV) {
       listSkeletion = listSkeletion.filter(x => x.CodeLV === CodeLV);
@@ -266,7 +275,7 @@ class DetailFormView extends React.Component {
                 <input
                   readOnly={true}
                   className="name form-control"
-                  value={GoldWeight_Estimate}
+                  value={(Product_Skeleton_Weight && SkeletonWeight) &&  GoldWeight_Estimate || ''}
                   onChange={e => this._onChange(e)}
                   type="number"
                   id="GoldWeight_Estimate"
@@ -672,6 +681,7 @@ class DetailFormView extends React.Component {
                             </div>
                             <div style={{ width: "78%" }}>
                               <ComboboxMultiple
+                                disable={isBlock}
                                 comboOther={"Worker"}
                                 list_data_other={list_worker}
                                 id="Worker"
@@ -681,7 +691,7 @@ class DetailFormView extends React.Component {
                             </div>
                           </div>
                         </div>
-                       
+
                         <div className="col-md-6">
                           <div className="form-group">
                             <div style={{ width: "20%" }}>
@@ -689,6 +699,7 @@ class DetailFormView extends React.Component {
                             </div>
                             <div style={{ width: "78%" }}>
                               <input
+                                readOnly={isBlock}
                                 className="name form-control"
                                 value={Notes}
                                 onChange={e => this._onChange(e)}

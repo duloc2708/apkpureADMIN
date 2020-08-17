@@ -255,7 +255,7 @@ class ListProductFormView extends React.Component {
                     <tbody>
                         {list_data && list_data.map((item, i) => {
                             let { IdOrder, IdCustomer, DayMake, checked,
-                                StatusOrderName, StatusOrderBagName, StatusOrderTransferName, ProductsEachBag, StatusMoldName,TotalBags } = item
+                                StatusOrderName, StatusOrderBagName, StatusOrderTransferName, ProductsEachBag, StatusMoldName,TotalBags,DPCode,GCode } = item
                             return (
                                 <tr key={`data_${IdOrder}`} onDoubleClick={() => this._onClickRowDouble(item, !checked)}>
                                     <th scope="row">
@@ -264,7 +264,8 @@ class ListProductFormView extends React.Component {
                                         </label>
                                     </th>
                                     <td>{IdOrder}</td>
-                                    <td>{IdCustomer}</td>
+                                    <td>{GCode}</td>
+                                    
                                     <td>{moment.utc(DayMake).format('DD/MM/YYYY HH:mm:ss')}</td>
                                     <td>{StatusOrderName || 'Chờ xác nhận'}</td>
                                     <td>{StatusOrderBagName || 'Chưa khởi tạo'}</td>

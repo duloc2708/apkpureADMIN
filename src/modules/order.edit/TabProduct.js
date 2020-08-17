@@ -297,7 +297,7 @@ class TabProduct extends React.Component {
                         {listProductsSelected && listProductsSelected.map((item, i) => {
                             let { stt, value, url_image, color, size, Weight, WeightReal,
                                 label, sl, tl, tlut, price, sum, IdOdd, list_set, price_basic,
-                                sum_basic, isExists, index, remark, Image, isExistsBag } = item
+                                sum_basic, isExists, index, remark, Image, isExistsBag,GiaTT } = item
                             let IdProductParent = value
                             // if (value && value.length > 0) {
                             totalmoney = totalmoney + (sum_basic || 0)

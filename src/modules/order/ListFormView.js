@@ -358,7 +358,7 @@ class ListProductFormView extends React.Component {
                     </th>
                     <td>{IdOrder}</td>
                     <td>{GCode}</td>
-                    <td>{DPCode}</td> 
+                    
                     <td>{moment.utc(DayMake).format("DD/MM/YYYY HH:mm:ss")}</td>
                     <td>{StatusOrderName || "Chờ xác nhận"}</td>
 
