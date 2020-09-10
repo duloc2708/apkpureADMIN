@@ -48,9 +48,9 @@ import { updateInfoPage, resetInfoPage } from "modules/common/actions/form";
 const calGoldWeightEstimate = obj => {
   obj["GoldWeight_Estimate"] = Helper.round(
     15 *
-      (parseFloat(obj["Product_Skeleton_Weight"] || 0) -
-        parseFloat(obj["SkeletonWeight"] || 0) -
-        parseFloat(obj["Waxset_Weight_T"] || 0)),
+    (parseFloat(obj["Product_Skeleton_Weight"] || 0) -
+      parseFloat(obj["SkeletonWeight"] || 0) -
+      parseFloat(obj["Waxset_Weight_T"] || 0)),
     4
   );
   return obj;
@@ -151,7 +151,7 @@ export const updateCellStoneWaxSetting = obj => {
         if (strWorkersTemp.indexOf(g.Worker) == -1)
           strWorkersTemp += g.Worker + " ,";
         if (g.QtyAssignProduct) sumQtyAssignProduct += g.QtyAssignProduct;
-        if (g.Worker) ++countWorker;
+        if (g.Worker)++countWorker;
       });
       // join list worker
       item.strWorkers = strWorkersTemp.substr(0, strWorkersTemp.length - 1);
@@ -218,11 +218,11 @@ export const changeInputProductCancel = obj => {
     let listProductCancelTemp = _.clone(listProductCancel, true);
     listProductCancelTemp.map(item => {
       if (item.orderby == obj.id) {
-        if (obj.key === "QtyCancel") {
+        if (obj.key === "QtyCancelTemp") {
           if (obj.value) {
-            item["QtyRemain"] = parseInt(item.QtyRemain) - parseInt(obj.value);
+            item["QtyRemainTemp"] = (parseInt(item.QtyRemainTemp) - parseInt(obj.value)) || '';
           } else {
-            item["QtyRemain"] = parseInt(item.QtyRemainTemp);
+            item["QtyRemainTemp"] = (parseInt(item.QtyCancel || 0) + parseInt(item.QtyRemainTemp || 0)) || null;
           }
         }
         item[obj.key] = obj.value;
@@ -249,7 +249,7 @@ export const changeWeightGold = obj => {
         item.TF_Weight_Default = obj.value;
         item.TF_Weight_Convert = Helper.round(
           (item.ValueLV * parseFloat(item.TF_Weight_Default || 0)) /
-            objData.ValueLV,
+          objData.ValueLV,
           4
         );
       }
@@ -259,12 +259,9 @@ export const changeWeightGold = obj => {
       return item;
     });
     objDataTemp["Gold_Weight_IN_T"] = Helper.round(totalWeight, 4);
-    objDataTemp["Gold_Lost_T"] = Helper.round(
-      totalWeight -
-        parseFloat(objDataTemp["Gold_Weight_OUT_T"] || 0) -
-        parseFloat(objDataTemp["Gold_Weight2Store_T"] || 0),
-      4
-    );
+    // tính lại trọng lượng hao hut
+    objDataTemp = calGoldLostT(objDataTemp);
+
     if (objDataTemp["Gold_Lost_T"] < 0) objDataTemp["Gold_Lost_T"] = null;
     dispatch({
       type: CHANGE_WEIGHT_GOLD,
@@ -323,11 +320,11 @@ export const saveWeightStone = () => {
     });
   };
 };
-const indexColor=(data)=>{
-  let dataNew= [];
-  let comboIdStonePcs=""
-  let bg ="";
-  data.forEach((item,i) => {
+const indexColor = (data) => {
+  let dataNew = [];
+  let comboIdStonePcs = ""
+  let bg = "";
+  data.forEach((item, i) => {
     // if(i==0){
     //     bg =getRandomColor();
     //     item.isColor=bg
@@ -345,16 +342,16 @@ const indexColor=(data)=>{
     // if(item.QtyStonePcs>0){
     //
     // }
-      dataNew.push(item)
+    dataNew.push(item)
   });
-  return  dataNew
+  return dataNew
 }
 export const clearListStoneByBag = IdBag => {
   return (dispatch, getState) => {
-    const {listStoneWaxset} =getState().ticket_proc
-    let listStoneWaxsetTemp =_.clone(listStoneWaxset,true);
-    listStoneWaxsetTemp=listStoneWaxsetTemp.map(item=>{
-      return {...item,BrokenQty:'',BrokenWeight:'',BrokenRate:''};
+    const { listStoneWaxset } = getState().ticket_proc
+    let listStoneWaxsetTemp = _.clone(listStoneWaxset, true);
+    listStoneWaxsetTemp = listStoneWaxsetTemp.map(item => {
+      return { ...item, BrokenQty: '', BrokenWeight: '', BrokenRate: '' };
     })
     dispatch({
       type: GET_LIST_WAXSET_BY_BAG,
@@ -395,12 +392,6 @@ export const getListStoneWaxsetByIdBag = IdBag => {
               // break da
               const listBreakDownProduct = [];
               data.forEach(product => {
-                // for (let i = 1; i <= product.QtyProduct; i++) {
-                //   let itemProduct = _.clone(product, true);
-                //   itemProduct.orderby = itemProduct.orderby + `_split_${i}`;
-                //   itemProduct.QtyProduct = 1;
-                //   listBreakDownProduct.push(itemProduct);
-                // }
                 let itemProduct = _.clone(product, true);
                 listBreakDownProduct.push(itemProduct);
               });
@@ -408,14 +399,14 @@ export const getListStoneWaxsetByIdBag = IdBag => {
               let dataNew = [...listStoneWaxset, ...listBreakDownProduct];
               // parse Color by Group Product
 
-              dataNew=indexColor(dataNew)
+              dataNew = indexColor(dataNew)
 
               // clear stone Weight
               let listBagSelectedTemp = _.clone(listBagSelected, true);
               // cal weight again
 
               listBagSelectedTemp = listBagSelectedTemp.map(item => {
-                item.Broken_Weight_OUT = null;
+                // item.Broken_Weight_OUT = null;
                 item = {
                   ...calWeightDetailBag(item, objConfig)
                 };
@@ -460,6 +451,20 @@ export const updateActiveToolTipBag = (obj, status) => {
     });
   };
 };
+const calGoldLostT = (objData) => {
+  return {
+    ...objData,
+    Gold_Lost_T: Helper.round(
+      parseFloat(objData["Gold_Weight_IN_T"] || 0) -
+      parseFloat(objData["Gold_Weight_OUT_T"] || 0) -
+      parseFloat(objData["Gold_Weight2Store_T"] || 0) -
+      parseFloat(objData["BackGoldWeight_T"] || 0) -
+      parseFloat(objData["CancelGoldWeight_T"] || 0) +
+      parseFloat(objData["AddGoldWeight_T"] || 0),
+      4
+    )
+  }
+}
 export const updateInputItemProcess = obj => {
   return (dispatch, getState) => {
     let { objConfig, objData, listBagSelected } = getState().ticket_proc;
@@ -484,11 +489,8 @@ export const updateInputItemProcess = obj => {
       ].indexOf(key) != -1
     ) {
       //Trọng lượng vàng hao hụt
-      objDataTemp["Gold_Lost_T"] = Helper.round(
-        parseFloat(objDataTemp["Gold_Weight_IN_T"] || 0) -
-          parseFloat(objDataTemp["Gold_Weight_OUT_T"] || 0),
-        4
-      );
+      objDataTemp = calGoldLostT(objDataTemp);
+
       if (objDataTemp["Gold_Lost_T"] < 0) objDataTemp["Gold_Lost_T"] = null;
       //if (IsInputweightbyM_OUT == 1) {
       //Estimate trọng lượng vàng cần đúc
@@ -504,15 +506,7 @@ export const updateInputItemProcess = obj => {
       });
 
       objDataTemp["CancelGoldWeight_T"] = TotalWeightGoldCancel;
-      objDataTemp["Gold_Lost_T"] = Helper.round(
-        parseFloat(objDataTemp["Gold_Weight_IN_T"] || 0) -
-          parseFloat(objDataTemp["Gold_Weight_OUT_T"] || 0) -
-          parseFloat(objDataTemp["Gold_Weight2Store_T"] || 0) -
-          parseFloat(objDataTemp["BackGoldWeight_T"] || 0) -
-          parseFloat(objDataTemp["CancelGoldWeight_T"] || 0) +
-          parseFloat(objDataTemp["AddGoldWeight_T"] || 0),
-        4
-      );
+      objDataTemp = calGoldLostT(objDataTemp);
     }
 
     if (key === "CodeLV") {
@@ -709,11 +703,11 @@ export const getNumberAutoTicketProc = () => {
             let numberGen = (data && data[0].value) || "0000000";
 
             objData_temp["CodeTicket"] = numberGen;
-            objData_temp["Name"] = numberGen;
+            //objData_temp["Name"] = numberGen;
             objData_temp["CodeProcess"] = objConfig.Code || "";
 
             default_bag_temp["CodeTicket"] = numberGen;
-            default_bag_temp["Name"] = numberGen;
+            //default_bag_temp["Name"] = numberGen;
             default_bag_temp["CodeProcess"] = objConfig.Code || "";
 
             listBagSelectedTemp.map(x => (x.CodeTicket = numberGen));
@@ -775,16 +769,9 @@ const sumTotalObjData = (objData, listBagSelected) => {
     objDataNew = calGoldWeightEstimate(objDataNew);
   }
 
+  objDataNew.AddGoldWeight_T = sumAddGoldWeight;
   if (objDataNew.Gold_Weight_IN_T && objDataNew.Gold_Weight_OUT_T) {
-    objDataNew.Gold_Lost_T = Helper.round(
-      objDataNew.Gold_Weight_IN_T -
-        objDataNew.Gold_Weight_OUT_T -
-        objDataNew.CancelGoldWeight_T -
-        objDataNew.Gold_Weight2Store_T -
-        parseFloat(objDataNew.BackGoldWeight_T || 0) +
-        sumAddGoldWeight,
-      4
-    );
+    objDataNew = calGoldLostT(objDataNew);
   }
 
   return objDataNew;
@@ -804,20 +791,20 @@ const parseListBag = (data, listProductCancel, objConfig) => {
 
     item.Origin_Handset_Weight = item.Origin_Handset_Weight || item.Handset_Weight;
     item.Origin_Waxset_Weight = item.Origin_Handset_Weight || item.Waxset_Weight;
-    item.Custom_Handset_Weight = item.Custom_Handset_Weight||  item.Handset_Weight;
+    item.Custom_Handset_Weight = item.Custom_Handset_Weight || item.Handset_Weight;
     item.Custom_Waxset_Weight = item.Custom_Waxset_Weigh || item.Waxset_Weight;
 
     if (objConfig.IsIncludeHandset === 1) {
       item.Gold_Weight_OUT = Helper.round(
         parseFloat(item.Product_Weight_OUT || 0) +
-          parseFloat(item.Broken_Weight_OUT || 0) -
-          parseFloat(item.Waxset_Weight || 0) -
-          parseFloat(item.Handset_Weight || 0),
+        parseFloat(item.Broken_Weight_OUT || 0) -
+        parseFloat(item.Waxset_Weight || 0) -
+        parseFloat(item.Handset_Weight || 0),
         4
       );
       item.Gold_Lost = Helper.round(
         parseFloat(item.Gold_Weight_IN || 0) -
-          parseFloat(item.Gold_Weight_OUT || 0),
+        parseFloat(item.Gold_Weight_OUT || 0),
         4
       );
     }
@@ -826,12 +813,12 @@ const parseListBag = (data, listProductCancel, objConfig) => {
   return listBagSelectedTemp;
 };
 const parseListProductCancel = (data, objData) => {
-  const newData = data.filter(x => x.QtyCancel);
+  const newData = data.filter(x => x.QtyCancel || (x.QtyCancelTemp && !x.QtyCancel));
   newData.map(item => {
     item.CodeTicket = objData.CodeTicket;
     item.CodeProcess = objData.CodeProcess;
-    item.QtyCancel = parseInt(item.QtyCancel || 0);
-    item.QtyRemain = parseInt(item.QtyRemain || 0);
+    item.QtyCancel = parseInt(item.QtyCancelTemp || 0);
+    item.QtyRemain = parseInt(item.QtyRemainTemp || 0);
     item.created_date = item.created_date || "";
     item.isConfirmed = item.isConfirmed || "";
     item.confirm_by = item.confirm_by || "";
@@ -1006,19 +993,24 @@ export const initAddCastingProc = () => {
 };
 export const changeListBagSelected = (objNew) => {
   return (dispatch, getState) => {
-    const {listBagSelected} =getState().ticket_proc;
-    let listBagSelectedTemp  = _.clone(listBagSelected,true);
-    listBagSelectedTemp=listBagSelectedTemp.map(item=>{
-      if(item.orderby===objNew.orderby){
-        console.log('objNew>>>',objNew)
-        return objNew
+    const { listBagSelected, objData } = getState().ticket_proc;
+    let listBagSelectedTemp = _.clone(listBagSelected, true);
+    let sumWaxset = 0;
+    listBagSelectedTemp = listBagSelectedTemp.map(item => {
+      if (item.orderby === objNew.orderby) {
+        item = objNew
       }
+      sumWaxset = sumWaxset + item.Waxset_Weight || 0
       return item;
     })
     dispatch({
       type: UPDATE_BAG_DETAIL,
       payload: {
-        listBagSelected: listBagSelectedTemp
+        listBagSelected: listBagSelectedTemp,
+        objData: {
+          ...objData,
+          Waxset_Weight_T: sumWaxset
+        }
       }
     });
   };
@@ -1070,17 +1062,9 @@ const calTotalChangeWeightBag = (listBag, objData) => {
     Gold_Weight_IN_T: Helper.round(sumGoldWeightIN, 4),
     Gold_Weight_OUT_T: Helper.round(sumGoldWeightOut, 4),
     AddGoldWeight_T: Helper.round(sumAddGoldWeight, 4),
-    CancelGoldWeight_T: Helper.round(sumGold_Cancel, 4),
-    Gold_Lost_T: Helper.round(
-      sumGoldWeightIN -
-        sumGoldWeightOut -
-        objData.Gold_Weight2Store_T -
-        sumGold_Cancel -
-        (objData.BackGoldWeight_T || 0) +
-        sumAddGoldWeight,
-      4
-    )
+    CancelGoldWeight_T: Helper.round(sumGold_Cancel, 4)
   };
+  newObjData = calGoldLostT(newObjData);
   if (typeProcess == "SKELETON") {
     newObjData = calGoldWeightEstimate(newObjData);
   }
@@ -1089,13 +1073,13 @@ const calTotalChangeWeightBag = (listBag, objData) => {
 const calGoldWeightAfterHandset = item => {
   let result = Helper.round(
     parseFloat(item.Gold_Weight_OUT || 0) -
-      parseFloat(item.Handset_Weight || 0),
+    parseFloat(item.Handset_Weight || 0),
     4
   );
   return result;
 };
 
-export const updateCellBrokenQty = obj => {
+export const updateCellBrokenQty = (obj, IdBagInStone) => {
   return (dispatch, getState) => {
     let {
       objData,
@@ -1109,8 +1093,7 @@ export const updateCellBrokenQty = obj => {
     let temp = _.clone(listStoneWaxset, true);
     let listBagSelectedTemp = _.clone(listBagSelected, true);
     let totalWeightBrokenTemp = 0;
-    let IdBagInStone = "";
-    temp.map((item, i) => {
+    temp = temp.map((item, i) => {
       if (item.orderby == obj.id) {
         let { AvgStone, QtyProduct } = item;
         let valueTemp = obj.value;
@@ -1122,9 +1105,8 @@ export const updateCellBrokenQty = obj => {
           2
         );
         item[obj.key] = valueTemp;
-        IdBagInStone = item.IdBag;
       }
-      if (item.INOUT == typeInOut) {
+      if (item.INOUT == typeInOut && item.IdBag == IdBagInStone) {
         totalWeightBrokenTemp =
           totalWeightBrokenTemp + parseFloat(item.BrokenWeight || 0);
       }
@@ -1132,7 +1114,8 @@ export const updateCellBrokenQty = obj => {
     });
 
     // Tính lại trọng lượng đá rớt 1 lần nữa
-    listBagSelectedTemp.map(item => {
+    listBagSelectedTemp = listBagSelectedTemp.map(itemNew => {
+      let item = _.clone(itemNew, true);
       if (item.IdBag == IdBagInStone) {
         let { Waxset_Weight, Product_Weight_IN, Product_Weight_OUT } = item;
         let Waxset_WeightTemp = parseFloat(Waxset_Weight || 0);
@@ -1142,8 +1125,8 @@ export const updateCellBrokenQty = obj => {
           item.Broken_Weight_IN = totalWeightBrokenTemp;
           item["Gold_Weight_IN"] = Helper.round(
             valueTemp +
-              parseFloat(item.Broken_Weight_IN || 0) -
-              Waxset_WeightTemp,
+            parseFloat(item.Broken_Weight_IN || 0) -
+            Waxset_WeightTemp,
             4
           );
         } else {
@@ -1152,8 +1135,8 @@ export const updateCellBrokenQty = obj => {
 
           item["Gold_Weight_OUT"] = Helper.round(
             parseFloat(valueTemp || 0) +
-              parseFloat(item.Broken_Weight_OUT || 0) -
-              parseFloat(Waxset_WeightTemp || 0),
+            parseFloat(item.Broken_Weight_OUT || 0) -
+            parseFloat(Waxset_WeightTemp || 0),
             4
           );
           if (item["Gold_Weight_OUT"] < 0) item["Gold_Weight_OUT"] = null;
@@ -1208,7 +1191,7 @@ export const updateProductCancel = item => {
         const listProductCancelByBag = listProductCancelTemp.filter(
           x => x.IdBag === item.IdBag && x.isConfirmed == 1
         );
-        const totalWeightGoldReturn = _.sumBy(listProductCancelByBag, function(
+        const totalWeightGoldReturn = _.sumBy(listProductCancelByBag, function (
           itemProduct
         ) {
           return parseFloat(itemProduct.WeightGoldReturn || 0);
@@ -1300,8 +1283,8 @@ export const calWeightDetailBag = (objItem, objConfig) => {
     // (TL (Vàng + Đá) Trừ Đá Rớt + Tổng TL đá rớt ) - trọng lượng waxset
     item.Gold_Weight_OUT = Helper.round(
       parseFloat(item.Product_Weight_OUT || 0) +
-        parseFloat(Broken_Weight_OUTTemp || 0) -
-        parseFloat(Waxset_WeightTemp || 0),
+      parseFloat(Broken_Weight_OUTTemp || 0) -
+      parseFloat(Waxset_WeightTemp || 0),
       4
     );
     if (IsIncludeHandset == 1) {
@@ -1315,7 +1298,7 @@ export const calWeightDetailBag = (objItem, objConfig) => {
   // );
   item.Gold_Lost = Helper.round(
     parseFloat(item.Gold_Weight_IN || 0) -
-      parseFloat(item.Gold_Weight_OUT || 0),
+    parseFloat(item.Gold_Weight_OUT || 0),
     4
   );
   if (item.Gold_Lost < 0) item.Gold_Lost = null;
@@ -2007,8 +1990,8 @@ export const getDataDetailByCode = (value = "") => {
                 item.Qty_Product_RemainTemp =
                   item.Qty_Product_Remain + item.Qty_Product_Cancel;
               }
-              item.Temp_Waxset_Weight=item.Waxset_Weight;
-              item.Temp_Handset_Weight=item.Handset_Weight
+              item.Temp_Waxset_Weight = item.Waxset_Weight;
+              item.Temp_Handset_Weight = item.Handset_Weight
               return item;
             });
             dispatch({
@@ -2061,7 +2044,7 @@ export const getDataDetailStoneByCode = (
 
             const groupProductByOrder = _.chain(data)
               .groupBy("strProducts")
-              .map(function(v, i) {
+              .map(function (v, i) {
                 return {
                   IdProduct: i,
                   IdOrder: _.map(v, "IdOrder"),
@@ -2072,7 +2055,7 @@ export const getDataDetailStoneByCode = (
 
 
             // parse Color by Group Product
-            data=indexColor(data)
+            data = indexColor(data)
             dispatch({
               type: GET_LIST_TICKET_DETAIL,
               payload: {
@@ -2121,6 +2104,7 @@ export const getProductsByBag = IdBag => {
             item.orderby = item.IdBag + "_" + (i + 1);
             item.CodeProcess = objData.CodeProcess;
             item.CodeTicket = objData.CodeTicket;
+            item.QtyCancelTemp = item.QtyCancel;
             item.QtyRemainTemp = item.QtyRemain;
             return item;
           });
@@ -2164,6 +2148,7 @@ export const getProductsByTicket = CodeTicket => {
               if (status == "ADD") {
                 item.QtyRemainTemp = parseInt(item.QtyRemain || 0);
                 item.QtyCancel = "";
+                item.QtyCancelTemp = "";
                 item.WeightGoldReturn = "";
                 item.isConfirmed = "";
                 item.created_date = "";
@@ -2226,10 +2211,10 @@ export const getDataSkeleton = () => {
 export const getTicketProcDetail = (CodeTicket) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      axios.get(`${Config.API_URL_USER}ticket_proc/ticket_proc_detail`,{params: { CodeTicket }}).then(
+      axios.get(`${Config.API_URL_USER}ticket_proc/ticket_proc_detail`, { params: { CodeTicket } }).then(
         response => {
           let { data } = response.data;
-          const objData=data[0]
+          const objData = data[0]
           dispatch({
             type: UPDATE_CELL_INPUT_BY_BAG,
             payload: {
@@ -2251,7 +2236,7 @@ export const printDetail = (itemDetail) => {
       axios
         .post(
           `${Config.API_URL_USER}ticket_proc/print_detail`,
-          { keyTicket: itemDetail.CodeTicket,Info: itemDetail},
+          { keyTicket: itemDetail.CodeTicket, Info: itemDetail },
           {
             responseType: "arraybuffer",
             headers: {

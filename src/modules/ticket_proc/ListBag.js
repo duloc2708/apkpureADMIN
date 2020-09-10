@@ -697,6 +697,7 @@ class ListBag extends React.Component {
                 total_Handset_Weight = total_Handset_Weight+Handset_Weight;
                 total_Gold_Weight_Pay=total_Gold_Weight_Pay+Gold_Weight_Pay;
                 let renderCols = [];
+                console.log('Broken_Weight_IN>>',Broken_Weight_IN)
                 renderCols.push(
                   <td>
                     <div>
@@ -866,14 +867,14 @@ class ListBag extends React.Component {
                       readOnly={isBlock}
                       id={orderby}
                       className={`name form-control`}
-                      type="text"
+                      type="number"
                       value={Waxset_Weight}
                       onChange={e => this._onChangeInputWaxsetHandset(e,item)}
                       name="Waxset_Weight"
                     />
                     :
-                  <span id="Waxset_Weight" onDoubleClick={(e)=>this._changeLabelWaxsetHandset(e,item)}>
-                    {Helper.round(Waxset_Weight || 0, 4) || ""}
+                  <span style={{"display":"inline-block", "width":"25px","height":"25px"}} id="Waxset_Weight" onDoubleClick={(e)=>this._changeLabelWaxsetHandset(e,item)}>
+                    {Helper.round(Waxset_Weight || 0, 4) || ''}
                   </span>
                   }
 
@@ -892,9 +893,9 @@ class ListBag extends React.Component {
                       name="Handset_Weight"
                     />
                     :
-                  <span id="Handset_Weight" onDoubleClick={(e)=>this._changeLabelWaxsetHandset(e,item)}>
+                  <span style={{"display":"inline-block", "width":"25px","height":"25px"}} id="Handset_Weight" onDoubleClick={(e)=>this._changeLabelWaxsetHandset(e,item)}>
                   {IsIncludeHandset == 1
-                    ? Helper.round(Handset_Weight || 0, 4) || ""
+                    ? Helper.round(Handset_Weight || 0, 4) || " "
                     : ""}
                   </span>
                   }

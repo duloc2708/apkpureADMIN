@@ -6,10 +6,10 @@ import * as castingProcActions from "modules/ticket_proc/actions/form";
 const typeProcess = Helper.getParam(window.location.href, "type");
 import SearchBag from "./SearchBag";
 const {
-   LIST_PROCESS_PREV_SPURE,
+  LIST_PROCESS_PREV_SPURE,
   STATUS_PROCESS_ACCEPT,
   STATUS_PROCESS_FINISH
- } = require("./Constant");
+} = require("./Constant");
 
 import ModalGoldWeightFormView from "./ModalGoldWeightFormView";
 const customStyles = {
@@ -35,7 +35,6 @@ class DetailFormView extends React.Component {
     this.props.getDataSkeleton();
 
     let { status } = this.props.toolbar;
-    const { objData } = this.props.ticket_proc;
     if (typeProcess === "CASTING") {
       if (status === "ADD") {
         this.props.getAllGold();
@@ -122,7 +121,7 @@ class DetailFormView extends React.Component {
     objData.value = date;
     this.props.updateInputItemProcess(objData);
   }
-  ChangeValueComboboxByTable(obj) {}
+  ChangeValueComboboxByTable(obj) { }
   componentWillUnmount() {
     this.props.resetDataCastingProc();
   }
@@ -275,7 +274,7 @@ class DetailFormView extends React.Component {
                 <input
                   readOnly={true}
                   className="name form-control"
-                  value={(Product_Skeleton_Weight && SkeletonWeight) &&  GoldWeight_Estimate || ''}
+                  value={(Product_Skeleton_Weight && SkeletonWeight) && GoldWeight_Estimate || ''}
                   onChange={e => this._onChange(e)}
                   type="number"
                   id="GoldWeight_Estimate"
@@ -307,8 +306,8 @@ class DetailFormView extends React.Component {
                     parentObject={this}
                   />
                 ) : (
-                  Skeleton
-                )}
+                    Skeleton
+                  )}
               </div>
             </div>
           </div>
@@ -448,8 +447,8 @@ class DetailFormView extends React.Component {
               </div>
             </div>
           ) : (
-            ""
-          )}
+              ""
+            )}
           <div className="col-md-3">
             <div className="form-group">
               <div className="left">
@@ -606,8 +605,8 @@ class DetailFormView extends React.Component {
                           </div>
                         </div>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                       <div className="col-md-3">
                         <div className="form-group">
                           <div className="left">
@@ -666,8 +665,8 @@ class DetailFormView extends React.Component {
                           </div>
                         </div>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </div>
 
                     {listControls}
@@ -713,27 +712,27 @@ class DetailFormView extends React.Component {
                         </div>
                       </div>
                     ) : (
-                      <div className="row">
-                        <div className="col-md-12">
-                          <div className="form-group">
-                            <div className="left" style={{ width: "10%" }}>
-                              <label htmlFor="name">Ghi chú</label>
-                            </div>
-                            <div className="right" style={{ width: "90%" }}>
-                              <input
-                                className="name form-control"
-                                value={Notes}
-                                onChange={e => this._onChange(e)}
-                                type="text"
-                                id="Notes"
-                                name="name"
-                                required=""
-                              />
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <div className="left" style={{ width: "10%" }}>
+                                <label htmlFor="name">Ghi chú</label>
+                              </div>
+                              <div className="right" style={{ width: "90%" }}>
+                                <input
+                                  className="name form-control"
+                                  value={Notes}
+                                  onChange={e => this._onChange(e)}
+                                  type="text"
+                                  id="Notes"
+                                  name="name"
+                                  required=""
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                 </div>
 
@@ -744,10 +743,10 @@ class DetailFormView extends React.Component {
                         <div>
                           {["CASTING", "WAX_SETTING"].indexOf(typeProcess) ===
                             -1 && Status !== STATUS_PROCESS_ACCEPT ? (
-                            <SearchBag key={"SearchBag"} />
-                          ) : (
-                            ""
-                          )}
+                              <SearchBag key={"SearchBag"} />
+                            ) : (
+                              ""
+                            )}
                           <ListBag key={"order"} />
                         </div>
                       </div>

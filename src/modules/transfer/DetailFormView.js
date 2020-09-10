@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ComboboxByTable from "../common/ComboboxByTable";
 import ListGold from "./ListGold";
 import * as transferActions from "modules/transfer/actions/form";
-import {STATUS_TRANS_04, STATUS_TRANS_02} from './Constant'
+import { STATUS_TRANS_04, STATUS_TRANS_02 } from './Constant'
 
 import {
   updateInfoPage,
@@ -18,17 +18,29 @@ class DetailFormView extends React.Component {
       startDate: moment()
     };
   }
-  componentDidMount(){
+  componentDidMount() {
     this.props.getListIdStores();
   }
   ChangeValueCombobox(obj) {
     let { id, value } = obj;
     let { objData } = this.props.transfer;
-    this.props.updateInputItem({...objData,
-      [id]:value
+    this.props.updateInputItem({
+      ...objData,
+      [id]: value
     });
-    if(id=='IdStore_From'){
-        this.props.getListBalanceByIdStore(value)
+    if (id == 'IdStore_From') {
+      this.props.getListBalanceByIdStore(value)
+    }
+  }
+
+  ChangeValueComboboxMulti(obj) {
+    let { objData } = this.props.transfer;
+    this.props.updateInputItem({
+      ...objData,
+      [obj.key]: obj.data
+    });
+    if (obj.key == 'IdStore_From') {
+      this.props.getListBalanceByIdStore(obj.data)
     }
   }
 
@@ -37,7 +49,7 @@ class DetailFormView extends React.Component {
     let { objData } = this.props.transfer;
     let objDataTemp = _.clone(objData, true);
     objDataTemp[id] = value;
-    if(id=='TypeGoldWarm' && value>100){
+    if (id == 'TypeGoldWarm' && value > 100) {
       alert('Loại vàng nấu tối đa 100');
       return;
     }
@@ -49,18 +61,13 @@ class DetailFormView extends React.Component {
     objDataTemp["ValueDate"] = date;
     this.props.updateInputItem(objDataTemp);
   }
-  ChangeValueComboboxByTable(obj) {}
+  ChangeValueComboboxByTable(obj) { }
   componentWillUnmount() {
     this.props.resetInfoPage().then(() => {
       this.props.resetData();
     });
   }
 
-  ChangeValueComboboxMulti(obj) {
-    console.log("obj>>>", obj);
-
-    // this.props.updateInputItem(objDataTemp);
-  }
   _onCollapse() {
     if ($("#collapse-show").css("display") == "none") {
       $("#collapse-show").css({ display: "" });
@@ -84,7 +91,8 @@ class DetailFormView extends React.Component {
       Notes,
       TypeGoldWarm,
       TotalWeightAfterWarm,
-      DayConfirmF
+      DayConfirmF,
+      Gold_Lost_T
     } = this.props.transfer.objData;
     let { objConfig, objSearch, list_turn_type } = this.props.transfer;
     let { list_config_process } = this.props.header;
@@ -99,11 +107,11 @@ class DetailFormView extends React.Component {
     });
     let { IsGoldTypeRequest } = objConfig;
     let type = Helper.getParam(window.location.href, "type");
-    let blockInput = [STATUS_TRANS_04,STATUS_TRANS_02].indexOf(Status)!=-1? true : false;
+    let blockInput = [STATUS_TRANS_04, STATUS_TRANS_02].indexOf(Status) != -1 ? true : false;
     const { list_data_idstores } = this.props.transfer;
 
     const { status } = this.props.toolbar
-    const blockByStatusToolbar= status==='EDIT'?true:false
+    const blockByStatusToolbar = status === 'EDIT' ? true : false
     return (
       <div className="main__content">
         <div className="row">
@@ -173,12 +181,12 @@ class DetailFormView extends React.Component {
                             <label htmlFor="name">Từ kho</label>
                           </div>
                           <div className="right">
-                            <Combobox
+                            <ComboboxMultiple
                               disable={blockInput}
-                              type_code="IdStore_From"
-                              value={IdStore_From}
+                              comboOther={"IdStore_From"}
+                              list_data_other={list_data_idstores}
                               id="IdStore_From"
-                              data_order={list_data_idstores}
+                              value={IdStore_From}
                               parentObject={this}
                             />
                           </div>
@@ -190,12 +198,12 @@ class DetailFormView extends React.Component {
                             <label htmlFor="name">Đến kho</label>
                           </div>
                           <div className="right">
-                            <Combobox
+                            <ComboboxMultiple
                               disable={blockInput}
-                              type_code="IdStore_To"
-                              value={IdStore_To}
+                              comboOther={"IdStore_To"}
+                              list_data_other={list_data_idstores}
                               id="IdStore_To"
-                              data_order={list_data_idstores}
+                              value={IdStore_To}
                               parentObject={this}
                             />
                           </div>
@@ -245,11 +253,31 @@ class DetailFormView extends React.Component {
                           </div>
                         </div>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </div>
                     <div className="row">
-                      <div className="col-md-12">
+                    <div className="col-md-3">
+                      <div className="form-group">
+                        <div className="left">
+                          <label htmlFor="name">
+                            Tổng TL hao hụt
+                          </label>
+                        </div>
+                        <div className="right">
+                          <input
+                            readOnly={true}
+                            className="name form-control"
+                            value={Gold_Lost_T}
+                            onChange={e => this._onChange(e)}
+                            type="text"
+                            id="Gold_Lost_T"
+                            name="Gold_Lost_T"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                      <div className="col-md-9">
                         <div className="form-group">
                           <div style={{ width: "10%" }}>
                             <label htmlFor="name">Ghi chú </label>

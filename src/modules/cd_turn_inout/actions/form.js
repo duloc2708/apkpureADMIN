@@ -487,7 +487,6 @@ export const selectCustomerCash = value => {
     let objData_temp = _.clone(objData, true);
     let objSearch_temp = _.clone(objSearch, true);
     let { list_data_all } = getState().list;
-    let list_data_allTemp = _.clone(list_data_all, true);
     let { value: valueCode, name } = value || {};
 
     dispatch(getListCustomerConfig(valueCode)).then(res => {
@@ -867,12 +866,10 @@ const updateOrderByOrg = data => {
 };
 
 export const updateItem = data => {
-  let ListProduct_temp = _.clone(data);
   return (dispatch, getState) => {
     let {
       objData,
-      listProductSelected,
-      CodeBaoGiaTemp
+      listProductSelected
     } = getState().cd_turn_inout;
     listProductSelected.map(x => (x.TicketCode = objData.TicketCode));
     // trường hợp xuất hàng hồi thì update loại tồn kho
@@ -902,10 +899,6 @@ export const updateItem = data => {
       return item;
     });
     let objDataTemp = _.clone(objData, true);
-    let type = Helper.getParam(window.location.href, "type");
-    if (CodeBaoGiaTemp && type == 1) {
-      objDataTemp["CodeBaoGia"] = CodeBaoGiaTemp;
-    }
     listProductSelected = listProductSelected.map(item => {
       if (objDataTemp.Trans_Type !== "TURN_TRANS_TYPE_04") {
         item.CodeLV = objData.codeLV;
@@ -946,12 +939,10 @@ export const updateItem = data => {
   };
 };
 export const addNewItem = data => {
-  let ListProduct_temp = _.clone(data);
   return (dispatch, getState) => {
     let {
       objData,
-      listProductSelected,
-      CodeBaoGiaTemp
+      listProductSelected
     } = getState().cd_turn_inout;
     listProductSelected.map(x => (x.TicketCode = objData.TicketCode));
     // trường hợp xuất hàng hồi thì update loại tồn kho
@@ -982,13 +973,6 @@ export const addNewItem = data => {
     });
 
     let objDataTemp = _.clone(objData, true);
-    let type = Helper.getParam(window.location.href, "type");
-    if (type == 1) {
-      objDataTemp["CodeBaoGia"] = CodeBaoGiaTemp;
-    } else {
-      objDataTemp["CodeBaoGia"] = "";
-    }
-
     listProductSelected = listProductSelected.map(item => {
       if (objDataTemp.Trans_Type !== "TURN_TRANS_TYPE_04") {
         item.CodeLV = objData.codeLV;
@@ -1032,7 +1016,7 @@ export const addNewItem = data => {
 export const findProducts = (loadAll = false) => {
   return (dispatch, getState) => {
     let { objSearch, objData, CodeBaoGiaTemp } = getState().cd_turn_inout;
-    let { page, total, endPage } = getState().common;
+    let { page, total } = getState().common;
     let objSearchTemp = _.clone(objSearch, true);
     // reset lại sản phẩm tìm kiếm nếu chọn null phiếu trẩ hàng
     if (objSearchTemp.TicketCode && !objData.IdRef) {

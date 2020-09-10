@@ -6,7 +6,16 @@ class ButtonPermission extends React.Component {
 	_addNotification(mes, type) {
 
 	}
+	_ignorePermission() {
+		if (window.location.pathname == '/ticket_proc') {
+			return true
+		}
+	}
 	_onRowEdit() {
+		if (this._ignorePermission()) {
+			this.props.parentObject.ChangeRowEdit(data);
+			return;
+		}
 		let { listButton } = this.props.toolbar
 		let { nameBtn } = this.props
 		let checkPermisson = listButton.filter(x => x.code == nameBtn)
@@ -19,6 +28,10 @@ class ButtonPermission extends React.Component {
 
 	}
 	_onRowDetail() {
+		if (this._ignorePermission()) {
+			this.props.parentObject.ChangeRowDetail(data);
+			return;
+		}
 		let { listButton } = this.props.toolbar
 		let { nameBtn } = this.props
 		let checkPermisson = listButton.filter(x => x.code == nameBtn)
@@ -31,6 +44,10 @@ class ButtonPermission extends React.Component {
 
 	}
 	_onRowPrint() {
+		if (this._ignorePermission()) {
+			this.props.parentObject.ChangeRowPrint(data);
+			return;
+		}
 		let { listButton } = this.props.toolbar
 		let { nameBtn } = this.props
 		let checkPermisson = listButton.filter(x => x.code == nameBtn)
@@ -67,9 +84,16 @@ class ButtonPermission extends React.Component {
 		return data
 	}
 	_onClickButton(nameBtn, type, icon, key, data) {
+
+		if (this._ignorePermission()) {
+			this.props.parentObject.onClickButtonPermission({ data: data, nameBtn: nameBtn });
+			return;
+		}
+
 		let { listButtonPer } = this.props.toolbar
-		console.log('listButtonPer',listButtonPer)
-		let checkPermisson = listButtonPer.filter(x => x == nameBtn)
+
+		let checkPermisson = listButtonPer.filter(x => x == nameBtn);
+
 		let oldUserInfo = SportConfig._getCookie('userInfo')
 		try {
 			oldUserInfo = JSON.parse(SportConfig.function._base64.decode(oldUserInfo))
@@ -104,4 +128,4 @@ const mapStateToProps = ({
 		toolbar
 	}
 }
-module.exports = ReactRedux.connect(mapStateToProps, null)(ButtonPermission) 
+module.exports = ReactRedux.connect(mapStateToProps, null)(ButtonPermission)

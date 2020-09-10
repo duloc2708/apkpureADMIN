@@ -1,17 +1,13 @@
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TabProduct from "./TabProduct";
 import TabProductSearch from "./TabProductSearch";
-import ComboboxByTable from "../common/ComboboxByTable";
 import * as cd_turn_inout_Actions from "modules/cd_turn_inout/actions/form";
 import ComboboxCustomer from "./ComboboxCustomer";
-import ComboboxMultipleByCustomer from "./ComboboxMultipleByCustomer";
 import {
   updateInfoPage,
   resetInfoPage,
   updateTotalInPage
 } from "modules/common/actions/form";
-import ComboboxMultipleBaoGia from "./ComboboxMultipleBaoGia";
 import ComboboxOutput from "./ComboboxOutput";
 class DetailFormView extends React.Component {
   constructor() {
@@ -97,7 +93,7 @@ class DetailFormView extends React.Component {
     objDataTemp["ValueDate"] = date;
     this.props.updateInputItem(objDataTemp);
   }
-  ChangeValueComboboxByTable(obj) {}
+  ChangeValueComboboxByTable(obj) { }
   componentWillUnmount() {
     this.props.resetInfoPage().then(() => {
       this.props.resetData();
@@ -105,17 +101,8 @@ class DetailFormView extends React.Component {
   }
   _onSearch() {
     let {
-      IdProduct,
-      IdOutput,
-      Weight,
-      SCodeLV,
-      SCodeLH,
-      SCodeMX,
-      Is_Filter,
-      SIdCustomer,
-      CodeBaoGia
+      IdProduct
     } = this.props.cd_turn_inout.objSearch;
-    let { CodeBaoGiaTemp } = this.props.cd_turn_inout;
     let { Trans_Type, IdCustomer } = this.props.cd_turn_inout.objData;
     let type = Helper.getParam(window.location.href, "type");
     // nếu trả hàng bắt buộc chọn khách hàng
@@ -123,18 +110,8 @@ class DetailFormView extends React.Component {
       alert("Vui lòng chọn khách hàng!");
     } else if (!IdProduct && !Is_Filter) {
       alert("Vui lòng nhập mã sản phẩm cần tìm!");
-      // }
-      // else if (Is_Filter && (!SCodeLV || !SCodeLH || !SCodeMX)) {
-      //     alert('Vui lòng chọn loại vàng/loại hình/màu xi!')
     } else if (type == 1 && Trans_Type == "TURN_TRANS_TYPE_03" && !IdCustomer) {
       alert("Vui lòng chọn khách hàng để lấy bảng giá");
-    } else if (
-      type == 1 &&
-      Trans_Type == "TURN_TRANS_TYPE_03" &&
-      CodeBaoGiaTemp &&
-      CodeBaoGiaTemp.indexOf(",") != -1
-    ) {
-      alert("Vui lòng bảng giá");
     } else {
       this.props.resetInfoPage().then(() => {
         this.props.updateTotalInPage(10).then(() => {
@@ -227,37 +204,10 @@ class DetailFormView extends React.Component {
       Staff_Id,
       TicketCode,
       IdCustomer,
-      Turn_Type,
       Trans_Type,
-      codeLH,
-      codeMX,
       codeLV,
-      codeLAI,
-      CodeBaoGia,
-      IdOrder,
       DayMake,
       Status,
-      StatusTurnback,
-      Remark,
-      discount,
-      IsDeleted,
-      total_org_amount,
-      total_amount,
-      total_gold,
-      total_gold_adjust,
-      total_gold_10,
-      total_gold_10_adjust,
-      total_product_w,
-      total_qty,
-      total_amount_adjust,
-      saleman,
-      DayConfirm,
-      DayFinish,
-      DayDeliver,
-      created_by,
-      created_date,
-      updated_by,
-      updated_date,
       nameCustomer,
       IdOutput,
       IdRef,
@@ -273,19 +223,8 @@ class DetailFormView extends React.Component {
       isRenderSearch,
       listCustomerConfig
     } = this.props.cd_turn_inout;
-    let { list_config_process } = this.props.header;
-    let parseData = [];
-    list_config_process.map(itemn => {
-      parseData.push({
-        id: itemn.Code,
-        code: itemn.Code,
-        name: itemn.Name,
-        type_code: "CodeProcess"
-      });
-    });
-    let { IsGoldTypeRequest } = objConfig;
+
     let {
-      list_data_baogia,
       listCdTurnIn,
       listOutputByCustomer
     } = this.props.cd_turn_inout;
@@ -305,8 +244,6 @@ class DetailFormView extends React.Component {
         : 100 * (list_products_search.length + 1) + "px";
     let type = Helper.getParam(window.location.href, "type");
     let blockInput = Status == "STATUS_TURN_INOUT_02" ? true : false;
-    let list_data_baogia_parse = this._parseDataComboBaoGia(list_data_baogia);
-    console.log("codeLV", codeLV);
     return (
       <div className="main__content">
         <div className="row">
@@ -386,8 +323,8 @@ class DetailFormView extends React.Component {
                           </div>
                         </div>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </div>
                     <div className="row">
                       <div className="col-md-3">
@@ -469,8 +406,8 @@ class DetailFormView extends React.Component {
                           </div>
                         </div>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                       {type == 1 ? (
                         <div className="col-md-3">
                           <div className="form-group">
@@ -489,8 +426,8 @@ class DetailFormView extends React.Component {
                           </div>
                         </div>
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </div>
                     <div className="row">
                       <div className="col-md-6">
@@ -550,8 +487,8 @@ class DetailFormView extends React.Component {
                             </div>
                           </div>
                         ) : (
-                          ""
-                        )}
+                            ""
+                          )}
                         <div className="col-md-3">
                           <div className="form-group">
                             <div className="left">
@@ -672,31 +609,31 @@ class DetailFormView extends React.Component {
                         </div>
                       </div>
                       {Status != "STATUS_TURN_INOUT_02" &&
-                      list_products_search.length > 0 ? (
-                        <div className="row">
-                          <div className="col-md-12">
-                            <div className="left">
-                              {/* <label htmlFor="name">Sản phẩm được tìm thấy</label> */}
-                            </div>
-                            <div className="form-group">
-                              <div style={{ width: "100%" }}>
-                                <TabProductSearch
-                                  heightList={heightList}
-                                  key={"order"}
-                                />
+                        list_products_search.length > 0 ? (
+                          <div className="row">
+                            <div className="col-md-12">
+                              <div className="left">
+                                {/* <label htmlFor="name">Sản phẩm được tìm thấy</label> */}
+                              </div>
+                              <div className="form-group">
+                                <div style={{ width: "100%" }}>
+                                  <TabProductSearch
+                                    heightList={heightList}
+                                    key={"order"}
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ) : (
-                        ""
-                      )}
+                        ) : (
+                          ""
+                        )}
                       <div className="clearfix"></div>
                     </div>
                   </div>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
                 <div className="row">
                   <div className="col-md-12">
                     <div className="left">

@@ -27,7 +27,6 @@ import {
     ADD_NEW_ITEM
 } from '../types'
 import { updateInfoPage, resetInfoPage } from 'modules/common/actions/form'
-
 export const getListOutputByCustomer = () => {
     return (dispatch, getState) => {
         let { objData } = getState().cd_gold_trans
@@ -476,9 +475,9 @@ export const addNewItem = (data) => {
         dispatch({
             type: ADD_NEW_ITEM,
             payload: {
-              isSave: true
+                isSave: true
             }
-          });
+        });
         let { objData, listGoldSelected } = getState().cd_gold_trans
         listGoldSelected.map(x => x.CodeTicket = objData.CodeTicket)
         // sum total 
@@ -514,9 +513,9 @@ export const addNewItem = (data) => {
                     dispatch({
                         type: ADD_NEW_ITEM,
                         payload: {
-                          isSave: false
+                            isSave: false
                         }
-                      });
+                    });
                     resolve(response)
                 })
         }, (err) => {
@@ -530,9 +529,9 @@ export const updateItem = (data) => {
         dispatch({
             type: ADD_NEW_ITEM,
             payload: {
-              isSave: true
+                isSave: true
             }
-          });
+        });
         let { objData, listGoldSelected } = getState().cd_gold_trans
         listGoldSelected.map(x => x.CodeTicket = objData.CodeTicket)
         // sum total 
@@ -566,9 +565,9 @@ export const updateItem = (data) => {
                     dispatch({
                         type: ADD_NEW_ITEM,
                         payload: {
-                          isSave: false
+                            isSave: false
                         }
-                      });
+                    });
                     resolve(response)
                 })
         }, (err) => {
@@ -727,16 +726,16 @@ export const updateCellBag = (obj) => {
                         let parseLyReal = Helper.roundNumber(parseFloat(obj.value / 0.0375), 1)
                         item[obj.key] = parseFloat(obj.value)
                         item['PaymentWeight_Real'] = parseLyReal
-                        item['PaymentWeight10'] = parseFloat((parseLyReal * ValueLV_ConfirmTemp) / 100)
-                        item['PaymentWeight10_Real'] = parseFloat(parseLyReal * ValueLV_RealTemp) / 100
+                        item['PaymentWeight10'] = Helper.roundNumber(parseFloat((parseLyReal * ValueLV_ConfirmTemp) / 100), 1);
+                        item['PaymentWeight10_Real'] = Helper.roundNumber(parseFloat(parseLyReal * ValueLV_RealTemp) / 100, 1);
                         break;
                     case 'ValueLV_Confirm':
                         item[obj.key] = parseFloat(obj.value)
-                        item['PaymentWeight10'] = parseFloat(valueTemp * PaymentWeight_RealTemp) / 100
+                        item['PaymentWeight10'] = Helper.roundNumber(parseFloat(valueTemp * PaymentWeight_RealTemp) / 100, 1);
                         break;
                     case 'ValueLV_Real':
                         item[obj.key] = parseFloat(obj.value)
-                        item['PaymentWeight10_Real'] = parseFloat(valueTemp * PaymentWeight_RealTemp) / 100
+                        item['PaymentWeight10_Real'] = Helper.roundNumber(parseFloat(valueTemp * PaymentWeight_RealTemp) / 100, 1);
                         break;
                     case 'PaymentWeightGram':
                         let parseLy = Helper.roundNumber(parseFloat(obj.value / 0.0375), 1)

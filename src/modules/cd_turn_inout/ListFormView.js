@@ -119,7 +119,7 @@ class ListCastingProcFormView extends React.Component {
     }
     onClickButtonPermission(obj) {
         let { data, nameBtn } = obj
-        let { item, checked, typePrint, status, codeCustom } = data
+        let { item, checked, status, codeCustom } = data
         switch (nameBtn) {
             case 'EDIT':
                 this._EditCasting(item)
@@ -152,8 +152,7 @@ class ListCastingProcFormView extends React.Component {
         this.props.onChangeFilterListTurnInOut(obj)
     }
     render() {
-        let { list_data, listHeaderTable, objConfig, listHeaderTableCustomIn, listHeaderTableCustomOut } = this.props.cd_turn_inout
-        let { IsIncludeInOut } = objConfig
+        let { list_data, listHeaderTableCustomIn, listHeaderTableCustomOut } = this.props.cd_turn_inout
         let type = Helper.getParam(window.location.href, 'type')
         let listHeaderTableCustom = type == 0 ? listHeaderTableCustomIn : listHeaderTableCustomOut
         return (
@@ -180,7 +179,7 @@ class ListCastingProcFormView extends React.Component {
                         <div className="col-md-2">
                             <div className="form-group">
                                 <div className="left"
-                                // onClick={() => this._onSearch()}
+                                    onClick={() => this._onSearch()}
                                 >
                                     <button className="btn btn-primary">Tìm kiếm</button>
                                 </div>

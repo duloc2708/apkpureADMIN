@@ -141,12 +141,11 @@ class ListProductFormView extends React.Component {
                 this.props.isEditOutPut(true)
                 break;
             case 'PRINT':
-                if ((item.StatusOutput == 'STATUS_OUTPUT_01' || item.StatusOutput==null ) && (typePrint=='type1' || typePrint=='type2')) {
+                if ((item.StatusOutput == 'STATUS_OUTPUT_01' || item.StatusOutput == null) && (typePrint == 'type1' || typePrint == 'type2') && SportConfig._getCookie('userInfo').user_name == "admin") {
                     this.child._addNotification(`Chỉ được phép in sau khi đã xác nhận phiếu xuất.`, 'warning')
                 }
-                else
-                {
-                    this.props.printOuputDetail(item, typePrint)                
+                else {
+                    this.props.printOuputDetail(item, typePrint)
                 }
                 break;
             case 'ACCEPT_OUTPUT':
@@ -236,9 +235,9 @@ class ListProductFormView extends React.Component {
                         </tr> */}
                         {list_data && list_data.map((item, i) => {
                             let { IdOrder, IdOutput, CodeCustomer, DayMake, checked,
-                                StatusOrderName, StatusOrderBagName,codeLV,Pricename,bgColor_G, StatusOrderTransferName, StatusOutputName, ValueLAI, DayConfirm, DayDeliver,DPCode,DAmount,DValue } = item
+                                StatusOrderName, StatusOrderBagName, codeLV, Pricename, bgColor_G, StatusOrderTransferName, StatusOutputName, ValueLAI, DayConfirm, DayDeliver, DPCode, DAmount, DValue } = item
                             return (
-                                <tr style={{ "backgroundColor": bgColor_G != null? bgColor_G : null }} key={`data_${IdOrder}_${i}`}
+                                <tr style={{ "backgroundColor": bgColor_G != null ? bgColor_G : null }} key={`data_${IdOrder}_${i}`}
                                 // onDoubleClick={() => this._onClickRowDouble(item, !checked)}
                                 >
                                     <th scope="row">
@@ -252,14 +251,14 @@ class ListProductFormView extends React.Component {
                                     <td>{Pricename}</td>
                                     <td>{DPCode}</td>
                                     <td>{IdOrder + '-' + CodeCustomer}</td>
-                                    
+
                                     <td>{DayMake}</td>
                                     <td>{DayConfirm != null ? DayConfirm : ''}</td>
-                                    <td>{DayDeliver != null ? DayDeliver : ''}</td>                                    
+                                    <td>{DayDeliver != null ? DayDeliver : ''}</td>
                                     <ButtonPermission type="ACCEPT_OUTPUT1" key="ACCEPT_OUTPUT1" nameBtn="ACCEPT_OUTPUT" icon={`fa fa-check`} data={{ item: item, status: 'STATUS_OUTPUT_02' }} parentObject={this} />
                                     <td>{StatusOutputName}</td>
                                     <ButtonPermission type="EDIT" key="EDIT" nameBtn="EDIT" icon={`fa fa-pencil-square-o`} data={{ item: item, checked: !checked }} parentObject={this} />
-                                    <ButtonPermission type="COMPlETED_OUTPUT" key="COMPlETED_OUTPUT" nameBtn="COMPlETED_OUTPUT" icon={`fa fa-key`} data={{ item: item, status: 'STATUS_OUTPUT_04' }} parentObject={this} />                                    
+                                    <ButtonPermission type="COMPlETED_OUTPUT" key="COMPlETED_OUTPUT" nameBtn="COMPlETED_OUTPUT" icon={`fa fa-key`} data={{ item: item, status: 'STATUS_OUTPUT_04' }} parentObject={this} />
                                     {/*  <ButtonPermission type="DETAIL" key="DETAIL" nameBtn="DETAIL" icon={`fa fa-info-circle`} data={{ item: item, checked: !checked }} parentObject={this} /> */}
                                     <ButtonPermission type="PRICE_OUTPUT" key="PRICE_OUTPUT" nameBtn="PRICE_OUTPUT" icon={`fa fa-usd`} data={{ item: item }} parentObject={this} />
                                     <ButtonPermission data={{ item: item, typePrint: "type1" }} parentObject={this} key="PRINT1" type="PRINT1" nameBtn="PRINT" icon={`fa fa-print`} />

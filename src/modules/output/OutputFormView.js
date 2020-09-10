@@ -287,7 +287,7 @@ class OutputFormView extends React.Component {
                     this.props.updateButtonToolbar(valueTemp)
                     break;
                 case "EDIT":
-                      if (objDataOutput.IdOutput) {
+                    if (objDataOutput.IdOutput) {
                         // this.props.isEditOutPut(true)
                         this.props.isEditOutPut(true)
                         this.props.updateButtonToolbar(valueTemp)

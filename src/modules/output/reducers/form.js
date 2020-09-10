@@ -52,7 +52,7 @@ const INITIAL_STATE = {
         , IdCustomer: ''
         , IdOutput: ''
         , IdCreater: ''
-        , DayMake: moment(new Date(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
+        , DayMake: moment()
         , Status: ''
         , Remark: ''
         , StatusOrder: 'STATUS_ORDER_01'
@@ -72,11 +72,11 @@ const INITIAL_STATE = {
         // { key: 'IdCustomer', title: 'Mã K/H', type: 'text', class: '' },
         { key: 'DateOut', title: 'Ngày tạo', type: 'text', class: '' },
         { key: 'DateOutCF', title: 'Ngày X/N xuất', type: 'text', class: '' },
-        { key: 'DateOutD', title: 'Ngày X/N giao', type: 'text', class: '' },        
-        { key: 'BTNACCEPT', title: 'X/N Xuất', type: 'text', class: '' },                
+        { key: 'DateOutD', title: 'Ngày X/N giao', type: 'text', class: '' },
+        { key: 'BTNACCEPT', title: 'X/N Xuất', type: 'text', class: '' },
         { key: 'STATUS', title: 'T thái', type: 'text', class: '' },
         { key: 'EDIT', title: 'Sửa/Xem', type: 'text', class: '' },
-        { key: 'BTNFINISH', title: 'X/N Giao', type: 'text', class: '' },        
+        { key: 'BTNFINISH', title: 'X/N Giao', type: 'text', class: '' },
         // { key: 'DETAIL', title: 'Chi tiết', type: 'text', class: '' },
         { key: 'PRICE', title: 'Giá', type: 'text', class: '' },
         { key: 'PRINT1', title: 'Mẫu 1', type: 'text', class: '' },

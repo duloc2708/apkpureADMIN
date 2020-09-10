@@ -147,20 +147,26 @@ class TabProduct extends React.Component {
     }
     _onAddProductonRow(IdGroup) {
         let { status } = this.props.toolbar
-        // if (status == 'EDIT') {
-        //     alert('Đơn hàng đã tồn tại!')
-        //     return
-        // }
 
         const { ListProductByOrderOutput } = this.props.output
-        let list_products_temp = _.clone(ListProductByOrderOutput, true)
+        let list_products_temp = _.clone(ListProductByOrderOutput, true);
+
+        // find item product copied
         let listProductFind = list_products_temp.filter(x => x.IdGroup == IdGroup)
 
-        let IdGroupNew = Helper.generateUUIDV4()
-        let IdProductParentColor_temp = ''
+        // find last product similar and sort IdGroupStt  desc
+        let data = _.clone(ListProductByOrderOutput, true).filter(x => x.IdProductParent === listProductFind[0].IdProductParent);
+        data = data.sort((a, b) => b.IdGroupStt > a.IdGroupStt);
+
+        // split data sort max IdGroupStt
+        let splitData = data.splice(0, listProductFind.length)
+        splitData = splitData.sort((a, b) => a.IdGroupStt > b.IdGroupStt);
+
+
         let listProductFind_temp = []
-        let IdGroupNewTemp = Helper.generateUUIDV4()
-        listProductFind.map((item) => {
+        let IdGroupNewTemp = Helper.generateUUIDV4();
+
+        splitData.forEach((item) => {
             let item_temp = _.clone(item, true)
             let strId = item_temp.IdGroupStt, IdGroupSttNew = ''
             let listId = strId.split("_")
@@ -174,21 +180,7 @@ class TabProduct extends React.Component {
             item_temp.remark = ''
             listProductFind_temp.push(item_temp)
         })
-
         this.props.updateExistProduct(listProductFind_temp)
-
-
-        // let { objDataOrder, listProductsSelected, isEditProducts } = this.props.order
-
-        // this.props.addProductonRow()
-        // setTimeout(() => {
-        //     $('#tbodyProduct > tbody  > tr').each(function (i, item) {
-        //         let all_rows = $('#tbodyProduct >tbody >tr').length;
-        //         if (i == all_rows - 1) {
-        //             $(item).find('input, textarea')[0].focus()
-        //         }
-        //     });
-        // }, 200)
     }
     handleClick() {
 
@@ -257,15 +249,13 @@ class TabProduct extends React.Component {
                                 total_gold_10_adjust = total_gold_10_adjust + ((WeightProduct / 0.0375 - (WeightCustom * NumberTemp)) * ((ValueLV) + (ValueLAI)) / 100)
 
                                 let colorbg = ''
-                                if (NumberTemp>0)
-                                {
-                                    if (WeightPro>0 && WeightRealPro>0 && (WeightPro*100/WeightRealPro<50 || WeightPro*100/WeightRealPro>150))
-                                       {
-                                         bgcolor = 'orange'
-                                       } 
-                                    else if (1==1 && 
-                                        ((WeightPro>0 && (PerCompare >= 130 || PerCompare < 30 )) 
-                                        || (WeightRealPro>0 && (PerCompareReal >= 125 || PerCompareReal < 75)))) {
+                                if (NumberTemp > 0) {
+                                    if (WeightPro > 0 && WeightRealPro > 0 && (WeightPro * 100 / WeightRealPro < 50 || WeightPro * 100 / WeightRealPro > 150)) {
+                                        bgcolor = 'orange'
+                                    }
+                                    else if (1 == 1 &&
+                                        ((WeightPro > 0 && (PerCompare >= 130 || PerCompare < 30))
+                                            || (WeightRealPro > 0 && (PerCompareReal >= 125 || PerCompareReal < 75)))) {
                                         bgcolor = 'orange'
                                     }
                                     // if ((WeightPro*100/WeightRealPro>70) && (WeightPro*100/WeightRealPro<130) && 
@@ -338,7 +328,7 @@ class TabProduct extends React.Component {
                                 <td colSpan="2"><b>Tổng TL vàng quy 10 (Chỉ): {Helper.round(total_gold_10_adjust || 0, 1)}</b></td>
                                 <td colSpan="2"><b>Tổng tiền công: {SportConfig.function._formatMoney(total_org_amount || 0)}</b></td>
                                 <td colSpan="2"><b>Discount: {objDataOutput.discount} %</b></td>
-                                <td colSpan="2"><b>Tổng TT sau discount: {SportConfig.function._formatMoney(total_org_amount- Helper.roundNumberPerThousand(total_org_amount*objDataOutput.discount/100) || 0)}</b></td>
+                                <td colSpan="2"><b>Tổng TT sau discount: {SportConfig.function._formatMoney(total_org_amount - Helper.roundNumberPerThousand(total_org_amount * objDataOutput.discount / 100) || 0)}</b></td>
                             </tr>
                         </tbody>
                     </table>

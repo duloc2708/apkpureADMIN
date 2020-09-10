@@ -13,14 +13,14 @@ class ListProductCancel extends React.Component {
       key: type,
       value: value
     };
-    if (type == "QtyCancel" && parseFloat(value) > parseFloat(item.QtyRemain)) {
+    if (type == "QtyCancelTemp" && parseFloat(value) > parseFloat(item.QtyRemainTemp)) {
       this.child._addNotification("Số lượng còn lại không đủ!", "warning");
       obj = {
         ...obj,
         value: ""
       };
     }
-    if (type == "WeightGoldReturn" && parseFloat(item.QtyCancel || 0) == 0) {
+    if (type == "WeightGoldReturn" && parseFloat(item.QtyCancelTemp || 0) == 0) {
       this.child._addNotification("Vui lòng nhập số lượng huỷ!", "warning");
       obj = {
         ...obj,
@@ -41,7 +41,7 @@ class ListProductCancel extends React.Component {
     }
 
     if (
-      parseFloat(item.QtyCancel || 0) <= 0 ||
+      parseFloat(item.QtyCancelTemp || 0) <= 0 ||
       parseFloat(item.WeightGoldReturn) <= 0
     ) {
       this.child._addNotification(
@@ -121,9 +121,10 @@ class ListProductCancel extends React.Component {
                   IdProduct,
                   IdProductParent,
                   QtyRemain,
-                  QtyCancel,
+                  QtyCancelTemp,
                   WeightGoldReturn,
-                  isConfirmed
+                  isConfirmed,
+                  QtyRemainTemp
                 } = item;
                 const isBlock =
                   isConfirmed == 1 || objData.Status == STATUS_PROCESS_FINISH
@@ -134,18 +135,18 @@ class ListProductCancel extends React.Component {
                     <td className="col-xs-1">{i + 1}</td>
                     <td className="col-xs-2">{IdProduct}</td>
                     <td className="col-xs-1">{ColorName}</td>
-                    <td className="col-xs-2">{QtyRemain}</td>
+                    <td className="col-xs-2">{QtyRemainTemp=== null? QtyRemain:QtyRemainTemp}</td>
                     <td className="col-xs-2">
                       <input
                         readOnly={isBlock}
                         onChange={e =>
-                          this._onChangeInput(e, "QtyCancel", item)
+                          this._onChangeInput(e, "QtyCancelTemp", item)
                         }
                         id={orderby}
                         className={`name form-control`}
                         type="text"
-                        value={QtyCancel}
-                        name="QtyCancel"
+                        value={QtyCancelTemp}
+                        name="QtyCancelTemp"
                       />
                     </td>
                     <td className="col-xs-2">

@@ -10,7 +10,7 @@ class TabOrder extends React.Component {
     constructor() {
         super()
         this.state = {
-            startDate: moment()
+            startDate: moment(new Date())
         };
     }
     ChangeValueCombobox(obj) {
@@ -80,28 +80,12 @@ class TabOrder extends React.Component {
         }
     }
     render() {
-        let { listCustomer, namecustomer } = this.props.output
-        let { IdOrder
-            , IdOutput
-            , IdCustomer
-            , Deadline
-            , StartWeek
-            , FinishWeek
-            , TotalFinish
-            , TotalBags
-            , IdCreater
-            , DayMake
-            , Status
+        let { IdOutput
             , Remark
-            , CodeLd
-            , CodeLv
             , StatusOrder
-            , StatusBag
-            , StatusTransfer
-            , CodeKH
-            , NameKH
-        } = this.props.output.objDataOutput
-        let { list_worker } = this.props.output
+            , DayMake,
+            DayCreate
+        } = this.props.output.objDataOutput;
         return (
             <div className="form__personnal">
                 <div className="row">
@@ -124,7 +108,7 @@ class TabOrder extends React.Component {
                                 {/* <input type="date" name="dateofbirth" id="DayMake" /> */}
                                 <DatePicker
                                     dateFormat="DD/MM/YYYY"
-                                    selected={this.state.startDate} onChange={(e) => this.handleChange(e)} />
+                                    selected={moment(DayCreate || new Date())} onChange={(e) => this.handleChange(e)} />
                             </div>
                         </div>
                     </div>
@@ -141,20 +125,6 @@ class TabOrder extends React.Component {
                 </div>
 
                 <div className="row">
-                    {list_worker.length > 0 ?
-                        ''
-                        // <div className="col-md-4">
-                        //     <div className="form-group">
-                        //         <div className="left">
-                        //             <label htmlFor="name">Worker</label>
-                        //         </div>
-                        //         <div className="right">
-                        //             <ComboboxMultiple typeCombo={'single'} list_data_other={list_worker} type_code='saleman' id='saleman' value={saleman} parentObject={this} />
-                        //             {/* <Combobox type_code='Worker' data_order={list_worker} value={Worker} id='Worker' parentObject={this} /> */}
-                        //         </div>
-                        //     </div>
-                        // </div>
-                        : ''}
                     <div className="col-md-12">
                         <div className="form-group">
                             <div style={{ width: "12%" }}>
@@ -166,41 +136,8 @@ class TabOrder extends React.Component {
                         </div>
                     </div>
                 </div>
-                {/* <div className="row">
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <div className="left">
-                                <label htmlFor="name">Mã khách hàng</label>
-                            </div>
-                            <div className="right">
-                                <ComboboxCustomer value={{ value: CodeKH, label: CodeKH, name: NameKH }} list_data={listCustomer} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <div className="left">
-                                <label htmlFor="name">Tên khách hàng</label>
-                            </div>
-                            <div className="right">
-                                <input className="name form-control" value={namecustomer} type="text" id="namecustomer" name="namecustomer" required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="form-group">
-                            <div className="left">
-                                <label htmlFor="name">Địa chỉ</label>
-                            </div>
-                            <div className="right">
-                                <input className="name form-control" value={namecustomer} type="text" id="Lv" name="namecustomer" required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
                 <div className="row">
                     <ListOrder key={'order'} />
-
                 </div>
             </div>
         )

@@ -59,7 +59,7 @@ class ListFunction extends React.Component {
                     <tbody>
                         {list_function && list_function.map((item, i) => {
                             let { name, checked, list_button, code, checkedAll, list_action, funcname, strListAction } = item
-                            let list_btncustom =list_btncustom_by_page.filter(x => x.page == code)[0] && list_btncustom_by_page.filter(x => x.page == code)[0].listbtn || []
+                            let list_btncustom =list_btncustom_by_page.filter(x => x.page == code)[0] && list_btncustom_by_page.filter(x => x.page == code)[0].listbtn || [];
                             return (
                                 <tr key={`data_${i}`}>
                                     <th scope="row">

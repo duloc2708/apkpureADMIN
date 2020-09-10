@@ -87,6 +87,26 @@ const INITIAL_STATE = {
                 { code: 'COMPlETED_CASH_TRANS', name: 'Hoàn thành' }]
         },
         { page: 'listimage', listbtn: [] },
+        {
+            page: 'cd_turn_in_out?type=0', listbtn: [
+                { code: 'ACCEPT_ORDER', name: 'Xác nhận' },
+                { code: 'COMPlETED_OUTPUT', name: 'Hoàn thành' }]
+        },
+        {
+            page: 'cd_turn_in_out?type=1', listbtn: [
+                { code: 'ACCEPT_ORDER', name: 'Xác nhận' },
+                { code: 'COMPlETED_OUTPUT', name: 'Hoàn thành' }]
+        },
+        {
+            page: 'transfer?type=0', listbtn: [
+                { code: 'ACCEPT_ORDER', name: 'Xác nhận' },
+                { code: 'COMPlETED_OUTPUT', name: 'Hoàn thành' }]
+        },
+        {
+            page: 'transfer?type=1', listbtn: [
+                { code: 'ACCEPT_ORDER', name: 'Xác nhận' },
+                { code: 'COMPlETED_OUTPUT', name: 'Hoàn thành' }]
+        },
     ]
 }
 const Reducer = (state = INITIAL_STATE, action) => {

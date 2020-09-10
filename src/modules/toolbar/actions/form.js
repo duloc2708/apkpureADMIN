@@ -17,24 +17,28 @@ export const perMissionToolbar = () => {
             let { list_function_user } = getState().header
             let { listButton } = getState().toolbar
             let { locationBeforeTransitions } = getState().routing
-            let listButton_temp = _.clone(listButton, true)
-            let page = ''
-            if (locationBeforeTransitions && locationBeforeTransitions.pathname) {
-                page = locationBeforeTransitions.pathname
-            }
-
+            let listButton_temp = _.clone(listButton, true);
+            let page = window.location.pathname+window.location.search
+            // if (locationBeforeTransitions && locationBeforeTransitions.pathname) {
+            //     page = locationBeforeTransitions.pathname
+            // }
+            page=page.substring(1,page.length)
             let filData = []
             let listButtonPer = []
             list_function_user.map((item) => {
                 if (item.code == page) {
                     let arrBtn = item && item.strListBtn.split(',') || []
-                    listButtonPer = arrBtn
-                    arrBtn.foreach(itemBtn => {
-                        let checkExists = listButton_temp.filter(x => x.code == itemBtn)
-                        if (checkExists.length > 0) {
-                            filData.push(checkExists[0])
-                        }
-                    })
+                    listButtonPer = arrBtn;
+                    if(arrBtn.length>0){
+                      arrBtn.map(itemBtn => {
+                          let checkExists = listButton_temp.filter(x => x.code == itemBtn);
+
+                          if (checkExists.length > 0) {
+                              filData.push(checkExists[0])
+                          }
+                      })
+                    }
+
                 }
             })
             console.log('filData>>>', filData);

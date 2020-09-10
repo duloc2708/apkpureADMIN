@@ -63,12 +63,12 @@ class HeaderFormView extends React.Component {
     this.props.getListFunctionByUserHeader();
     let that = this;
     // Đổi mật khẩu
-    $(".popup-menu li:eq(0)").click(function() {
+    $(".popup-menu li:eq(0)").click(function () {
       that.onChangePassword();
     });
     // Đăng xuất
 
-    $(".popup-menu li:eq(1)").click(function() {
+    $(".popup-menu li:eq(1)").click(function () {
       that.onLogout();
     });
 
@@ -92,20 +92,20 @@ class HeaderFormView extends React.Component {
       window.location.reload();
     }, 200);
   }
-  parseMenu(data){
-    let listMenu =[];
-    let listChildren =[]
-    data.forEach(item=>{
-      let newItem={};
-      let groupName=item.groupMenu || item.name;
-      if(!listMenu.find(x=>x.groupName===groupName)){
-        newItem.code=item.code;
-        newItem.groupName=groupName;
-        newItem.children=[item];
+  parseMenu(data) {
+    let listMenu = [];
+    let listChildren = []
+    data.forEach(item => {
+      let newItem = {};
+      let groupName = item.groupMenu || item.name;
+      if (!listMenu.find(x => x.groupName === groupName)) {
+        newItem.code = item.code;
+        newItem.groupName = groupName;
+        newItem.children = [item];
         listMenu.push(newItem);
-      }else {
-        listMenu=listMenu.map(itemMenu=>{
-          if(itemMenu.groupName===groupName){
+      } else {
+        listMenu = listMenu.map(itemMenu => {
+          if (itemMenu.groupName === groupName) {
             itemMenu.children.push(item)
           }
           return itemMenu
@@ -131,7 +131,7 @@ class HeaderFormView extends React.Component {
       userInfo = null;
     }
     let checkRenderPT = false;
-    list_function=this.parseMenu(list_function)
+    list_function = this.parseMenu(list_function)
     return (
       <header>
         <nav className="navbar2 menu navbar navbar-inverse navbar-static-top">
@@ -154,8 +154,8 @@ class HeaderFormView extends React.Component {
           <div id="navbar3" className="navbar-collapse collapse">
             <ul className="nav navbar-nav">
               {list_function.map(item => {
-                let {code, id, groupName, name, parent, groupMenu, children } = item;
-                 if(code == 'ticket_proc'){
+                let { code, id, groupName, name, parent, groupMenu, children } = item;
+                if (code == 'ticket_proc') {
                   return (
                     <li
                       key={"997"}
@@ -163,6 +163,11 @@ class HeaderFormView extends React.Component {
                     >
                       <a>{groupName}</a>
                       <ul className="sub-menu list-unstyled">
+                        <li key={`process_search_bag`}>
+                          <a href={`/search-bag`}>
+                            {`Tìm kiếm Bag`}
+                          </a>
+                        </li>
                         {list_config_process.map(item => {
                           if (item.IsApply == 1) {
                             return (
@@ -177,7 +182,7 @@ class HeaderFormView extends React.Component {
                       </ul>
                     </li>
                   );
-                }else if((code == "list")){
+                } else if ((code == "list")) {
                   return (
                     <li
                       key={-1}
@@ -203,12 +208,12 @@ class HeaderFormView extends React.Component {
                     </li>
                   );
                 }
-                 else if(
+                else if (
                   code != "bagdetail" &&
                   code != "productDetail" &&
                   code != "changepassword"
-                ){
-                  if(children.length==1){
+                ) {
+                  if (children.length == 1) {
                     return (
                       <li
                         key={code}
@@ -217,7 +222,7 @@ class HeaderFormView extends React.Component {
                         <a onClick={() => this.onClickData(code)}>{groupName}</a>
                       </li>
                     )
-                  }else {
+                  } else {
                     return (
                       <li
                         key={code}
@@ -225,7 +230,7 @@ class HeaderFormView extends React.Component {
                       >
                         <a>{groupName}</a>
                         <ul className="sub-menu list-unstyled">
-                          {children.map(item=>{
+                          {children.map(item => {
                             return (
                               <li key={item.code}>
                                 <a href={`/${item.code}`}>{item.name}</a>
@@ -259,8 +264,8 @@ class HeaderFormView extends React.Component {
                   </ul>
                 </li>
               ) : (
-                ""
-              )}
+                  ""
+                )}
             </ul>
             <div className="admin">
               <span>

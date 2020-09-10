@@ -10,7 +10,7 @@ class ModalStoneBrokenFormView extends React.Component {
     super();
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   _changeStatus(status) {
     this.setState({ status: !status });
@@ -57,10 +57,10 @@ class ModalStoneBrokenFormView extends React.Component {
   }
   checkImageExists(imageUrl, callBack) {
     var imageData = new Image();
-    imageData.onload = function() {
+    imageData.onload = function () {
       callBack(true);
     };
-    imageData.onerror = function() {
+    imageData.onerror = function () {
       callBack(false);
     };
     imageData.src = imageUrl;
@@ -147,7 +147,7 @@ class ModalStoneBrokenFormView extends React.Component {
     );
     let filename = Config.API_URL_IMAGE + check[0].url_image;
     let that = this;
-    this.checkImageExists(filename, function(existsImage) {
+    this.checkImageExists(filename, function (existsImage) {
       if (existsImage == true) {
         that.props.addExistProduct(value);
         setTimeout(() => {
@@ -230,7 +230,7 @@ class ModalStoneBrokenFormView extends React.Component {
     }
     return isCheck;
   }
-  handleClick() {}
+  handleClick() { }
   ChangeValueComboboxMulti(obj) {
     let { key, data } = obj;
     let objData = {
@@ -254,7 +254,7 @@ class ModalStoneBrokenFormView extends React.Component {
       );
       return;
     }
-    this.props.updateCellBrokenQty(obj);
+    this.props.updateCellBrokenQty(obj, item.IdBag);
   }
   _onChangeValueProduct(e) {
     this.props.changeProductSearch({
@@ -279,7 +279,7 @@ class ModalStoneBrokenFormView extends React.Component {
 
     if (objSearchProduct.IdProduct) {
       listStoneWaxsetFilter = listStoneWaxset.filter(
-        x => x.IdProduct.indexOf(objSearchProduct.IdProduct)!==-1
+        x => x.IdProduct.indexOf(objSearchProduct.IdProduct) !== -1
       );
     }
     return (
@@ -356,7 +356,7 @@ class ModalStoneBrokenFormView extends React.Component {
                   <tr
                     key={`data_${i}`}
                     id={`tr_${orderby}`}
-                    style={{ "backgroundColor": `${ColorB? ColorB : ""}`}}
+                    style={{ "backgroundColor": `${ColorB ? ColorB : ""}` }}
                   >
                     <td>{i + 1}</td>
                     <td>{IdBag}</td>
@@ -388,8 +388,8 @@ class ModalStoneBrokenFormView extends React.Component {
                           parentObject={this}
                         />
                       ) : (
-                        ""
-                      )}
+                          ""
+                        )}
                     </td>
                   </tr>
                 );

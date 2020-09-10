@@ -240,7 +240,7 @@ export const accept = keyMap => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${Config.API_URL_USER}transfer/accept`, { keyMap: keyMap})
+        .post(`${Config.API_URL_USER}transfer/accept`, { keyMap: keyMap })
         .then(
           response => {
             resolve(response);
@@ -256,7 +256,7 @@ export const finish = keyMap => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${Config.API_URL_USER}transfer/finish`, { keyMap: keyMap})
+        .post(`${Config.API_URL_USER}transfer/finish`, { keyMap: keyMap })
         .then(
           response => {
             resolve(response);
@@ -1277,10 +1277,10 @@ export const getListDataTransfer = () => {
   };
 };
 
-export const getListGoldDetail = (keyMap='') => {
+export const getListGoldDetail = (keyMap = '') => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      axios.get(`${Config.API_URL_USER}transfer/get_list_gold_detail`, {params:{keyMap}}).then(
+      axios.get(`${Config.API_URL_USER}transfer/get_list_gold_detail`, { params: { keyMap } }).then(
         response => {
           let { data } = response.data;
           dispatch({
@@ -1324,7 +1324,7 @@ export const getListIdStores = () => {
 export const getListBalanceByIdStore = (IdStore) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      axios.get(`${Config.API_URL_USER}transfer/get_tf_balance_by_idstore`, {params:{IdStore}}).then(
+      axios.get(`${Config.API_URL_USER}transfer/get_tf_balance_by_idstore`, { params: { IdStore } }).then(
         response => {
           let { data } = response.data;
           dispatch({
@@ -1356,13 +1356,13 @@ export const updateInputSearch = obj => {
 
 export const updateCellInput = obj => {
   return (dispatch, getState) => {
-    let { list_data_gold, objConfig,objData } = getState().transfer;
+    let { list_data_gold, objConfig, objData } = getState().transfer;
     let temp = _.clone(list_data_gold, true);
     temp.map((item, i) => {
       if (i == obj.id) {
         item[obj.key] = obj.value;
-        if(item.TF_Weight_From){
-          item.TF_Weight_To=item.TF_Weight_From*item.ValueLV_From/objData.TypeGoldWarm;
+        if (item.TF_Weight_From) {
+          item.TF_Weight_To = item.TF_Weight_From * item.ValueLV_From / objData.TypeGoldWarm;
         }
       }
       return item;
@@ -1404,55 +1404,76 @@ export const getNumberAuto = () => {
   };
 };
 
-const mappingListDataGold =(list_gold, objData)=>{
-  let list_gold_temp =_.clone(list_gold,true);
-  let objData_temp =_.clone(objData,true);
-  let sumTF_Weight_To=0;
-  list_gold_temp=list_gold_temp.map(item=>{
-    item.keyMap=objData.keyMap
-    item.TF_Weight_To=parseFloat(list_gold_temp.TF_Weight_To || 0)
+const mappingListDataGold = (list_gold, objData) => {
+  let list_gold_temp = _.clone(list_gold, true);
+  let objData_temp = _.clone(objData, true);
+  let sumTF_Weight_To = 0;
+  list_gold_temp = list_gold_temp.map(item => {
+    item.keyMap = objData.keyMap
+    item.TF_Weight_To = parseFloat(list_gold_temp.TF_Weight_To || 0)
     // truong hop chuyen kho thi LoaiVang, TL vang TO=FROM
-    if(objData.TransType=='TF_TYPE_01'){
-      item.ValueLV_To=item.ValueLV_From
-      item.TF_Weight_To=item.TF_Weight_From
+    if (objData.TransType == 'TF_TYPE_01') {
+      item.ValueLV_To = item.ValueLV_From
+      item.TF_Weight_To = item.TF_Weight_From
     }
     // truong hop nau
-    if(objData.TransType=='TF_TYPE_02'){
-      if(item.TF_Weight_From&&objData.TypeGoldWarm){
-        item.TF_Weight_To=item.TF_Weight_From*item.ValueLV_From/objData.TypeGoldWarm;
+    if (objData.TransType == 'TF_TYPE_02') {
+      if (item.TF_Weight_From && objData.TypeGoldWarm) {
+        item.TF_Weight_To = item.TF_Weight_From * item.ValueLV_From / objData.TypeGoldWarm;
       }
-      item.ValueLV_To=objData.TypeGoldWarm;
+      item.ValueLV_To = objData.TypeGoldWarm;
 
-      sumTF_Weight_To+=parseFloat(item.TF_Weight_To||0)
+      sumTF_Weight_To += parseFloat(item.TF_Weight_To || 0)
     }
     return item;
   })
-  list_gold_temp=list_gold_temp.filter(x=>x.TF_Weight_To > 0);
+  list_gold_temp = list_gold_temp.filter(x => x.TF_Weight_To > 0);
 
-  if(objData.TransType=='TF_TYPE_02'){
-    objData_temp={
+  if (objData.TransType == 'TF_TYPE_02') {
+    objData_temp = {
       ...objData_temp,
-      Gold_Lost_T:Helper.round(sumTF_Weight_To-(objData.TotalWeightAfterWarm ||0),4)
+      Gold_Lost_T: (sumTF_Weight_To - (objData.TotalWeightAfterWarm || 0))
     }
   }
-  return {
-    list_data_gold:list_gold_temp,
-    objData:objData_temp
-  };
-}
-const mappingListDataGoldCook =(list_gold, objData)=>{
-  let list_gold_temp =_.clone(list_gold,true);
-  let objData_temp =_.clone(objData,true);
-  objData_temp.IdStore_From='SAJIHH';
-  objData_temp.IdStore_To='SAJIKO';
-  objData_temp.TotalWeightBeforeCook=Helper.round(objData_temp.TotalWeightBeforeCook,4);
-  objData_temp={
+  objData_temp = {
     ...objData_temp,
-    Gold_Lost_T:Helper.round(objData_temp.TotalWeightBeforeCook-objData.TotalWeightAfterWarm ||0,4)
+    Gold_Lost_T: Helper.round(objData_temp.Gold_Lost_T,4)
   }
   return {
-    list_data_gold:[],
-    objData:objData_temp
+    list_data_gold: list_gold_temp,
+    objData: objData_temp
+  };
+}
+const mappingListDataGoldCook = (listGoldCook, objData) => {
+  let objData_temp = _.clone(objData, true);
+  objData_temp.IdStore_From = 'SAJIHH';
+  objData_temp.IdStore_To = 'SAJITG';
+  objData_temp.TotalWeightBeforeCook = Helper.round(objData_temp.TotalWeightBeforeCook, 4);
+  objData_temp = {
+    ...objData_temp,
+    Gold_Lost_T: Helper.round(objData_temp.TotalWeightBeforeCook - objData.TotalWeightAfterWarm || 0, 4)
+  };
+  let list_gold_temp = _.clone(listGoldCook, true);
+  list_gold_temp=list_gold_temp.filter(x=>x.checked);
+  list_gold_temp = list_gold_temp.map(item => {
+    item.keyMap = objData.keyMap;
+    item.IdStore_From = item.IdStore;
+    item.IdStore_To = 'SAJITG';
+    item.ValueLV_From = item.ValueLV;
+    item.ValueLV_To = objData_temp.TypeGoldWarm;
+    item.totalGoldCook = Helper.round(item.totalGoldCook, 4);
+    item.totalGoldCook10 = Helper.round(item.totalGoldCook10, 4);
+    item.TF_Weight_Hold = Helper.round(item.TF_Weight_Hold, 4);
+    item.TF_Weight_From = Helper.round(item.TF_Weight - item.TF_Weight_Hold,4);
+    item.TF_Weight_To = Helper.round((item.TF_Weight -item.TF_Weight_Hold)/objData_temp.TotalWeightBeforeCook*objData_temp.TotalWeightAfterWarm,4);
+    item.IsDeleted=-1;
+    item.Gold_Lost=item.Gold_Lost||null;
+    item.WeightAfterWarm=Helper.round(item.ValueLV*objData_temp.TotalWeightAfterWarm/item.totalGoldCook,4)
+    return item;
+  })
+  return {
+    list_data_gold: list_gold_temp,
+    objData: objData_temp
   };
 }
 
@@ -1467,8 +1488,8 @@ export const addNewItem = data => {
       (resolve, reject) => {
         axios
           .post(`${Config.API_URL_USER}transfer/add`, {
-            objData:type==0? mappingListDataGold(list_data_gold,objData).objData:mappingListDataGoldCook(listGoldCook,objData).objData,
-            list_data_gold: type==0?mappingListDataGold(list_data_gold,objData).list_data_gold:mappingListDataGoldCook(listGoldCook,objData).objData
+            objData: type == 0 ? mappingListDataGold(list_data_gold, objData).objData : mappingListDataGoldCook(listGoldCook, objData).objData,
+            list_data_gold: type == 0 ? mappingListDataGold(list_data_gold, objData).list_data_gold : mappingListDataGoldCook(listGoldCook, objData).list_data_gold
           })
           .then(response => {
             resolve(response);
@@ -1485,14 +1506,15 @@ export const updateItem = data => {
   return (dispatch, getState) => {
     let {
       objData,
-      list_data_gold
+      list_data_gold,
+      listGoldCook
     } = getState().transfer;
     return new Promise(
       (resolve, reject) => {
         axios
           .post(`${Config.API_URL_USER}transfer/update`, {
-            objData: mappingListDataGold(list_data_gold,objData).objData,
-            list_data_gold: mappingListDataGold(list_data_gold,objData).list_data_gold
+            objData: type == 0 ? mappingListDataGold(list_data_gold, objData).objData : mappingListDataGoldCook(listGoldCook, objData).objData,
+            list_data_gold: type == 0 ? mappingListDataGold(list_data_gold, objData).list_data_gold : mappingListDataGoldCook(listGoldCook, objData).list_data_gold
           })
           .then(response => {
             resolve(response);
@@ -1510,7 +1532,7 @@ export const clickCheckRowData = (value, checked) => {
       let { list_data, objSearch } = getState().transfer;
       let objData = _.clone(value, true);
 
-      if(value){
+      if (value) {
         objData.DayMake = moment(objData.DayMake || new Date());
         dispatch({
           type: CLICK_ROW_DATA,
@@ -1518,11 +1540,11 @@ export const clickCheckRowData = (value, checked) => {
             objData: objData
           }
         });
-      }else {
+      } else {
         dispatch({
           type: CLICK_ROW_DATA,
           payload: {
-            objData: {...objData, keyMap:''}
+            objData: { ...objData, keyMap: '' }
           }
         });
       }
@@ -1552,7 +1574,7 @@ export const printDetail = (itemDetail) => {
       axios
         .post(
           `${Config.API_URL_USER}transfer/print_detail`,
-          { keyMap: itemDetail.keyMap,Info: itemDetail},
+          { keyMap: itemDetail.keyMap, Info: itemDetail },
           {
             responseType: "arraybuffer",
             headers: {
@@ -1586,19 +1608,26 @@ export const printDetail = (itemDetail) => {
 };
 export const getListGoldCook = obj => {
   return (dispatch, getState) => {
+    const { objData } = getState().transfer;
     return new Promise((resolve, reject) => {
-      axios.get(`${Config.API_URL_USER}transfer/get_gold_cook`, obj).then(
+      axios.get(`${Config.API_URL_USER}transfer/get_gold_cook?keyMap=${objData.keyMap || ''}`).then(
         response => {
           let { data } = response.data;
-          const { objData } = getState().transfer;
-          let TotalWeightBeforeCook = data.reduce((acc,item)=>{
-            return acc+item.totalGoldCook10 || 0
-          },0);
+          let TotalWeightBeforeCook = data.reduce((acc, item) => {
+            return acc + item.totalGoldCook10 || 0
+          }, 0);
+          const { status } = getState().toolbar;
+          if(status=='EDIT'){
+            data=data.map(item=>{
+              item.checked=true
+              return item;
+            })
+          }
           dispatch({
-            type:GET_LIST_DATA_GOLD_COOK,
-            payload:{
-              listGoldCook:data,
-              objData:{
+            type: GET_LIST_DATA_GOLD_COOK,
+            payload: {
+              listGoldCook: data,
+              objData: {
                 ...objData,
                 TotalWeightBeforeCook
               }
@@ -1610,6 +1639,27 @@ export const getListGoldCook = obj => {
           reject(err);
         }
       );
+    });
+  };
+};
+
+export const changeStatusInput = (IdStore,checked) => {
+  return (dispatch, getState) => {
+    const {listGoldCook} =getState().transfer;
+
+    let listGoldCookTemp=_.clone(listGoldCook,true);
+    listGoldCookTemp=listGoldCookTemp.map(item=>{
+      if(item.IdStore==IdStore){
+        item.checked=!checked
+      }
+      return item;
+    });
+
+    dispatch({
+      type: GET_LIST_GOLD_TRANSFER,
+      payload: {
+        listGoldCook: listGoldCookTemp
+      }
     });
   };
 };

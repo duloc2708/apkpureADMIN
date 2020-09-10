@@ -663,9 +663,9 @@ export const updateCellProductsByOutput = (obj) => {
                     let perWeightReal = WeightRealPro * 100
 
                     // chênh lệch phần trăm ước tính
-                    item["PerCompare"] = parseInt(Math.abs(perCurrent )*100/perWeight)
+                    item["PerCompare"] = parseInt(Math.abs(perCurrent) * 100 / perWeight)
                     // chênh lệch phần trăm thực tế
-                    item["PerCompareReal"] = parseInt(Math.abs(perCurrent )*100/perWeightReal)
+                    item["PerCompareReal"] = parseInt(Math.abs(perCurrent) * 100 / perWeightReal)
                 }
 
             } else {
@@ -683,9 +683,9 @@ export const updateCellProductsByOutput = (obj) => {
                         let perWeightReal = WeightRealPro * 100
 
                         // chênh lệch phần trăm ước tính
-                        item["PerCompare"] = parseInt(Math.abs(perCurrent )*100/perWeight)
+                        item["PerCompare"] = parseInt(Math.abs(perCurrent) * 100 / perWeight)
                         // chênh lệch phần trăm thực tế
-                        item["PerCompareReal"] = parseInt(Math.abs(perCurrent )*100/perWeightReal)
+                        item["PerCompareReal"] = parseInt(Math.abs(perCurrent) * 100 / perWeightReal)
 
                     }
                     if (obj.key == 'WeightProduct') {
@@ -697,9 +697,9 @@ export const updateCellProductsByOutput = (obj) => {
                         let perWeightReal = WeightRealPro * 100
 
                         // chênh lệch phần trăm ước tính
-                        item["PerCompare"] = parseInt(Math.abs(perCurrent )*100/perWeight)
+                        item["PerCompare"] = parseInt(Math.abs(perCurrent) * 100 / perWeight)
                         // chênh lệch phần trăm thực tế
-                        item["PerCompareReal"] = parseInt(Math.abs(perCurrent)*100/perWeightReal)
+                        item["PerCompareReal"] = parseInt(Math.abs(perCurrent) * 100 / perWeightReal)
                     }
 
                 }
@@ -1221,7 +1221,7 @@ export const getListDataOrderInOutPutEdit = (IdOrder) => {
 }
 export const getListProductsByOrderOutput = (IdOrder) => {
     return (dispatch, getState) => {
-        const { default_product, ListProductByOrderOutput } = getState().output
+        const { default_product } = getState().output
         return new Promise((resolve, rejects) => {
             axios.get(`${Config.API_URL_USER}ouput/output_get_product_by_order`, { params: { IdOrder: IdOrder, Page: 1 } })
                 .then((response) => {

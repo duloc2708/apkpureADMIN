@@ -237,10 +237,10 @@ class TabProduct extends React.Component {
         let { status } = this.props.toolbar
         let { listHeaderBag, listOutputByCustomer, isEditProducts, isShowStone, objConfig, listHeaderOutputOfCus } = this.props.cd_cash_trans
         let v_total_gold_adjust = 0,
-             v_total_gold_10_adjust = 0,        
-             v_total_gold = 0,   
-             v_total_amount=0,
-             v_total_org_amount=0
+            v_total_gold_10_adjust = 0,
+            v_total_gold = 0,
+            v_total_amount = 0,
+            v_total_org_amount = 0
         return (
             <div>
                 <AlertCustom onRef={ref => (this.child = ref)} />
@@ -301,14 +301,14 @@ class TabProduct extends React.Component {
                                 , DayConfirm
                                 , DayFinish
                                 , DayDeliver
-                                ,nameLAI
-                                ,ValueLAI
+                                , nameLAI
+                                , ValueLAI
                             } = item
-                             v_total_gold_adjust = v_total_gold_adjust+(total_gold_adjust)
-                            v_total_gold_10_adjust = v_total_gold_10_adjust+total_gold_10_adjust
-                            v_total_gold = v_total_gold+total_gold
-                            v_total_amount=v_total_amount+parseInt(total_amount)
-                            v_total_org_amount=v_total_org_amount+parseInt(total_org_amount)
+                            v_total_gold_adjust = v_total_gold_adjust + (total_gold_adjust)
+                            v_total_gold_10_adjust = v_total_gold_10_adjust + total_gold_10_adjust
+                            v_total_gold = v_total_gold + total_gold
+                            v_total_amount = v_total_amount + parseInt(total_amount)
+                            v_total_org_amount = v_total_org_amount + parseInt(total_org_amount)
                             return (
                                 <tr key={`data_${i}`} id={`tr_${index}`}>
                                     <td>{IdOutput}</td>

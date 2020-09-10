@@ -24,7 +24,8 @@ const INITIAL_STATE = {
         { code: 'PRINT', name: 'In', classBtn: 'fa fa-print', status: '', display: true },
         { code: 'CANCEL', name: 'huỷ', class: 'fa fa-window-close-o', status: 'disable', display: true },
         { code: 'DETAIL', name: 'chi tiết', classBtn: 'fa fa-info-circle', status: '', display: true },
-        { code: 'DELETE', name: 'xoá', classBtn: 'fa fa-times', status: '', display: true }
+        { code: 'DELETE', name: 'xoá', classBtn: 'fa fa-times', status: '', display: true },
+        { code: 'ACCEPT_CASH_TRANS', name: 'ACCEPT_CASH_TRANS', classBtn: 'fa fa-times', status: '', display: false }
     ],
     listBtnReport: [
         { code: 'EXPORT', name: 'xuất dữ liệu', classBtn: 'fa fa-print', status: '' },

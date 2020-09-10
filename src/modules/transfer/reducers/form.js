@@ -106,7 +106,8 @@ const INITIAL_STATE = {
     updated_date: "",
     IdRef: "",
     Customer_groupKey: "",
-    DayConfirmF: ''
+    DayConfirmF: '',
+    Gold_Lost_T:''
   },
   listHeaderTable:[
     {
@@ -213,16 +214,20 @@ const INITIAL_STATE = {
     { key: "WEIGHTGOLD", title: "TL vàng", type: "text", class: "" },
     { key: "WEIGHGOLD10", title: "TL vàng quy 10", type: "text", class: "" },
     { key: "COLUMN3", title: "TL vàng sau nấu", type: "text", class: "" },
-    { key: "COLUMN4", title: "Tồn kho", type: "text", class: "" },
-    { key: "COLUMN5", title: "Tồn kho quy 10", type: "text", class: "" },
-    { key: "COLUMN6", title: "Tồn kho BAG", type: "text", class: "" }
+    { key: "COLUMN4", title: "Hao hụt", type: "text", class: "" },
+    { key: "COLUMN5", title: "Tồn kho", type: "text", class: "" },
+    { key: "COLUMN6", title: "Tồn kho quy 10", type: "text", class: "" },
+    { key: "COLUMN7", title: "Tồn kho BAG", type: "text", class: "" }
   ],
   listHeaderGoldCook: [
+    { key: "ID", title: "#", type: "text", class: "" },
     { key: "TYPE", title: "Kho worker", type: "text", class: "" },
     { key: "WEIGHTGOLD", title: "Loại vàng", type: "text", class: "" },
     { key: "COLUMN3", title: "TL vàng đi nấu", type: "text", class: "" },
     { key: "COLUMN5", title: "TL vàng quy 10", type: "text", class: "" },
-    { key: "COLUMN6", title: "Tồn kho BAG", type: "text", class: "" }
+    { key: "COLUMN7", title: "TL vàng sau nấu ", type: "text", class: "" },
+    { key: "COLUMN6", title: "Tồn kho BAG", type: "text", class: "" },
+    { key: "COLUMN4", title: "Hao hụt", type: "text", class: "" }
   ],
   default_product: {
     OrderIndex: 0,

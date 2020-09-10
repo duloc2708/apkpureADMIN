@@ -5,7 +5,7 @@ class Content extends React.Component {
 		const { location } = this.props.children.props || {}
 		let code = location && location.pathname
 		let { list_function_user, list_function } = this.props.header
-		let check = list_function_user.filter(x => x.code == code)
+		let check = list_function_user.filter(x => x.code.indexOf(code) !== 1)
 		let oldUserInfo = SportConfig._getCookie('userInfo')
 		try {
 			oldUserInfo = JSON.parse(SportConfig.function._base64.decode(oldUserInfo))

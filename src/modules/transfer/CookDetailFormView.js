@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ComboboxByTable from "../common/ComboboxByTable";
 import ListGoldCook from "./ListGoldCook";
 import * as transferActions from "modules/transfer/actions/form";
-import {STATUS_TRANS_04, STATUS_TRANS_02} from './Constant'
+import { STATUS_TRANS_04, STATUS_TRANS_02 } from './Constant'
 
 import {
   updateInfoPage,
@@ -18,17 +18,18 @@ class CookDetailFormView extends React.Component {
       startDate: moment()
     };
   }
-  componentDidMount(){
+  componentDidMount() {
     this.props.getListGoldCook();
   }
   ChangeValueCombobox(obj) {
     let { id, value } = obj;
     let { objData } = this.props.transfer;
-    this.props.updateInputItem({...objData,
-      [id]:value
+    this.props.updateInputItem({
+      ...objData,
+      [id]: value
     });
-    if(id=='IdStore_From'){
-        this.props.getListBalanceByIdStore(value)
+    if (id == 'IdStore_From') {
+      this.props.getListBalanceByIdStore(value)
     }
   }
 
@@ -37,7 +38,7 @@ class CookDetailFormView extends React.Component {
     let { objData } = this.props.transfer;
     let objDataTemp = _.clone(objData, true);
     objDataTemp[id] = value;
-    if(id=='TypeGoldWarm' && value>100){
+    if (id == 'TypeGoldWarm' && value > 100) {
       alert('Loại vàng nấu tối đa 100');
       return;
     }
@@ -49,7 +50,7 @@ class CookDetailFormView extends React.Component {
     objDataTemp["ValueDate"] = date;
     this.props.updateInputItem(objDataTemp);
   }
-  ChangeValueComboboxByTable(obj) {}
+  ChangeValueComboboxByTable(obj) { }
   componentWillUnmount() {
     this.props.resetInfoPage().then(() => {
       this.props.resetData();
@@ -85,7 +86,8 @@ class CookDetailFormView extends React.Component {
       TypeGoldWarm,
       TotalWeightAfterWarm,
       TotalWeightBeforeCook,
-      DayConfirmF
+      DayConfirmF,
+      Gold_Lost_T
     } = this.props.transfer.objData;
     let { objConfig, objSearch, list_turn_type } = this.props.transfer;
     let { list_config_process } = this.props.header;
@@ -100,11 +102,11 @@ class CookDetailFormView extends React.Component {
     });
     let { IsGoldTypeRequest } = objConfig;
     let type = Helper.getParam(window.location.href, "type");
-    let blockInput = [STATUS_TRANS_04,STATUS_TRANS_02].indexOf(Status)!=-1? true : false;
+    let blockInput = [STATUS_TRANS_04, STATUS_TRANS_02].indexOf(Status) != -1 ? true : false;
     const { list_data_idstores } = this.props.transfer;
 
     const { status } = this.props.toolbar
-    const blockByStatusToolbar= status==='EDIT'?true:false
+    const blockByStatusToolbar = status === 'EDIT' ? true : false
     return (
       <div className="main__content">
         <div className="row">
@@ -150,20 +152,40 @@ class CookDetailFormView extends React.Component {
                           </div>
                         </div>
                       </div>
+                      <div className="col-md-3">
+                        <div className="form-group">
+                          <div className="left">
+                            <label htmlFor="name">Loại vàng nấu</label>
+                          </div>
+                          <div className="right">
+                            <input
+                              readOnly={blockInput}
+                              className="name form-control"
+                              value={TypeGoldWarm}
+                              onChange={e => this._onChange(e)}
+                              type="number"
+                              id="TypeGoldWarm"
+                              name="TypeGoldWarm"
+                              required=""
+                              max="100"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="row">
                       <div className="col-md-3">
                         <div className="form-group">
                           <div className="left">
                             <label htmlFor="name">
-                              Tổng TL trước khi nấu quy 10
+                              Tổng TL trước khi nấu
                             </label>
                           </div>
                           <div className="right">
                             <input
                               readOnly={true}
                               className="name form-control"
-                              value={Helper.round(TotalWeightBeforeCook,4)}
+                              value={Helper.round(TotalWeightBeforeCook, 4)}
                               onChange={e => this._onChange(e)}
                               type="text"
                               id="TotalWeightBeforeCook"
@@ -172,30 +194,11 @@ class CookDetailFormView extends React.Component {
                           </div>
                         </div>
                       </div>
+
                       <div className="col-md-3">
                         <div className="form-group">
                           <div className="left">
-                            <label htmlFor="name">Loại vàng nấu</label>
-                          </div>
-                          <div className="right">
-                          <input
-                            readOnly={blockInput}
-                            className="name form-control"
-                            value={TypeGoldWarm}
-                            onChange={e => this._onChange(e)}
-                            type="number"
-                            id="TypeGoldWarm"
-                            name="TypeGoldWarm"
-                            required=""
-                            max="100"
-                          />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3">
-                        <div className="form-group">
-                          <div className="left">
-                            <label htmlFor="name">TL vàng nhập kho quy 10</label>
+                            <label htmlFor="name">TL vàng nhập kho</label>
                           </div>
                           <div className="right">
                             <input
@@ -206,6 +209,24 @@ class CookDetailFormView extends React.Component {
                               type="text"
                               id="TotalWeightAfterWarm"
                               name="TotalWeightAfterWarm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="form-group">
+                          <div className="left">
+                            <label htmlFor="name">Hao hụt</label>
+                          </div>
+                          <div className="right">
+                            <input
+                              readOnly={true}
+                              className="name form-control"
+                              value={Helper.round(Gold_Lost_T,4)}
+                              onChange={e => this._onChange(e)}
+                              type="text"
+                              id="Gold_Lost_T"
+                              name="Gold_Lost_T"
                             />
                           </div>
                         </div>

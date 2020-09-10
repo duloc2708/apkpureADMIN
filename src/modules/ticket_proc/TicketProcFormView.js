@@ -51,26 +51,26 @@ class TicketProcFormView extends React.Component {
     }
     // validate from SKELETON
     if (!type && typeProcess === "SKELETON") {
-      if (!objData.SkeletonWeight) {
-        message = `Vui lòng cập nhật trọng lượng chân đế!`;
-        type = 1;
-      }
-      if (!objData.Product_Skeleton_Weight) {
-        (message = `Vui lòng cập nhật trọng lượng cây!`), (type = 1);
-      }
-      if (
-        objData.SkeletonWeight &&
-        objData.Product_Skeleton_Weight &&
-        parseFloat(objData.SkeletonWeight) >=
-          parseFloat(objData.Product_Skeleton_Weight)
-      ) {
-        (message = `Trọng lượng chân đế phải nhỏ hơn trọng lượng cây!`),
-          (type = 1);
-      }
-      if (objData.GoldWeight_Estimate <= 0) {
-        message = `Trọng lượng ước tính phải > 0 !`;
-        type = 1;
-      }
+      // if (!objData.SkeletonWeight) {
+      //   message = `Vui lòng cập nhật trọng lượng chân đế!`;
+      //   type = 1;
+      // }
+      // if (!objData.Product_Skeleton_Weight) {
+      //   (message = `Vui lòng cập nhật trọng lượng cây!`), (type = 1);
+      // }
+      // if (
+      //   objData.SkeletonWeight &&
+      //   objData.Product_Skeleton_Weight &&
+      //   parseFloat(objData.SkeletonWeight) >=
+      //     parseFloat(objData.Product_Skeleton_Weight)
+      // ) {
+      //   (message = `Trọng lượng chân đế phải nhỏ hơn trọng lượng cây!`),
+      //     (type = 1);
+      // }
+      // if (objData.GoldWeight_Estimate <= 0) {
+      //   message = `Trọng lượng ước tính phải > 0 !`;
+      //   type = 1;
+      // }
     }
     // validate from CASTING
     if (!type && typeProcess === "CASTING") {
@@ -154,20 +154,20 @@ class TicketProcFormView extends React.Component {
           };
         })
         .value();
-
-      groupProductByOrder.forEach(group => {
-        if (group.IdOrder.length > 1) {
-          let itemIdOrder = "";
-          group.IdOrder.forEach(item => {
-            if (itemIdOrder && itemIdOrder != item) {
-              type = 6;
-              message = `Sản phẩm ${group.IdProduct} tồn tại trên bag (${group.IdBag.toString()})
-              khác đơn hàng (${group.IdOrder.toString()})`;
-            }
-            itemIdOrder = item;
-          });
-        }
-      });
+      //Tam che
+      // groupProductByOrder.forEach(group => {
+      //   if (group.IdOrder.length > 1) {
+      //     let itemIdOrder = "";
+      //     group.IdOrder.forEach(item => {
+      //       if (itemIdOrder && itemIdOrder != item) {
+      //         type = 6;
+      //         message = `Sản phẩm ${group.IdProduct} tồn tại trên bag (${group.IdBag.toString()})
+      //         khác đơn hàng (${group.IdOrder.toString()})`;
+      //       }
+      //       itemIdOrder = item;
+      //     });
+      //   }
+      // });
     }
     // require input Worker when config info detail
     if (!type && WorkerInTicket == 1 && !objData.Worker) {
