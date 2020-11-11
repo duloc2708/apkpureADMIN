@@ -170,6 +170,12 @@ class ChartFormView extends React.Component {
     let { data, type, title } = this.props;
     const convertData = this._convertData(data, title);
     const dataRender = [];
+    let theTotal =0;
+    data.map(item => {
+      let { lable, value } = item;
+      console.log(value)
+      theTotal+=parseFloat(value);
+    });
     switch (type) {
       case "TYPE_CHART_05":
         dataRender.push(
@@ -178,31 +184,11 @@ class ChartFormView extends React.Component {
             options={{
               plugins: {
                 doughnutlabel: {
-                  labels: [
+                  labels: [                   
                     {
-                      text: "The title",
-                      font: {
-                        size: "60"
-                      }
-                    },
-                    {
-                      text: "Total:",
+                      text: "",
                       font: {
                         size: "50"
-                      },
-                      color: "grey"
-                    },
-                    {
-                      text: "$100.000",
-                      font: {
-                        size: "30"
-                      },
-                      color: "red"
-                    },
-                    {
-                      text: "95%",
-                      font: {
-                        size: "45"
                       },
                       color: "green"
                     }
@@ -322,7 +308,7 @@ class ChartFormView extends React.Component {
             data={convertData}
             options={{
               rotation: 0,
-              cutoutPercentage: 2,
+              cutoutPercentage: 32,
               padding: 24,
               layout: {
                 padding: 16
@@ -337,8 +323,18 @@ class ChartFormView extends React.Component {
               // },
               // format lại giá trị
               plugins: {
+                doughnutlabel: {                                
+                    labels: [
+                      {
+                        text: "Tổng doanh thu: \n " + SportConfig.function._formatMoney(theTotal),
+                        font: {
+                          size: "12"
+                        }
+                      }
+                    ]
+                  },
                 datalabels: {
-                  textAlign: "bottom",
+                  textAlign: "right",
                   offset: 8,
                   align: "stretch",
                   formatter: (value, ctx) => {
@@ -346,6 +342,7 @@ class ChartFormView extends React.Component {
                     let dataArr = ctx.chart.data.datasets[0].data;
                     dataArr.map(data => {
                       sum += parseFloat(data);
+                      theTotal += parseFloat(data);
                     });
                     let formatValue =
                       `${ctx.chart.data.labels[ctx.dataIndex] +
@@ -354,18 +351,9 @@ class ChartFormView extends React.Component {
                       ((value * 100) / sum).toFixed(2) +
                       "%)";
                     return formatValue;
-                  },
-                  color: "white",
-                  doughnutlabels: {
-                    labels: [
-                      {
-                        text: "The Total",
-                        font: {
-                          size: "60"
-                        }
-                      }
-                    ]
-                  }
+                  },                
+                   
+                  color: "white"                
                 }
               }
             }}

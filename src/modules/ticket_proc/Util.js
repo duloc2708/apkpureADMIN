@@ -18,9 +18,8 @@ export const validateAddBag = (
     IsUsePriorData
   } = objConfig;
   let list_bag_default_temp = _.clone(listBagSystem, true);
-
   let check = list_bag_default_temp.find(x => x.IdBag.toUpperCase() === IdBag);
-  if (!objDataParent.CodeLV) {
+  if (!objDataParent.CodeLV && IsGoldTypeRequest == 1) {
     alert("Vui lòng chọn loại vàng");
     return false;
   }
@@ -31,16 +30,17 @@ export const validateAddBag = (
   let objBag = _.clone(check);
   // Kiểm tra config có thuộc loại vàng trong quy trình
   if (IsGoldTypeRequest == 1) {
-    if (objBag.codeLV != objDataParent.CodeLV) {
+    if (objDataParent.CodeLV != null && objBag.CodeLV != objDataParent.CodeLV) {
       alert(
-        `Bag ${IdBag} (LV:${objBag.codeLV}) này không thuộc loại vàng trên!.`
+        `Bag ${IdBag} (LV:${objBag.CodeLV}) này không thuộc loại vàng trên!.`
       );
       return false;
     }
   }
+  console.log("LV:", objDataParent);
   // Kiểm tra config các sản phầm trong bag phải thuộc loại vàng
   if (IsAllowProduct_NotSameGold == 1) {
-    if (objBag.codeLV != objDataParent.CodeLV) {
+    if (objDataParent.CodeLV != null && objDataParent.CodeLV != '' && objBag.CodeLV != objDataParent.CodeLV) {
       alert("Sản phẩm của Bag này không thuộc loại vàng trên");
       return false;
     }
@@ -59,8 +59,12 @@ export const validateAddBag = (
 
   // Kiểm tra bag nhập trùng
   let checkList = listBagSelected.filter(
-    x => x.IdBag === IdBag && x.IdOrder != ""
+    x =>
+      x.IdBag === IdBag &&
+      x.IdOrder != "" &&
+      x.CodeTicket === objDataParent.CodeTicket
   );
+
   if (checkList && checkList.length >= 1) {
     alert("Bag này đã tồn tại!");
     return false;

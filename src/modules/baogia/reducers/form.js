@@ -61,13 +61,17 @@ const INITIAL_STATE = {
         , VAT: ''
         , GoldRate: ''
         , PriceCatType:''
+        , CodeLV: ''
     },
     listHeaderTable: [
         { key: 'PRICECODE', title: 'Mã bảng giá', type: 'text', class: '' },
         { key: 'PRICENAME', title: 'Tên bảng giá', type: 'text', class: '' },
         { key: 'PRICETYPE', title: 'Loại giá', type: 'text', class: '' },
         { key: 'PRICECATTYPE', title: 'Kiểu tính giá', type: 'text', class: '' },
+        { key: 'CODELV', title: 'Loại vàng', type: 'text', class: '' },
+        { key: 'valueLAI', title: 'LAI', type: 'text', class: '' },
         { key: 'RATIO', title: 'Tỷ lệ', type: 'text', class: '' },
+        { key: 'VAT', title: 'VAT', type: 'text', class: '' },
         { key: 'DATEUPDATE', title: 'Ngày cập nhật', type: 'text', class: '' },
         { key: 'EDIT', title: 'Sửa', type: 'text', class: '' },
         { key: 'PRINT', title: 'In', type: 'text', class: '' }
@@ -121,7 +125,12 @@ const INITIAL_STATE = {
     ListProductByOrderInOutPut: [],
     listHeaderTableProduct: [
         { key: 'CODEPRODUCT', title: 'Mã sản phẩm', type: 'text', class: '' },
-        { key: 'WEIGHTGOLD', title: 'TL ước tính', type: 'text', class: '' },
+        { key: 'WEIGHTGOLD', title: 'TL vàng/SP', type: 'text', class: '' },
+        { key: 'STONEAMOUNT', title: 'Trị giá đá thường', type: 'text', class: '' },
+        { key: 'STONEAMOUNTC', title: 'Trị giá đá CC', type: 'text', class: '' },
+        { key: 'SETTINGSTONE', title: 'Công gắn đá', type: 'text', class: '' },
+        { key: 'SETTINGSTONECC', title: 'Công gắn đá CC', type: 'text', class: '' },
+        
         { key: 'PRICEBASIC', title: 'Giá cơ sở', type: 'text', class: '' },
         { key: 'BUFFER', title: 'Điều chỉnh', type: 'text', class: '' },
         { key: 'LAI', title: 'Lai hao', type: 'text', class: '' },

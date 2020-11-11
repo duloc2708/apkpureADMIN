@@ -44,7 +44,7 @@ class ListProductFormView extends React.Component {
         })
 
         // get list type
-        let list = ['CLSP', 'KC', 'DSM', 'LV', 'UNIT']
+        let list = ['CLSP', 'KC', 'DSM', 'LV', 'UNIT','TYPE_RESIN']
         this.props.getListTypeByListCode(list)
     }
     _onSearch() {

@@ -62,7 +62,6 @@ class ListProductFormView extends React.Component {
         return data;
     }
 
-
     _onNext(obj) {
         this.props.getListDataOrder(obj.params)
     }
@@ -94,6 +93,12 @@ class ListProductFormView extends React.Component {
                         const { data } = res.data
                         if (data.length > 0 && data[0].ERROR_CODE == 'ERROR_NOT_PRICE') {
                             alert('Một số sản phẩm chưa có giá, vui lòng kiểm tra lại!')
+                        }
+                        else if (data.length > 0 && data[0].ERROR_CODE == 'ERROR_NOT_RAISE_DEBT_GOLD') {
+                            alert('Chưa phát sinh giao dịch công nợ vàng, vui lòng liên hệ quản trị hệ thống!')
+                        }
+                        else if (data.length > 0 && data[0].ERROR_CODE == 'ERROR_NOT_RAISE_DEBT_CASH') {
+                            alert('Chưa phát sinh giao dịch công nợ tiền, vui lòng liên hệ quản trị hệ thống!')
                         } else {
                             this.child._addNotification(`Cập nhật thành công.`, 'success')
                             this.props.getListDataOutPutBySearch(this.refs.code_output && this.refs.code_output.value || '')
@@ -141,7 +146,8 @@ class ListProductFormView extends React.Component {
                 this.props.isEditOutPut(true)
                 break;
             case 'PRINT':
-                if ((item.StatusOutput == 'STATUS_OUTPUT_01' || item.StatusOutput == null) && (typePrint == 'type1' || typePrint == 'type2') && SportConfig._getCookie('userInfo').user_name == "admin") {
+                console.log('item.StatusOutput ',item.StatusOutput )
+                if ((item.StatusOutput == 'STATUS_OUTPUT_01' || item.StatusOutput == null) && (typePrint == 'type1' || typePrint == 'type2') && SportConfig._getCookie('userInfo').user_name != "admin") {
                     this.child._addNotification(`Chỉ được phép in sau khi đã xác nhận phiếu xuất.`, 'warning')
                 }
                 else {

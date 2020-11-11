@@ -7,6 +7,7 @@ import ToolbarFormView from 'modules/toolbar/ToolbarFormView'
 import BrackcrumFromView from 'modules/brackcrum/BrackcrumFromView'
 import * as castingActions from 'modules/casting/actions/form'
 import ComboboxListTab from './ComboboxListTab'
+import { log } from 'util';
 
 const { Translate, I18n } = ReactReduxI18n;
 class TabCasting extends React.Component {
@@ -92,27 +93,34 @@ class TabCasting extends React.Component {
                     </thead>
                     <tbody>
                         {listCastingSelected && listCastingSelected.map((item, i) => {
-                            let { value, label, sl, WeightWax, WeightGold } = item
+                            let { value, label, sl, WeightWax, WeightGold,WeightWax_T, WeightGold_T } = item
                             if (value && value.length > 0) {
-                                const calWax = WeightWax && WeightWax * sl || 0
-                                const calGold = WeightGold && WeightGold * sl || 0
-                                WeightWaxTotal = WeightWaxTotal + (calWax)
-                                WeightGoldTotal = WeightGoldTotal + (calGold)
+                                // const calWax = WeightWax && WeightWax * sl || 0
+                                // const calGold = WeightGold && WeightGold || 0
+                                WeightWaxTotal = WeightWaxTotal + (WeightWax||0)
+                                WeightGoldTotal = WeightGoldTotal + (WeightWax*3.7||0)
+                                console.log('Wax:',WeightWax)
+                                console.log('Total:', WeightWaxTotal)
+                                
                                 return (
                                     <tr key={`data_${i}`}>
                                         <td>{value || ''}</td>
                                         <Cell value={sl} id={value} parentObject={this} />
-                                        <td>{calWax || null}</td>
-                                        <td>{calGold || null}</td>
+                                        <td style={{ "textAlign": "right" }}>{WeightWax || 0}</td>
+                                        <td style={{ "textAlign": "right" }}>{Helper.round(WeightGold || WeightWax*3.7 || 0,4)}</td>
+                                        <td style={{ "textAlign": "right" }}>{Helper.round(WeightWax_T || WeightWax || 0,4)}</td>
+                                        <td style={{ "textAlign": "right" }}>{Helper.round(WeightGold_T || WeightWax*3.7 || 0,4)}</td>
                                         <td onClick={() => this._onRemove(item)}><button><i className="fa fa-trash-o" aria-hidden="true"></i></button></td>
                                     </tr>)
                             }
                         })}
                         {listCastingSelected.length > 0 ?
-                            <tr key={`data_total`}>
+                            <tr key={`data_total`}>                            
                                 <td colSpan="2" style={{ "textAlign": "right" }}><b>Tổng trọng lượng: </b></td>
-                                <td>{WeightWaxTotal}</td>
-                                <td>{WeightGoldTotal}</td>
+                                <td></td>
+                                <td></td>
+                                <td style={{ "textAlign": "right" }}>{Helper.round(WeightWaxTotal,4)}</td>
+                                <td style={{ "textAlign": "right" }}>{Helper.round(WeightGoldTotal,4)}</td>
                                 <td></td>
                             </tr> : ''
                         }

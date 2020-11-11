@@ -19,6 +19,7 @@ import {
   UPDATE_CELL_TICKET_STONE,
   UPDATE_TYPE_IN_OUT,
   UPDATE_BAG_DETAIL,
+  CONFIRM_BAG_DETAIL,
   LOADING_TICKET_PROC,
   UPDATE_DEFAULT_BAG,
   REMOVE_ITEM_BAG,
@@ -32,6 +33,18 @@ import {
   CHANGE_INPUT_PRODUCT_CANCEL,
   CHANGE_INPUT_PRODUCT_SEARCH
 } from "../types";
+const {
+  LIST_PROCESS_PREV_SPURE,
+  STATUS_PROCESS_ACCEPT,
+  STATUS_PROCESS_FINISH,
+  STATUS_TF_TRANS_01_CODE,
+  STATUS_TF_TRANS_02_CODE,
+  STATUS_TF_TRANS_04_CODE,
+  STATUS_TF_TRANS_02_NAME,
+  STATUS_TF_TRANS_04_NAME,
+  FIELDS_MODAL
+} = require("../Constant");
+
 const { FULL_STONE, PARTIAL_STONE, NONE_STONE } = require("../Constant");
 let oldUserInfo = SportConfig._getCookie("userInfo");
 try {
@@ -48,9 +61,9 @@ import { updateInfoPage, resetInfoPage } from "modules/common/actions/form";
 const calGoldWeightEstimate = obj => {
   obj["GoldWeight_Estimate"] = Helper.round(
     15 *
-    (parseFloat(obj["Product_Skeleton_Weight"] || 0) -
-      parseFloat(obj["SkeletonWeight"] || 0) -
-      parseFloat(obj["Waxset_Weight_T"] || 0)),
+      (parseFloat(obj["Product_Skeleton_Weight"] || 0) -
+        parseFloat(obj["SkeletonWeight"] || 0) -
+        parseFloat(obj["Waxset_Weight_T"] || 0)),
     4
   );
   return obj;
@@ -122,6 +135,26 @@ export const getAllGold = () => {
     });
   };
 };
+
+export const copyWorker = obj => {
+  return (dispatch, getState) => {
+    let { listStoneWaxset } = getState().ticket_proc;
+
+    listStoneWaxset = listStoneWaxset.map((item, i) => {
+      if (obj.index < i && !item.Worker) {
+        item.Worker = obj.Worker;
+      }
+      return item;
+    });
+    dispatch({
+      type: UPDATE_CELL_TICKET_STONE,
+      payload: {
+        listStoneWaxset
+      }
+    });
+  };
+};
+
 export const updateCellStoneWaxSetting = obj => {
   return (dispatch, getState) => {
     let { listStoneWaxset, listBagSelected } = getState().ticket_proc;
@@ -151,7 +184,7 @@ export const updateCellStoneWaxSetting = obj => {
         if (strWorkersTemp.indexOf(g.Worker) == -1)
           strWorkersTemp += g.Worker + " ,";
         if (g.QtyAssignProduct) sumQtyAssignProduct += g.QtyAssignProduct;
-        if (g.Worker)++countWorker;
+        if (g.Worker) ++countWorker;
       });
       // join list worker
       item.strWorkers = strWorkersTemp.substr(0, strWorkersTemp.length - 1);
@@ -220,9 +253,12 @@ export const changeInputProductCancel = obj => {
       if (item.orderby == obj.id) {
         if (obj.key === "QtyCancelTemp") {
           if (obj.value) {
-            item["QtyRemainTemp"] = (parseInt(item.QtyRemainTemp) - parseInt(obj.value)) || '';
+            item["QtyRemainTemp"] =
+              parseInt(item.QtyRemainTemp) - parseInt(obj.value) || "";
           } else {
-            item["QtyRemainTemp"] = (parseInt(item.QtyCancel || 0) + parseInt(item.QtyRemainTemp || 0)) || null;
+            item["QtyRemainTemp"] =
+              parseInt(item.QtyCancel || 0) +
+                parseInt(item.QtyRemainTemp || 0) || null;
           }
         }
         item[obj.key] = obj.value;
@@ -249,7 +285,7 @@ export const changeWeightGold = obj => {
         item.TF_Weight_Default = obj.value;
         item.TF_Weight_Convert = Helper.round(
           (item.ValueLV * parseFloat(item.TF_Weight_Default || 0)) /
-          objData.ValueLV,
+            objData.ValueLV,
           4
         );
       }
@@ -320,9 +356,9 @@ export const saveWeightStone = () => {
     });
   };
 };
-const indexColor = (data) => {
+const indexColor = data => {
   let dataNew = [];
-  let comboIdStonePcs = ""
+  let comboIdStonePcs = "";
   let bg = "";
   data.forEach((item, i) => {
     // if(i==0){
@@ -342,23 +378,23 @@ const indexColor = (data) => {
     // if(item.QtyStonePcs>0){
     //
     // }
-    dataNew.push(item)
+    dataNew.push(item);
   });
-  return dataNew
-}
+  return dataNew;
+};
 export const clearListStoneByBag = IdBag => {
   return (dispatch, getState) => {
-    const { listStoneWaxset } = getState().ticket_proc
+    const { listStoneWaxset } = getState().ticket_proc;
     let listStoneWaxsetTemp = _.clone(listStoneWaxset, true);
     listStoneWaxsetTemp = listStoneWaxsetTemp.map(item => {
-      return { ...item, BrokenQty: '', BrokenWeight: '', BrokenRate: '' };
-    })
+      return { ...item, BrokenQty: "", BrokenWeight: "", BrokenRate: "" };
+    });
     dispatch({
       type: GET_LIST_WAXSET_BY_BAG,
       payload: {
         listStoneWaxset: listStoneWaxsetTemp
       }
-    });;
+    });
   };
 };
 export const getListStoneWaxsetByIdBag = IdBag => {
@@ -399,7 +435,7 @@ export const getListStoneWaxsetByIdBag = IdBag => {
               let dataNew = [...listStoneWaxset, ...listBreakDownProduct];
               // parse Color by Group Product
 
-              dataNew = indexColor(dataNew)
+              dataNew = indexColor(dataNew);
 
               // clear stone Weight
               let listBagSelectedTemp = _.clone(listBagSelected, true);
@@ -451,20 +487,20 @@ export const updateActiveToolTipBag = (obj, status) => {
     });
   };
 };
-const calGoldLostT = (objData) => {
+const calGoldLostT = objData => {
   return {
     ...objData,
     Gold_Lost_T: Helper.round(
       parseFloat(objData["Gold_Weight_IN_T"] || 0) -
-      parseFloat(objData["Gold_Weight_OUT_T"] || 0) -
-      parseFloat(objData["Gold_Weight2Store_T"] || 0) -
-      parseFloat(objData["BackGoldWeight_T"] || 0) -
-      parseFloat(objData["CancelGoldWeight_T"] || 0) +
-      parseFloat(objData["AddGoldWeight_T"] || 0),
+        parseFloat(objData["Gold_Weight_OUT_T"] || 0) -
+        parseFloat(objData["Gold_Weight2Store_T"] || 0) -
+        parseFloat(objData["BackGoldWeight_T"] || 0) -
+        parseFloat(objData["CancelGoldWeight_T"] || 0),
+      // + parseFloat(objData["AddGoldWeight_T"] || 0)
       4
     )
-  }
-}
+  };
+};
 export const updateInputItemProcess = obj => {
   return (dispatch, getState) => {
     let { objConfig, objData, listBagSelected } = getState().ticket_proc;
@@ -512,6 +548,7 @@ export const updateInputItemProcess = obj => {
     if (key === "CodeLV") {
       const { list_data_all } = getState().list;
       const data = list_data_all.find(x => x.code == value);
+      // console.log('data',data)
       if (data) {
         objDataTemp["ValueLV"] = data.valueParams;
       }
@@ -703,11 +740,14 @@ export const getNumberAutoTicketProc = () => {
             let numberGen = (data && data[0].value) || "0000000";
 
             objData_temp["CodeTicket"] = numberGen;
-            //objData_temp["Name"] = numberGen;
-            objData_temp["CodeProcess"] = objConfig.Code || "";
 
+            if (PREFIX != "SKE") {
+              objData_temp["Name"] = numberGen;
+              default_bag_temp["Name"] = numberGen;
+            }
+
+            objData_temp["CodeProcess"] = objConfig.Code || "";
             default_bag_temp["CodeTicket"] = numberGen;
-            //default_bag_temp["Name"] = numberGen;
             default_bag_temp["CodeProcess"] = objConfig.Code || "";
 
             listBagSelectedTemp.map(x => (x.CodeTicket = numberGen));
@@ -746,15 +786,39 @@ const sumTotalObjData = (objData, listBagSelected) => {
   let sumGold_Cancel = 0;
   let sumAddGoldWeight = 0;
   listBagSelected.forEach(elm => {
-    sumBroken_Weight_OUT_T += parseFloat(elm.Broken_Weight_OUT || 0);
-    sumBroken_Weight_IN_T += parseFloat(elm.Broken_Weight_IN || 0);
-    sumWaxset_Weight_T += parseFloat(elm.Waxset_Weight || 0);
-    sumProduct_Weight_IN_T += parseFloat(elm.Product_Weight_IN || 0);
-    sumProduct_Weight_OUT_T += parseFloat(elm.Product_Weight_OUT || 0);
-    sumGold_Weight_OUT_T += parseFloat(elm.Gold_Weight_OUT || 0);
-    sumHandset_Weight_T += parseFloat(elm.Handset_Weight || 0);
-    sumGold_Cancel += parseFloat(elm.TotalWeightGoldCancel || 0);
-    sumAddGoldWeight += parseFloat(elm.AddGoldWeight || 0);
+    sumBroken_Weight_OUT_T += Helper.round(
+      parseFloat(elm.Broken_Weight_OUT || 0),
+      4
+    );
+    sumBroken_Weight_IN_T += Helper.round(
+      parseFloat(elm.Broken_Weight_IN || 0),
+      4
+    );
+    sumWaxset_Weight_T += Helper.round(parseFloat(elm.Waxset_Weight || 0), 4);
+    sumProduct_Weight_IN_T += Helper.round(
+      parseFloat(elm.Product_Weight_IN || 0),
+      4
+    );
+    sumProduct_Weight_OUT_T += Helper.round(
+      parseFloat(elm.Product_Weight_OUT || 0),
+      4
+    );
+    sumGold_Weight_OUT_T += Helper.round(
+      parseFloat(elm.Gold_Weight_OUT || 0),
+      4
+    );
+    
+    sumGold_Weight_IN_T += Helper.round(
+      parseFloat(elm.Gold_Weight_IN || 0),
+      4
+    );
+   
+    sumHandset_Weight_T += Helper.round(parseFloat(elm.Handset_Weight || 0), 4);
+    sumGold_Cancel += Helper.round(
+      parseFloat(elm.TotalWeightGoldCancel || 0),
+      4
+    );
+    sumAddGoldWeight += Helper.round(parseFloat(elm.AddGoldWeight || 0), 4);
   });
   objDataNew.Handset_Weight_T = Helper.round(sumHandset_Weight_T, 4);
   objDataNew.Waxset_Weight_T = Helper.round(sumWaxset_Weight_T, 4);
@@ -762,7 +826,14 @@ const sumTotalObjData = (objData, listBagSelected) => {
   objDataNew.Broken_Weight_IN_T = Helper.round(sumBroken_Weight_IN_T, 4);
   objDataNew.Product_Weight_OUT_T = Helper.round(sumProduct_Weight_OUT_T, 4);
   objDataNew.Broken_Weight_OUT_T = Helper.round(sumBroken_Weight_OUT_T, 4);
+  if (sumGold_Weight_IN_T>0) 
+      {objDataNew.Gold_Weight_IN_T = Helper.round(sumGold_Weight_IN_T, 4);}
+  if (listBagSelected.length==0)
+  {
+    objDataNew.Gold_Weight_IN_T=0
+  }
   objDataNew.Gold_Weight_OUT_T = Helper.round(sumGold_Weight_OUT_T, 4);
+  
   objDataNew.CancelGoldWeight_T = Helper.round(sumGold_Cancel, 4);
   // if SKELETON then calculator
   if (typeProcess == "SKELETON") {
@@ -773,47 +844,74 @@ const sumTotalObjData = (objData, listBagSelected) => {
   if (objDataNew.Gold_Weight_IN_T && objDataNew.Gold_Weight_OUT_T) {
     objDataNew = calGoldLostT(objDataNew);
   }
-
+  if (sumGold_Weight_IN_T<=0 && sumGold_Weight_OUT_T<=0)
+  {
+     objDataNew.Gold_Lost_T=0
+  }
   return objDataNew;
 };
-const parseListBag = (data, listProductCancel, objConfig) => {
+const parseListBag = async (data, listProductCancel, objConfig) => {
   let listBagSelectedTemp = _.clone(data);
   listBagSelectedTemp = listBagSelectedTemp.filter(x => x.IdBag && !x.isNew);
-  listBagSelectedTemp = listBagSelectedTemp.map(item => {
-    if (item.IsDone === false) {
-      item.IsDone = 0;
-    }
-    if (item.IsDone === true) {
-      item.IsDone = 1;
-    }
-    item.created_date = new Date();
-    item.created_by = username;
 
-    item.Origin_Handset_Weight = item.Origin_Handset_Weight || item.Handset_Weight;
-    item.Origin_Waxset_Weight = item.Origin_Handset_Weight || item.Waxset_Weight;
-    item.Custom_Handset_Weight = item.Custom_Handset_Weight || item.Handset_Weight;
-    item.Custom_Waxset_Weight = item.Custom_Waxset_Weigh || item.Waxset_Weight;
+  listBagSelectedTemp = await Promise.all(
+    listBagSelectedTemp.map(async item => {
+      if (item.IsDone === false) {
+        item.IsDone = 0;
+      }
+      if (item.IsDone === true) {
+        item.IsDone = 1;
+      }
+      item.created_date = new Date();
+      item.created_by = username;
 
-    if (objConfig.IsIncludeHandset === 1) {
-      item.Gold_Weight_OUT = Helper.round(
-        parseFloat(item.Product_Weight_OUT || 0) +
-        parseFloat(item.Broken_Weight_OUT || 0) -
-        parseFloat(item.Waxset_Weight || 0) -
-        parseFloat(item.Handset_Weight || 0),
-        4
-      );
-      item.Gold_Lost = Helper.round(
-        parseFloat(item.Gold_Weight_IN || 0) -
-        parseFloat(item.Gold_Weight_OUT || 0),
-        4
-      );
-    }
-    return item;
-  });
+      item.Origin_Handset_Weight =
+        item.Origin_Handset_Weight || item.Handset_Weight;
+      item.Origin_Waxset_Weight =
+        item.Origin_Handset_Weight || item.Waxset_Weight;
+      item.Custom_Handset_Weight =
+        item.Custom_Handset_Weight || item.Handset_Weight;
+      item.Custom_Waxset_Weight =
+        item.Custom_Waxset_Weigh || item.Waxset_Weight;
+      item.Product_Weight_OUT = Helper.round(item.Product_Weight_OUT, 4);
+      item.Product_Weight_IN = Helper.round(item.Product_Weight_IN, 4);
+
+      await axios
+        .post(`${Config.API_URL_USER}ticket_proc/getHandsetReady`, {
+          CodeProcess: item.CodeProcess,
+          IdBag: item.IdBag
+        })
+        .then(res => {
+          const { data } = res.data;
+          if (data && data[0]) {
+            const result = data[0].OUTPUT;
+            if (result == 1) {
+              item.Gold_Weight_OUT = Helper.round(
+                parseFloat(item.Product_Weight_OUT || 0) +
+                  parseFloat(item.Broken_Weight_OUT || 0) -
+                  parseFloat(item.Waxset_Weight || 0) -
+                  parseFloat(item.Handset_Weight || 0),
+                4
+              );
+              item.Gold_Lost = Helper.round(
+                parseFloat(item.Gold_Weight_IN || 0) -
+                  parseFloat(item.Gold_Weight_OUT || 0),
+                4
+              );
+            }
+          }
+        });
+      return item;
+    })
+  );
+
   return listBagSelectedTemp;
 };
+
 const parseListProductCancel = (data, objData) => {
-  const newData = data.filter(x => x.QtyCancel || (x.QtyCancelTemp && !x.QtyCancel));
+  const newData = data.filter(
+    x => x.QtyCancel || (x.QtyCancelTemp && !x.QtyCancel)
+  );
   newData.map(item => {
     item.CodeTicket = objData.CodeTicket;
     item.CodeProcess = objData.CodeProcess;
@@ -847,7 +945,7 @@ export const addNewItem = data => {
     dispatch(loadingProc(true));
     return new Promise(
       (resolve, reject) => {
-        dispatch(getNumberAutoTicketProc()).then(() => {
+        dispatch(getNumberAutoTicketProc()).then(async () => {
           let {
             objData,
             listBagSelected,
@@ -865,7 +963,7 @@ export const addNewItem = data => {
             objData
           );
 
-          let listBagSelectedTemp = parseListBag(
+          let listBagSelectedTemp = await parseListBag(
             listBagSelected,
             listProductCancelTemp,
             objConfig
@@ -893,7 +991,8 @@ export const addNewItem = data => {
 };
 export const updateItem = data => {
   let ListProduct_temp = _.clone(data);
-  return (dispatch, getState) => {
+  console.log('updateItem.data',data)
+  return async (dispatch, getState) => {
     dispatch(loadingProc(true));
     let {
       objConfig,
@@ -912,11 +1011,12 @@ export const updateItem = data => {
       objData
     );
 
-    let listBagSelectedTemp = parseListBag(
+    let listBagSelectedTemp = await parseListBag(
       listBagSelected,
       listProductCancelTemp,
       objConfig
     );
+
     const objDataNew = sumTotalObjData(objData, listBagSelectedTemp);
     return new Promise(
       (resolve, reject) => {
@@ -991,18 +1091,18 @@ export const initAddCastingProc = () => {
     dispatch(getNumberAutoTicketProc());
   };
 };
-export const changeListBagSelected = (objNew) => {
+export const changeListBagSelected = objNew => {
   return (dispatch, getState) => {
     const { listBagSelected, objData } = getState().ticket_proc;
     let listBagSelectedTemp = _.clone(listBagSelected, true);
     let sumWaxset = 0;
     listBagSelectedTemp = listBagSelectedTemp.map(item => {
       if (item.orderby === objNew.orderby) {
-        item = objNew
+        item = objNew;
       }
-      sumWaxset = sumWaxset + item.Waxset_Weight || 0
+      sumWaxset = sumWaxset + item.Waxset_Weight || 0;
       return item;
-    })
+    });
     dispatch({
       type: UPDATE_BAG_DETAIL,
       payload: {
@@ -1042,12 +1142,18 @@ const calTotalChangeWeightBag = (listBag, objData) => {
   let sumAddGoldWeight = 0;
 
   listBag.forEach(item => {
-    sumGoldWeightOut += parseFloat(item.Gold_Weight_OUT || 0);
-    sumGoldWeightIN += parseFloat(item.Gold_Weight_IN || 0);
-    sumWeightWaxset += parseFloat(item.Waxset_Weight || 0);
-    sumGold_Weight_Pay += parseFloat(item.Gold_Weight_Pay || 0);
-    sumGold_Cancel += parseFloat(item.TotalWeightGoldCancel || 0);
-    sumAddGoldWeight += parseFloat(item.AddGoldWeight || 0);
+    sumGoldWeightOut += Helper.round(parseFloat(item.Gold_Weight_OUT || 0), 4);
+    sumGoldWeightIN += Helper.round(parseFloat(item.Gold_Weight_IN || 0), 4);
+    sumWeightWaxset += Helper.round(parseFloat(item.Waxset_Weight || 0), 4);
+    sumGold_Weight_Pay += Helper.round(
+      parseFloat(item.Gold_Weight_Pay || 0),
+      4
+    );
+    sumGold_Cancel += Helper.round(
+      parseFloat(item.TotalWeightGoldCancel || 0),
+      4
+    );
+    sumAddGoldWeight += Helper.round(parseFloat(item.AddGoldWeight || 0), 4);
   });
 
   // objData.Gold_Weight2Store_T = sumGold_Weight_Pay;
@@ -1073,7 +1179,7 @@ const calTotalChangeWeightBag = (listBag, objData) => {
 const calGoldWeightAfterHandset = item => {
   let result = Helper.round(
     parseFloat(item.Gold_Weight_OUT || 0) -
-    parseFloat(item.Handset_Weight || 0),
+      parseFloat(item.Handset_Weight || 0),
     4
   );
   return result;
@@ -1125,8 +1231,8 @@ export const updateCellBrokenQty = (obj, IdBagInStone) => {
           item.Broken_Weight_IN = totalWeightBrokenTemp;
           item["Gold_Weight_IN"] = Helper.round(
             valueTemp +
-            parseFloat(item.Broken_Weight_IN || 0) -
-            Waxset_WeightTemp,
+              parseFloat(item.Broken_Weight_IN || 0) -
+              Waxset_WeightTemp,
             4
           );
         } else {
@@ -1135,8 +1241,8 @@ export const updateCellBrokenQty = (obj, IdBagInStone) => {
 
           item["Gold_Weight_OUT"] = Helper.round(
             parseFloat(valueTemp || 0) +
-            parseFloat(item.Broken_Weight_OUT || 0) -
-            parseFloat(Waxset_WeightTemp || 0),
+              parseFloat(item.Broken_Weight_OUT || 0) -
+              parseFloat(Waxset_WeightTemp || 0),
             4
           );
           if (item["Gold_Weight_OUT"] < 0) item["Gold_Weight_OUT"] = null;
@@ -1191,7 +1297,7 @@ export const updateProductCancel = item => {
         const listProductCancelByBag = listProductCancelTemp.filter(
           x => x.IdBag === item.IdBag && x.isConfirmed == 1
         );
-        const totalWeightGoldReturn = _.sumBy(listProductCancelByBag, function (
+        const totalWeightGoldReturn = _.sumBy(listProductCancelByBag, function(
           itemProduct
         ) {
           return parseFloat(itemProduct.WeightGoldReturn || 0);
@@ -1243,7 +1349,27 @@ export const acceptProductCancel = item => {
     });
   };
 };
-export const acceptStatusBag = obj => {
+export const CancelConfirmBag = (obj,item) => {
+  console.log('CancelConfirmBag',item)
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${Config.API_URL_USER}ticket_proc/cancel_confirm_bag`, obj)
+        .then(
+          response => {
+            let { data } = response.data;
+            getDataDetailByCode(item.CodeTicket);     
+            resolve(response);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+  };
+};
+export const acceptStatusBag = (obj,item) => {
+  console.log('acceptStatusBag',item)
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios
@@ -1251,6 +1377,7 @@ export const acceptStatusBag = obj => {
         .then(
           response => {
             let { data } = response.data;
+            getDataDetailByCode(item.CodeTicket);
             resolve(response);
           },
           err => {
@@ -1283,8 +1410,8 @@ export const calWeightDetailBag = (objItem, objConfig) => {
     // (TL (Vàng + Đá) Trừ Đá Rớt + Tổng TL đá rớt ) - trọng lượng waxset
     item.Gold_Weight_OUT = Helper.round(
       parseFloat(item.Product_Weight_OUT || 0) +
-      parseFloat(Broken_Weight_OUTTemp || 0) -
-      parseFloat(Waxset_WeightTemp || 0),
+        parseFloat(Broken_Weight_OUTTemp || 0) -
+        parseFloat(Waxset_WeightTemp || 0),
       4
     );
     if (IsIncludeHandset == 1) {
@@ -1298,7 +1425,7 @@ export const calWeightDetailBag = (objItem, objConfig) => {
   // );
   item.Gold_Lost = Helper.round(
     parseFloat(item.Gold_Weight_IN || 0) -
-    parseFloat(item.Gold_Weight_OUT || 0),
+      parseFloat(item.Gold_Weight_OUT || 0),
     4
   );
   if (item.Gold_Lost < 0) item.Gold_Lost = null;
@@ -1428,9 +1555,9 @@ export const updateExistBag2 = objBag => {
       itemBagNew.CodeProcess = objData.CodeProcess;
       itemBagNew.CodeTicket = objData.CodeTicket;
 
-      itemBagNew.Custom_Waxset_Weight = '';
+      itemBagNew.Custom_Waxset_Weight = "";
       itemBagNew.Origin_Waxset_Weight = itemBagNew.Waxset_Weight;
-      itemBagNew.Custom_Handset_Weight = '';
+      itemBagNew.Custom_Handset_Weight = "";
       itemBagNew.Origin_Handset_Weight = itemBagNew.Handset_Weight;
 
       listBagSelectedConvert.push(itemBagNew);
@@ -1598,7 +1725,7 @@ export const updateExistBag = data => {
   };
 };
 export const updateExistBagWaxSetting = inputData => {
-  alert('aaa')
+  alert("aaa");
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios
@@ -1789,7 +1916,7 @@ export const removeItemBag = obj => {
     listBagSelectedTemp = listBagSelectedTemp.filter(x => x.IdBag != obj.IdBag);
     // remove stones by bag
     listStoneWaxsetTemp = listStoneWaxsetTemp.filter(x => x.IdBag != obj.IdBag);
-
+    console.log('obj',obj,'listBagSelectedTemp',listBagSelectedTemp,'objData',objData)
     dispatch({
       type: REMOVE_ITEM_BAG,
       payload: {
@@ -1972,9 +2099,41 @@ export const validateTicket = obj => {
     });
   };
 };
+export const UpdateConfirmBag = (obj,LastStatus) => {
+  return (dispatch, getState) => {
+    const { listBagSelected, objData } = getState().ticket_proc;
+    let listBagSelectedTemp = _.clone(listBagSelected, true);
+    let sumWaxset = 0;
+    console.log('LastStatus',LastStatus,obj)
+    listBagSelectedTemp = listBagSelectedTemp.map(item => {
+      if (item.IdBag === obj.IdBag) {
+        item.Status = LastStatus;
+        if (LastStatus===STATUS_TF_TRANS_02_CODE)
+          {
+            item.statusName=STATUS_TF_TRANS_02_NAME
+          }
+        else 
+          {
+            item.statusName=STATUS_TF_TRANS_04_NAME
+          }
+        console.log('item.Status4BAG',item.IdBag)
+      }
+      return item;
+    });
+    console.log('listBagSelectedTemp',listBagSelectedTemp)
+    dispatch({
+      type: CONFIRM_BAG_DETAIL,
+      payload: {
+        listBagSelected: listBagSelectedTemp
+      }
+    });
+  };
+};
+
 export const getDataDetailByCode = (value = "") => {
   return (dispatch, getState) => {
     let { objData } = getState().ticket_proc;
+    console.log('value',value,'getDataDetailByCode',objData)
     return new Promise((resolve, reject) => {
       axios
         .get(`${Config.API_URL_USER}ticket_proc/get_ticket_detail`, {
@@ -1984,6 +2143,7 @@ export const getDataDetailByCode = (value = "") => {
           response => {
             let { data } = response.data;
             let data_temp = data;
+            console.log('value',value,'data_temp',data_temp)
             data_temp.map(item => {
               item.Qty_Product_RemainTemp = item.Qty_Product_Remain;
               if (item.Qty_Product_Cancel > 0) {
@@ -1991,7 +2151,8 @@ export const getDataDetailByCode = (value = "") => {
                   item.Qty_Product_Remain + item.Qty_Product_Cancel;
               }
               item.Temp_Waxset_Weight = item.Waxset_Weight;
-              item.Temp_Handset_Weight = item.Handset_Weight
+              item.Temp_Handset_Weight = item.Handset_Weight;
+
               return item;
             });
             dispatch({
@@ -2011,8 +2172,8 @@ export const getDataDetailByCode = (value = "") => {
 };
 
 function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
+  var letters = "0123456789ABCDEF";
+  var color = "#";
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
@@ -2044,7 +2205,7 @@ export const getDataDetailStoneByCode = (
 
             const groupProductByOrder = _.chain(data)
               .groupBy("strProducts")
-              .map(function (v, i) {
+              .map(function(v, i) {
                 return {
                   IdProduct: i,
                   IdOrder: _.map(v, "IdOrder"),
@@ -2053,9 +2214,8 @@ export const getDataDetailStoneByCode = (
               })
               .value();
 
-
             // parse Color by Group Product
-            data = indexColor(data)
+            data = indexColor(data);
             dispatch({
               type: GET_LIST_TICKET_DETAIL,
               payload: {
@@ -2208,29 +2368,33 @@ export const getDataSkeleton = () => {
   };
 };
 
-export const getTicketProcDetail = (CodeTicket) => {
+export const getTicketProcDetail = CodeTicket => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      axios.get(`${Config.API_URL_USER}ticket_proc/ticket_proc_detail`, { params: { CodeTicket } }).then(
-        response => {
-          let { data } = response.data;
-          const objData = data[0]
-          dispatch({
-            type: UPDATE_CELL_INPUT_BY_BAG,
-            payload: {
-              objData
-            }
-          });
-          resolve(objData);
-        },
-        err => {
-          reject(err);
-        }
-      );
+      axios
+        .get(`${Config.API_URL_USER}ticket_proc/ticket_proc_detail`, {
+          params: { CodeTicket }
+        })
+        .then(
+          response => {
+            let { data } = response.data;
+            const objData = data[0];
+            dispatch({
+              type: UPDATE_CELL_INPUT_BY_BAG,
+              payload: {
+                objData
+              }
+            });
+            resolve(objData);
+          },
+          err => {
+            reject(err);
+          }
+        );
     });
   };
 };
-export const printDetail = (itemDetail) => {
+export const printDetail = itemDetail => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios

@@ -279,16 +279,16 @@ class TabConfigFormView extends React.Component {
       if (key == "IdCustomer") {
         this.props.getListCustomerConfig(data);
       }
-      if (key == "CodeLAI") {
-        if (["0", "1"].indexOf(data) !== -1) {
-          let objDpolicy = list_dpolicy.find(x => x.DType == data);
-          objDataConfig["DPCode"] = objDpolicy.code;
-          this.props.updateInputItemConfig(objDataConfig);
-        }else{
-          objDataConfig["DPCode"] = '';
-          this.props.updateInputItemConfig(objDataConfig);
-      }
-      }
+      // if (key == "CodeLAI") {
+      //   if (["0", "1"].indexOf(data) !== -1) {
+      //     let objDpolicy = list_dpolicy.find(x => x.DType == data);
+      //     objDataConfig["DPCode"] = objDpolicy.code;
+      //     this.props.updateInputItemConfig(objDataConfig);
+      //   }else{
+      //     objDataConfig["DPCode"] = '';
+      //     this.props.updateInputItemConfig(objDataConfig);
+      // }
+      // }
     } else {
       let { objData } = this.props.customer;
       objData[key] = data;

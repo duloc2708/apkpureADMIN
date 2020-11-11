@@ -525,6 +525,7 @@ export const updateNumberCastingById = (obj) => {
         temp.map((item, i) => {
             if (item.value == obj.id) {
                 item.sl = obj.value
+                item.WeightWax=obj.WeightWax
             }
             return item
         })
@@ -540,11 +541,41 @@ export const updateNumberCastingById = (obj) => {
 export const updateNumberStoneById = (obj) => {
     return (dispatch, getState) => {
         let { listStoneSelected } = getState().products
-        let temp = _.clone(listStoneSelected, true);
+        let temp = _.clone(listStoneSelected, true);  
+       
         temp.map((item, i) => {
-            if (item.value == obj.id) {
+             if (item.value == obj.id) {
                 item.sl = obj.value
             }
+            // if (obj.id=='sl')
+            // {
+            //      item.sl = obj.value
+            // }
+            return item
+        })
+        dispatch({
+            type: UPDATE_NUMBER_STONE_BY_ID,
+            payload: {
+                listStoneSelected: temp
+            }
+        })
+    }
+}
+export const updateQtyHandsetStoneById = (obj) => {
+    return (dispatch, getState) => {
+        let { listStoneSelected } = getState().products
+        let temp = _.clone(listStoneSelected, true);
+       
+        temp.map((item, i) => {
+            
+             if (item.value == obj.other) {
+                item.QtyHandset = obj.value
+
+            }
+            // if (obj.id=='QtyHandset')
+            // {
+            //    item.QtyHandset = obj.value 
+            // }
             return item
         })
         dispatch({
@@ -573,6 +604,7 @@ export const updatePrimaryStoneById = (obj, checked) => {
         })
     }
 }
+
 export const updateNumberMouldById = (obj) => {
     return (dispatch, getState) => {
         let { listMouldSelected } = getState().products
@@ -733,19 +765,24 @@ export const addListStoneAndCasting = () => {
         let data_temp3 = []
         let data_temp4 = []
         if (objData.Id) {
+            console.log('data_stone',data_temp)
+            console.log('listStoneSelected',listStoneSelected)
             listStoneSelected.map((item, i) => {
                 data_temp.push({
                     IdProduct: objData.Id,
                     IdStone: item.value,
                     Qty: item.sl,
+                    QtyHandset: item.QtyHandset || 0,
                     PrimaryStone: item.PrimaryStone ? 1 : 0,
                 })
             })
+
             listCastingSelected.map((item, i) => {
                 data_temp2.push({
                     IdProduct: objData.Id,
                     IdCasting: item.value,
-                    Qty: item.sl
+                    Qty: item.sl,
+                    WeightWax: item.WeightWax,
                 })
             })
             listProductsSelected.map((item, i) => {
@@ -758,7 +795,8 @@ export const addListStoneAndCasting = () => {
                 data_temp4.push({
                     IdProduct: objData.Id,
                     IdMould: item.value,
-                    Qty: item.sl
+                    Qty: item.sl,
+                    WeightWax: item.WeightWax,
                 })
             })
             return new Promise((resolve, reject) => {
@@ -797,7 +835,9 @@ export const addListCasting = () => {
                 data_temp.push({
                     IdProduct: objData.Id,
                     IdCasting: item.value,
-                    Qty: item.sl
+                    Qty: item.sl,
+                    QtyHandset: item.QtyHandset,
+                    WeightWax: item.WeightWax,
                 })
             })
             return new Promise((resolve, reject) => {

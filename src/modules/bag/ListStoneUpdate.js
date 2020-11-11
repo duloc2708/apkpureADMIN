@@ -130,6 +130,7 @@ class ListStoneUpdate extends React.Component {
                 <table className="table table-striped" id={idTable}>
                     <thead>
                         <tr>
+                            <th style={{ "textAlign": "left" }} key={`thead_${0}`} scope="col">{'Tổng SL đá'}</th>
                             <th style={{ "textAlign": "left" }} key={`thead_${1}`} scope="col">{'Số lượng'}</th>
                             <th style={{ "textAlign": "left" }} key={`thead_${9}`} scope="col">{'Sl đá/pc'}</th>
                             <th style={{ "textAlign": "left" }} key={`thead_${10}`} scope="col">{'Đá handset'}</th>
@@ -148,10 +149,13 @@ class ListStoneUpdate extends React.Component {
                     <tbody>
                         {list_stone_save.map((item, i) => {
                             let { IdStone, Color, numofstone, value, Weight, PrimaryStone, IdProduct, IdProductColorStone, IdProductColorParentColorStone, 
-                                ColorParent, IdProductParent, sl2, exchange, TypeStone, AvgStone, IdProductParentIdProductStoneColor, sl,AvgWeight } = item
+                                ColorParent, IdProductParent, sl2, exchange, TypeStone, AvgStone, IdProductParentIdProductStoneColor, sl,AvgWeight,remain } = item
                             AvgStone = Weight / sl2
                             return (
                                 <tr key={`dataDetail_${i}`}>
+                                    <td>
+                                        {remain || 0}
+                                    </td>
                                     <td style={{ "textAlign": "left", "fontWeight": PrimaryStone == 1 ? 'bold' : '' }}>
                                         {sl2 || 0}
                                     </td>
@@ -164,7 +168,7 @@ class ListStoneUpdate extends React.Component {
                                     <td style={{ "textAlign": "left", "fontWeight": PrimaryStone == 1 ? 'bold' : '' }}>
                                         {IdStone}
                                     </td>
-                                    <td style={{ "textAlign": "left" }}>
+                                    <td style={{ "font-weight":"bold"}}>
                                         <Combobox disable={true} type_code='DSM' keyInput="Color" value={PrimaryStone || Color ? Color : '001'} id={IdProductParent + ColorParent + IdStone + '/' + IdStone} parentObject={this} />
                                     </td>
                                     <td style={{ "textAlign": "left" }}>

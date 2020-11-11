@@ -303,6 +303,7 @@ class ListCastingProcFormView extends React.Component {
                   Name,
                   ValueDate,
                   CodeLV,
+                  CodeLVLH,
                   ValueLV,
                   Notes,
                   Waxset_Weight_T,
@@ -358,13 +359,14 @@ class ListCastingProcFormView extends React.Component {
                         .format("DD/MM/YYYY HH:mm:ss")}
                     </td>
                     <td>{CodeLV}</td>
+                    <td>{CodeLVLH}</td>
                     {columns}
                     <td>{StatusName}</td>
                     <ButtonPermission
                       type="ACCEPT_ORDER"
                       key="ACCEPT_ORDER"
                       nameBtn="ACCEPT_ORDER"
-                      icon={`fa fa-check`}
+                      icon={`fa fa-arrow-circle-right`}
                       data={{ item: item, Status: STATUS_PROCESS_ACCEPT }}
                       parentObject={this}
                     />
@@ -372,7 +374,7 @@ class ListCastingProcFormView extends React.Component {
                       type="COMPlETED_OUTPUT"
                       key="COMPlETED_OUTPUT"
                       nameBtn="COMPlETED_OUTPUT"
-                      icon={`fa fa-check`}
+                      icon={`fa fa-arrow-circle-left`}
                       data={{ item: item, Status: STATUS_PROCESS_FINISH }}
                       parentObject={this}
                     />
@@ -397,7 +399,7 @@ class ListCastingProcFormView extends React.Component {
                       }}
                       parentObject={this}
                     />
-                    <ButtonPermission
+                    {/* <ButtonPermission
                       type="DETAIL"
                       key="DETAIL"
                       nameBtn="DETAIL"
@@ -407,7 +409,7 @@ class ListCastingProcFormView extends React.Component {
                         checked: checked ? checked : !checked
                       }}
                       parentObject={this}
-                    />
+                    />*/}
                   </tr>
                 );
               })}

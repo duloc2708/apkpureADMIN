@@ -43,7 +43,16 @@ class ListStoneSplit extends React.Component {
   }
 
   ChangeValueCell(value) {
-    this.props.updateCellStoneSplit(value);
+    
+    if(value.key=='totalWeight')
+    {
+      this.props.updateCelltotalWeightStoneSplit(value);
+    }
+    else
+    {
+      this.props.updateCellStoneSplit(value);
+    }
+    
   }
 
   ChangeValueCombobox(obj) {
@@ -101,7 +110,7 @@ class ListStoneSplit extends React.Component {
                 {"Loại đá"}
               </th>
               <th style={{ textAlign: "left" }} key={`thead_${5}`} scope="col">
-                {"Tổng trọng lượng"}
+                {"Trọng lượng"}
               </th>
               <th style={{ textAlign: "left" }} key={`thead_${6}`} scope="col">
                 {"Quy đổi"}
@@ -113,7 +122,10 @@ class ListStoneSplit extends React.Component {
                 {"TLTB t.khảo"}
               </th>
               <th style={{ textAlign: "left" }} key={`thead_${9}`} scope="col">
-                {"Tách"}
+                {"Tổng trọng lượng"}
+              </th>
+              <th style={{ textAlign: "left" }} key={`thead_${10}`} scope="col">
+                {"Xóa"}
               </th>
             </tr>
           </thead>
@@ -136,7 +148,9 @@ class ListStoneSplit extends React.Component {
                 SplitIdProductColorParentColorStone,
                 TypeStone,
                 AvgStone,
-                AvgWeight
+                AvgWeight,
+                totalWeight,
+                randomNumber
               } = item;
               AvgStone = Weight / sl2;
               return (
@@ -168,7 +182,7 @@ class ListStoneSplit extends React.Component {
                   </td>
                   <td style={{ textAlign: "left" }}>
                     <Combobox
-                      disable={true}
+                      disable={isHanset ? false : true}
                       type_code="DSM"
                       keyInput="Color"
                       value={PrimaryStone || Color ? Color : "001"}
@@ -203,6 +217,14 @@ class ListStoneSplit extends React.Component {
                   <td style={{ textAlign: "left" }}>
                     {Helper.round(AvgWeight, 4)}
                   </td>
+                  <Cell
+                    type="text"
+                    width="100px"
+                    value={totalWeight || ""}
+                    keyInput="totalWeight"
+                    id={IdProductColorParentColorStone}
+                    parentObject={this}
+                  />
                   <td onClick={() => this._onRemove(item)}>
                     <button>
                       <i className="fa fa-trash-o" aria-hidden="true"></i>

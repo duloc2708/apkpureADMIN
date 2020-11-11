@@ -556,7 +556,7 @@ class DetailFormView extends React.Component {
               <div className="form__personnal">
                 <AlertCustom onRef={ref => (this.child = ref)} />
                 <div className="panel panel-default">
-                  <div className="panel-heading">Thông tin chung</div>
+                  
                   <div className="panel-body">
                     <div className="row">
                       <div className="col-md-3">
@@ -676,7 +676,7 @@ class DetailFormView extends React.Component {
                         <div className="col-md-6">
                           <div className="form-group">
                             <div style={{ width: "20%" }}>
-                              <label htmlFor="name">Mã</label>
+                              <label htmlFor="name">Mã Worker</label>
                             </div>
                             <div style={{ width: "78%" }}>
                               <ComboboxMultiple

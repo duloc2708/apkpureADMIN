@@ -89,7 +89,7 @@ class ListProductCancel extends React.Component {
       x => x.IdBag == objBagDetail.IdBag
     );
     return (
-      <div style={{ height: "350px" }}>
+      <div style={{ height: "380px", width: "780px" }}>
         <AlertCustom onRef={ref => (this.child = ref)} />
         <table className="table table-fixed">
           <thead>

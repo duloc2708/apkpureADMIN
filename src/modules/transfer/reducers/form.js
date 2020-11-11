@@ -107,7 +107,8 @@ const INITIAL_STATE = {
     IdRef: "",
     Customer_groupKey: "",
     DayConfirmF: '',
-    Gold_Lost_T:''
+    Gold_Lost_T:'',
+    TotalWeightLH:''
   },
   listHeaderTable:[
     {

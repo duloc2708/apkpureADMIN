@@ -48,11 +48,17 @@ class SearchBag extends React.Component {
         return;
       }
       let objReturn = data[0];
-      if (objReturn.Msg != "OK") {
-        alert(objReturn.Msg);
-        return;
-      }
+      // if (objReturn.Msg != "OK") {
+      //   alert(objReturn.Msg);
+      //   return;
+      // }
 
+      if (objReturn.MsgNum = "3" && objReturn.Msg != "OK") {
+            var r1 = confirm(objReturn.Msg);
+            if (r1 == false) {
+               return;
+            }         
+      }
 
       const objBag = validateAddBag(
         item.IdBag,
@@ -206,7 +212,7 @@ class SearchBag extends React.Component {
                   created_date,
                   ProcessName,
                   StatusProcess,
-                  codeLV,
+                  CodeLV,
                   codeLH,
                   nameLH
                 } = item;
@@ -219,7 +225,7 @@ class SearchBag extends React.Component {
                     </td>
                     <td>{CodeTicket}</td>
                     <td>{IdBag}</td>
-                    <td>{codeLV}</td>
+                    <td>{CodeLV}</td>
                     <td>{nameLH}</td>
                     <td>{IdOrder}</td>
                     <td>{ProcessName}</td>

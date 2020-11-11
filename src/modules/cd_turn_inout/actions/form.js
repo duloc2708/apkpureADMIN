@@ -1048,8 +1048,8 @@ export const findProducts = (loadAll = false) => {
             objSearchTemp["total"] = 1000;
             dispatch(updateTotalInPage(1000));
           } else {
-            objSearchTemp["total"] = 10;
-            dispatch(updateTotalInPage(10));
+            objSearchTemp["total"] = 1000;
+            dispatch(updateTotalInPage(100));
           }
           axios
             .post(

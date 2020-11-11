@@ -15,7 +15,8 @@ const customHistory = ReactRouter.useRouterHistory(createHistory)({
 const routingMiddleware = ReactRouterRedux.routerMiddleware(customHistory);
 const createStoreWithMiddleware = Redux.applyMiddleware(
     reduxThunk,
-    routingMiddleware
+    routingMiddleware,
+    loggerMiddleware
 )(Redux.createStore);
 const store = createStoreWithMiddleware(reducers);
 const history = ReactRouterRedux.syncHistoryWithStore(customHistory, store);

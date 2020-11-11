@@ -24,7 +24,7 @@ class TabStone extends React.Component {
         this.setState({
             Id, Name, IdType, IdUnit, Decription, Numb, Weight
         });
-        this.props.clickCheckRow(item)
+        // this.props.clickCheckRow(item)
     }
     _handleInput(e) {
         const name = e.target.name;
@@ -42,12 +42,19 @@ class TabStone extends React.Component {
     }
 
     ChangeValueCell(value) {
-        this.props.updateNumberStoneById(value)
+        console.log('value111',value)
+       if (value.key=='QtyHandset')
+        {            
+            this.props.updateQtyHandsetStoneById(value)
+        }
+        else 
+        {
+            this.props.updateNumberStoneById(value)
+        }
     }
     ChangePrimaryStone(item, checked) {
         this.props.updatePrimaryStoneById(item, checked)
     }
-
     _onRemove(item) {
         var r = confirm(I18n.t(`alert.delete`));
         if (r == true) {
@@ -77,16 +84,32 @@ class TabStone extends React.Component {
                     </thead>
                     <tbody>
                         {listStoneSelected && listStoneSelected.map((item, i) => {
-                            let { value, label, sl, PrimaryStone } = item
-                            if (value && value.length > 0) {
-                                return (
-                                    <tr key={`data_${i}`} onClick={() => this._onClickRow(item)}>
-                                        <td>{value || ''}</td>
-                                        <td><input type="checkbox" checked={PrimaryStone ? true : false} onChange={() => this.ChangePrimaryStone(item, !PrimaryStone)} /></td>
-                                        <Cell value={sl} id={value} parentObject={this} />
-                                        <td onClick={() => this._onRemove(item)}><button><i className="fa fa-trash-o" aria-hidden="true"></i></button></td>
-                                    </tr>)
-                            }
+                        let { value, label, sl, PrimaryStone,QtyHandset,randomNumber } = item
+                        if (value && value.length > 0) {
+                            return (
+                            <tr key={`data_${i}`} onClick={() => this._onClickRow(item)}>
+                                <td>{value || ''}</td>
+                                <td><input type="checkbox" checked={PrimaryStone ? true : false} onChange={() => this.ChangePrimaryStone(item, !PrimaryStone)} /></td>                                                                
+                                <Cell
+                                    value={sl || 0}
+                                    className={`name form-control`}
+                                    keyInput="sl"
+                                    id={value}
+                                    parentObject={this}
+                                    name="sl"
+                                />  
+                                <Cell
+                                    value={QtyHandset || 0}
+                                    className={`name form-control`}
+                                    keyInput="QtyHandset"
+                                    id={randomNumber}
+                                    parentObject={this}
+                                    name="QtyHandset"
+                                    other={value}
+                                />                                
+                                <td onClick={() => this._onRemove(item)}><button><i className="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                            </tr>)
+                        }
                         })}
                     </tbody>
                 </table>

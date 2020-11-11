@@ -214,6 +214,15 @@ class CustomerFormView extends React.Component {
       );
       $(`#${key_validate}`).focus();
     }
+    if (objData.Code.length!=6 )
+    {
+        this.child._addNotification(
+            "Mã khách hàng phải nhập 6 ký tự",
+            "warning"
+          );
+        result=false;
+    }
+   
     return result;
   }
   _addNewItem() {
@@ -235,7 +244,7 @@ class CustomerFormView extends React.Component {
   _handleInput(e) {
     let { id, value } = e.target;
     let { objData } = this.props.customer;
-    objData[id] = value;
+    objData[id] = value;    
     this.props.updateInputItem(objData);
   }
   _handleInputConfig(e) {

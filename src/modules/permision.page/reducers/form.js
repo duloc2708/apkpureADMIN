@@ -43,7 +43,9 @@ const INITIAL_STATE = {
                 { code: 'ACCEPT_ORDER', name: 'Xác nhận' },
                 { code: 'CANCEL_ORDER', name: 'Huỷ' },
                 { code: 'COPY', name: 'Copy' },
-                { code: 'PRICE_ORDER', name: 'Giá' }]
+                { code: 'PRICE_ORDER', name: 'Giá' },
+                { code: 'ALLOW_DISCOUNT', name: 'Giảm giá' }
+                ]
         },
         { page: 'bag', listbtn: [{ code: 'DELETE_BAG', name: 'Xoá bag' },
         { code: 'CANCEL_BAG', name: 'Huỷ bag' }] },

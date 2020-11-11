@@ -153,10 +153,10 @@ class ListBag extends React.Component {
     let {
       objData
     } = this.props.ticket_proc_wax_setting;
-    if (!objData.CodeLV) {
-      alert("Vui lòng chọn loại vàng!");
-      return false;
-    }
+    // if (!objData.CodeLV) {
+    //   alert("Vui lòng chọn loại vàng!");
+    //   return false;
+    // }
     this.props.addItemBagNew();
   }
   _funcAddProduct(listProductsSelected) {

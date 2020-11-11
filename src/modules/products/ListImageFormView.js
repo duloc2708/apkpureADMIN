@@ -1,4 +1,4 @@
-import Dropzone from 'react-dropzone';
+import Dropzone from 'react-dropzone'
 import * as productsActions from 'modules/products/actions/form'
 class ListImageFormView extends React.Component {
     constructor() {
@@ -11,7 +11,7 @@ class ListImageFormView extends React.Component {
     onDrop(acceptedFiles, rejectedFiles) {
         let filesArray = [], listimg = '';
         let { objData } = this.props.products
-        if(!objData.Id){
+        if (!objData.Id) {
             alert('Mã sản phẩm không tồn tại')
             return
         }
@@ -38,7 +38,7 @@ class ListImageFormView extends React.Component {
         let { objData } = this.props.products
         this.props.getListImageByProducts()
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.setState({
             fileName: '',
             files: []
@@ -76,12 +76,12 @@ class ListImageFormView extends React.Component {
                                     [
                                         <input type="radio" name="ss2" id={`ss2-item-${i + 1}`} className="slideshow--bullet" defaultChecked={i == 0 ? true : false} />,
                                         <div className="slideshow--item">
-                                                <div style={{ "border": "2px solid black", "display": "inline-block", "padding": "3px 3px", "textAlign": "right" }}>
-                                                    <img src={Config.API_URL_IMAGE + Path} width="280px" height="280px" />                                                      
-                                                </div>
-                                                <label htmlFor={`ss2-item-${i}`} className="slideshow--nav slideshow--nav-previous">Go to slide 3</label>
-                                                <label htmlFor={`ss2-item-${i + 2}`} className="slideshow--nav slideshow--nav-next">Go to slide 2</label> 
-                                            
+                                            <div style={{ "border": "2px solid black", "display": "inline-block", "padding": "3px 3px", "textAlign": "right" }}>
+                                                <img src={Config.API_URL_IMAGE + Path} width="280px" height="280px" />
+                                            </div>
+                                            <label htmlFor={`ss2-item-${i}`} className="slideshow--nav slideshow--nav-previous">Go to slide 3</label>
+                                            <label htmlFor={`ss2-item-${i + 2}`} className="slideshow--nav slideshow--nav-next">Go to slide 2</label>
+
                                         </div>
                                     ]
                                 )
@@ -89,13 +89,22 @@ class ListImageFormView extends React.Component {
                     }
                 </div>
                 <div className="file-upload" style={{ "paddingTop": "180px" }}>
-                    <Dropzone
+                    {/* <Dropzone
                         multiple={true}
                         onDrop={(files) => this.onDrop(files)}
                         style={dropzoneStyle}
                         required
                     >
                         <div><a> Chọn hình sản phẩm</a></div>
+                    </Dropzone> */}
+
+                    <Dropzone multiple={true} onDrop={(files) => this.onDrop(files)} style={dropzoneStyle} >
+                        {({ getRootProps, getInputProps }) => (
+                            <div {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                <div><a> Chọn hình sản phẩm</a></div>
+                            </div>
+                        )}
                     </Dropzone>
                 </div>
             </div>

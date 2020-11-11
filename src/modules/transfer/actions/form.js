@@ -975,7 +975,25 @@ export const updateExistProduct = itemProduct => {
     });
   };
 };
+export const calGoldWarmDetail = (objData) => {
+  return (dispatch, getState) => {
+    let { list_data_gold } = getState().transfer;
+    let temp = _.clone(list_data_gold, true);
+    temp=temp.map((item, i) => {
+      if (item.TF_Weight_From) {
+        item.TF_Weight_To = objData.TypeGoldWarm && (item.TF_Weight_From * item.ValueLV_From / objData.TypeGoldWarm) || '';
+      }
+      return item;
+    });
 
+    dispatch({
+      type: UPDATE_CELL_INPUT,
+      payload: {
+        list_data_gold: temp
+      }
+    });
+  };
+};
 export const updateInputItem = obj => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
@@ -1362,7 +1380,7 @@ export const updateCellInput = obj => {
       if (i == obj.id) {
         item[obj.key] = obj.value;
         if (item.TF_Weight_From) {
-          item.TF_Weight_To = item.TF_Weight_From * item.ValueLV_From / objData.TypeGoldWarm;
+          item.TF_Weight_To = objData.TypeGoldWarm && (item.TF_Weight_From * item.ValueLV_From / objData.TypeGoldWarm) || '';
         }
       }
       return item;
@@ -1409,6 +1427,11 @@ const mappingListDataGold = (list_gold, objData) => {
   let objData_temp = _.clone(objData, true);
   let sumTF_Weight_To = 0;
   list_gold_temp = list_gold_temp.map(item => {
+    item.totalGoldCook=''
+    item.totalGoldCook10=''
+    item.IdStore_From=''
+    item.IdStore_To=''
+    item.Gold_Lost=''
     item.keyMap = objData.keyMap
     item.TF_Weight_To = parseFloat(list_gold_temp.TF_Weight_To || 0)
     // truong hop chuyen kho thi LoaiVang, TL vang TO=FROM
@@ -1427,7 +1450,7 @@ const mappingListDataGold = (list_gold, objData) => {
     }
     return item;
   })
-  list_gold_temp = list_gold_temp.filter(x => x.TF_Weight_To > 0);
+  list_gold_temp = list_gold_temp.filter(x => parseFloat(x.TF_Weight_To || 0) > 0);
 
   if (objData.TransType == 'TF_TYPE_02') {
     objData_temp = {
@@ -1437,14 +1460,17 @@ const mappingListDataGold = (list_gold, objData) => {
   }
   objData_temp = {
     ...objData_temp,
+    TotalWeightLH:'',
     Gold_Lost_T: Helper.round(objData_temp.Gold_Lost_T,4)
   }
+
   return {
     list_data_gold: list_gold_temp,
     objData: objData_temp
   };
 }
 const mappingListDataGoldCook = (listGoldCook, objData) => {
+
   let objData_temp = _.clone(objData, true);
   objData_temp.IdStore_From = 'SAJIHH';
   objData_temp.IdStore_To = 'SAJITG';
@@ -1454,18 +1480,19 @@ const mappingListDataGoldCook = (listGoldCook, objData) => {
     Gold_Lost_T: Helper.round(objData_temp.TotalWeightBeforeCook - objData.TotalWeightAfterWarm || 0, 4)
   };
   let list_gold_temp = _.clone(listGoldCook, true);
-  list_gold_temp=list_gold_temp.filter(x=>x.checked);
+  list_gold_temp = list_gold_temp.filter(x => parseFloat(x.TF_Weight_From || 0) > 0);
+
+  // list_gold_temp=list_gold_temp.filter(x=>x.checked);
   list_gold_temp = list_gold_temp.map(item => {
     item.keyMap = objData.keyMap;
-    item.IdStore_From = item.IdStore;
+    item.IdStore_From = item.IdStore_From || item.IdStore;
     item.IdStore_To = 'SAJITG';
-    item.ValueLV_From = item.ValueLV;
+    item.ValueLV_From =  item.ValueLV_From || item.ValueLV;
     item.ValueLV_To = objData_temp.TypeGoldWarm;
     item.totalGoldCook = Helper.round(item.totalGoldCook, 4);
     item.totalGoldCook10 = Helper.round(item.totalGoldCook10, 4);
     item.TF_Weight_Hold = Helper.round(item.TF_Weight_Hold, 4);
-    item.TF_Weight_From = Helper.round(item.TF_Weight - item.TF_Weight_Hold,4);
-    item.TF_Weight_To = Helper.round((item.TF_Weight -item.TF_Weight_Hold)/objData_temp.TotalWeightBeforeCook*objData_temp.TotalWeightAfterWarm,4);
+    // item.TF_Weight_To = Helper.round((item.TF_Weight -item.TF_Weight_Hold)/objData_temp.TotalWeightBeforeCook*objData_temp.TotalWeightAfterWarm,4);
     item.IsDeleted=-1;
     item.Gold_Lost=item.Gold_Lost||null;
     item.WeightAfterWarm=Helper.round(item.ValueLV*objData_temp.TotalWeightAfterWarm/item.totalGoldCook,4)
@@ -1488,8 +1515,8 @@ export const addNewItem = data => {
       (resolve, reject) => {
         axios
           .post(`${Config.API_URL_USER}transfer/add`, {
-            objData: type == 0 ? mappingListDataGold(list_data_gold, objData).objData : mappingListDataGoldCook(listGoldCook, objData).objData,
-            list_data_gold: type == 0 ? mappingListDataGold(list_data_gold, objData).list_data_gold : mappingListDataGoldCook(listGoldCook, objData).list_data_gold
+            objData: type == 0 ? mappingListDataGold(list_data_gold, objData).objData : mappingListDataGoldCook(list_data_gold, objData).objData,
+            list_data_gold: type == 0 ? mappingListDataGold(list_data_gold, objData).list_data_gold : mappingListDataGoldCook(list_data_gold, objData).list_data_gold
           })
           .then(response => {
             resolve(response);
@@ -1513,8 +1540,8 @@ export const updateItem = data => {
       (resolve, reject) => {
         axios
           .post(`${Config.API_URL_USER}transfer/update`, {
-            objData: type == 0 ? mappingListDataGold(list_data_gold, objData).objData : mappingListDataGoldCook(listGoldCook, objData).objData,
-            list_data_gold: type == 0 ? mappingListDataGold(list_data_gold, objData).list_data_gold : mappingListDataGoldCook(listGoldCook, objData).list_data_gold
+            objData: type == 0 ? mappingListDataGold(list_data_gold, objData).objData : mappingListDataGoldCook(list_data_gold, objData).objData,
+            list_data_gold: type == 0 ? mappingListDataGold(list_data_gold, objData).list_data_gold : mappingListDataGoldCook(list_data_gold, objData).list_data_gold
           })
           .then(response => {
             resolve(response);

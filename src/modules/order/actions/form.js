@@ -441,6 +441,26 @@ export const getListProductByOrder = () => {
     });
   };
 };
+export const updateActiveToolTipBag = (obj, status) => {
+  return (dispatch, getState) => {    
+     const { list_data } = getState().order;
+      let objDataOrder_temp = _.clone(list_data, true);
+     console.log('obj',obj)
+    objDataOrder_temp.map(item => {
+      item.isActive = false;
+      if (item.IdOrder == obj.IdOrder) {
+        item.isActive = status;
+      }
+      return item;
+    });
+    dispatch({
+      type: GET_OTHER_PRODUCTS,
+      payload: {
+        list_data: objDataOrder_temp
+      }
+    });
+  };
+};
 export const getListProductByOrderReport = objDataOrder => {
   return (dispatch, getState) => {
     let { listProductsSelected } = getState().order;
@@ -539,8 +559,8 @@ export const getListProductsByPrice = (value, objDataOrder) => {
               itemParse.url_image = itemParse.Image;
               itemParse.value = itemParse.Id;
               itemParse.price =
-                Helper.roundNumberPerThousand(parseFloat(itemParse.Price)) *
-                ((100 - parseFloat(objDataOrder.discount || 0)) / 100);
+                Helper.roundNumberPerThousand(parseFloat(itemParse.Price)) ;
+                // ((100 - parseFloat(objDataOrder.discount || 0)) / 100);
               itemParse.price_basic = Helper.roundNumberPerThousand(
                 parseFloat(itemParse.Price)
               );
@@ -568,8 +588,8 @@ export const getListProductsByPrice = (value, objDataOrder) => {
                   item.price =
                     Helper.roundNumberPerThousand(
                       parseFloat(findProduct.Price)
-                    ) *
-                    ((100 - parseFloat(objDataOrder.discount || 0)) / 100);
+                    ) ;
+                    // ((100 - parseFloat(objDataOrder.discount || 0)) / 100);
                   item.price_basic = Helper.roundNumberPerThousand(
                     parseFloat(findProduct.Price)
                   );
@@ -736,7 +756,7 @@ export const selectCustomer = value => {
                 ValueMX: listCustomerConfig[0].ValueMX,
                 ValueLAI: listCustomerConfig[0].ValueLAI,
                 CodeBaoGia: listCustomerConfig[0].CodeBaoGia,
-                discount: listCustomerConfig[0].Discount,
+                // discount: listCustomerConfig[0].Discount,
                 Customer_groupKey: listCustomerConfig[0].groupKey
               };
             }
@@ -751,7 +771,7 @@ export const selectCustomer = value => {
                 payload: {
                   objDataOrder: objDataOrder_temp,
                   namecustomer: name,
-                  discount: Discount || 0,
+                  // discount: Discount || 0,
                   CodeBaoGia: objDataOrder_temp.CodeBaoGia,
                   CodeBaoGiaTemp: objDataOrder_temp.CodeBaoGia
                 }
@@ -783,10 +803,8 @@ export const selectProducts = objDataOrder => {
             temp.map((item, i) => {
               let item_temp = _.clone(item, true);
               item.price_basic = parseInt(item_temp.price);
-              item.price = Helper.roundNumberPerThousand(
-                parseInt(item_temp.price) *
-                  ((100 - parseFloat(objOrder.discount || 0)) / 100)
-              );
+              item.price = Helper.roundNumberPerThousand(parseInt(item_temp.price));
+                  // ((100 - parseFloat(objOrder.discount || 0)) / 100);
               item.stt = item_temp.value + "_" + i;
               item.sum = item.price * item_temp.sl;
               item.sum_basic = item.price_basic * item.sl;
@@ -810,10 +828,8 @@ export const selectProducts = objDataOrder => {
       temp.map((item, i) => {
         let item_temp = _.clone(item, true);
         item.price_basic = parseInt(item_temp.price);
-        item.price = Helper.roundNumberPerThousand(
-          parseInt(item_temp.price) *
-            ((100 - parseFloat(objOrder.discount || 0)) / 100)
-        );
+        item.price = Helper.roundNumberPerThousand(parseInt(item_temp.price));
+            // ((100 - parseFloat(objOrder.discount || 0)) / 100));
         item.stt = item_temp.value + "_" + i;
         item.sum = item.price * item_temp.sl;
         item.sum_basic = item.price_basic * item.sl;
@@ -1089,7 +1105,8 @@ export const clickCheckRowOrder = (value, checked) => {
         CodeLV: "",
         CodeMX: "",
         CodeLAI: "",
-        remark: ""
+        remark: "",
+        discount:""
       };
       if (checked) {
         itemDetailTemp = value;

@@ -121,7 +121,7 @@ class CreateBagFromView extends React.Component {
                                 let statusWeight = ''
                                 let lenthNum = 0
                                 list_stone_save_new.map(item => {
-                                    if (item.Weight > 0) {
+                                    if (item.Weight > 0 || (item.numofstone==0 && (item.Weight || item.Weight == 0))) {
                                         lenthNum = lenthNum + 1
                                     }
                                 })

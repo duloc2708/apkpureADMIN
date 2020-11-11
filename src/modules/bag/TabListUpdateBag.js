@@ -150,7 +150,7 @@ class TabListUpdateBag extends React.Component {
                 let { IdOdd, listChildrenProduct } = item
                 if (IdOdd == "1") {
                     list_stone_save_temp.map((item2) => {
-                        if (parseFloat(item2.Weight) <= 0) {
+                        if (parseFloat(item2.Weight) <= 0 && item2.numofstone>0) {
                             type = 4
                             isCheck = false
                             statusWeight = 'BAG_WEIGHT_STATUS_02'
@@ -168,7 +168,7 @@ class TabListUpdateBag extends React.Component {
                         return
                     } else {
                         list_stone_save_temp.map((item2) => {
-                            if (parseFloat(item2.Weight) <= 0) {
+                            if (parseFloat(item2.Weight) <= 0 && item2.numofstone>0) {
                                 type = 4
                                 isCheck = false
                                 statusWeight = 'BAG_WEIGHT_STATUS_02'
@@ -182,15 +182,17 @@ class TabListUpdateBag extends React.Component {
             })
         }
         let lenthNum = 0
-        console.log('lenthNum default', lenthNum);
+        
 
         list_stone_save_temp.map(item => {
-            if (item.Weight && item.Weight > 0) {
-                console.log('item.Weight', item);
+            // console.log('item.Weight', item.Weight,'numofstone',item.numofstone);
+            if (item.Weight && item.Weight > 0 || (item.numofstone==0 && (item.Weight || item.Weight == 0))) {
+                // console.log('item.Weight', item);
 
                 lenthNum = lenthNum + 1
             }
         })
+        // console.log('lenthNum default', lenthNum,'list_stone_save_temp.length',list_stone_save_temp.length);
         // trường hợp chưa nhập tất cả trọng lượng đá
         if (lenthNum == 0) {
             statusWeight = 'BAG_WEIGHT_STATUS_03'

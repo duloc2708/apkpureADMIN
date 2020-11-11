@@ -24,6 +24,17 @@ const INITIAL_STATE = {
             filter: false
         },
         {
+            key: "CodeTicket",
+            title: "Số ticket",
+            type: "link",
+            format: "",
+            class: "",
+            icon: "",
+            sort: true,
+            sortBy: "",
+            filter: true
+        },
+        {
             key: "nameProcess",
             title: "Process",
             type: "text",
@@ -44,18 +55,7 @@ const INITIAL_STATE = {
             sort: true,
             sortBy: "",
             filter: true
-        },
-        {
-            key: "CodeTicket",
-            title: "Số ticket",
-            type: "link",
-            format: "",
-            class: "",
-            icon: "",
-            sort: true,
-            sortBy: "",
-            filter: true
-        },
+        },        
         {
             key: "Worker",
             title: "Worker",
@@ -70,6 +70,73 @@ const INITIAL_STATE = {
         {
             key: "ValueLV",
             title: "Loại vàng",
+            type: "text",
+            format: "",
+            class: "",
+            icon: "",
+            sort: true,
+            sortBy: "",
+            filter: true
+        },
+        // {
+        //     key: "Product_Weight_IN",
+        //     title: "TLSP Vào",
+        //     type: "text",
+        //     format: "",
+        //     class: "",
+        //     icon: "",
+        //     sort: true,
+        //     sortBy: "",
+        //     filter: true
+        // },
+        {
+            key: "Product_Weight_OUT",
+            title: "TLSP Ra",
+            type: "text",
+            format: "",
+            class: "",
+            icon: "",
+            sort: true,
+            sortBy: "",
+            filter: true
+        },
+        {
+            key: "Gold_Weight_OUT",
+            title: "TLV Ra",
+            type: "text",
+            format: "",
+            class: "",
+            icon: "",
+            sort: true,
+            sortBy: "",
+            filter: true
+        },
+        {
+            key: "Gold_Weight_IN",
+            title: "TLV Vào",
+            type: "text",
+            format: "",
+            class: "",
+            icon: "",
+            sort: true,
+            sortBy: "",
+            filter: true
+        },
+        
+        {
+            key: "AddGoldWeight",
+            title: "TL Vàng bổ sung",
+            type: "text",
+            format: "",
+            class: "",
+            icon: "",
+            sort: true,
+            sortBy: "",
+            filter: true
+        },
+        {
+            key: "Gold_Lost",
+            title: "Hao hụt",
             type: "text",
             format: "",
             class: "",

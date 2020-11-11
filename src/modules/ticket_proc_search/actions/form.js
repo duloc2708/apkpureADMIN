@@ -18,7 +18,7 @@ export const getListBagInAllTicketProc = () => {
         return new Promise((resolve, reject) => {
             axios
                 .get(`${Config.API_URL_USER}ticket_proc/search_bag_all_process`, {
-                    params: { page: 1, total: 20, key: objSearch.input }
+                    params: { page: 1, total: 100, key: objSearch.input }
                 })
                 .then(
                     response => {

@@ -845,6 +845,7 @@ export const updateCellStoneSplit = (objTemp) => {
                     item["exchange"] = Helper.round((obj.value) / value, 4)
                     item["AvgStone"] = (obj.value / item.sl2)
                     item["AvgStoneSum"] = (obj.value / item.sl2)
+                    item["totalWeight"] =item["totalWeight"] || 0
                 }
                 return item
             })
@@ -855,6 +856,7 @@ export const updateCellStoneSplit = (objTemp) => {
                     item["exchange"] = Helper.round((obj.value) / value, 4)
                     item["AvgStone"] = (obj.value / item.sl2)
                     item["AvgStoneSum"] = (obj.value / item.sl2)
+                    item["totalWeight"] =item["totalWeight"] || 0
                 }
                 return item
             })
@@ -866,6 +868,7 @@ export const updateCellStoneSplit = (objTemp) => {
                     item["exchange"] = Helper.round((obj.value) / value, 4)
                     item["AvgStone"] = (obj.value / item.sl2)
                     item["AvgStoneSum"] = (obj.value / item.sl2)
+                    item["totalWeight"] =item["totalWeight"] || 0
                 }
                 return item
             })
@@ -876,6 +879,7 @@ export const updateCellStoneSplit = (objTemp) => {
                     item["exchange"] = Helper.round((obj.value) / value, 4)
                     item["AvgStone"] = (obj.value / item.sl2)
                     item["AvgStoneSum"] = (obj.value / item.sl2)
+                    item["totalWeight"] =item["totalWeight"] || 0
                 }
                 return item
             })
@@ -889,6 +893,67 @@ export const updateCellStoneSplit = (objTemp) => {
                 list_stone_save_split_custom: tempCustom
             }
         })
+
+    }
+}
+export const updateCelltotalWeightStoneSplit = (objTemp) => {
+    return (dispatch, getState) => {
+        let obj = _.clone(objTemp, true)
+        let { list_stone_save_split, list_stone_save_split_custom, itemDetailCreateBag } = getState().bag
+        let { list_config } = getState().header
+        let temp = _.clone(list_stone_save_split, true);
+        let tempCustom = _.clone(list_stone_save_split_custom, true);
+        let exchange = list_config.filter(x => x.code == "exchange"), value = 1
+        if (exchange && exchange[0]) {
+            value = parseFloat(exchange[0].value)
+        }
+        
+        if (itemDetailCreateBag.IdOdd == "1") {
+            temp.map((item, i) => {
+                if (item.IdProductColorParentColorStone == obj.id) {
+                    console.log('objTemp',objTemp)
+                    item["totalWeight"] = (obj.value)                    
+                }
+                console.log('item2',item)
+                return item
+            })
+            tempCustom.map((item, i) => {
+                if (item.IdProductColorParentColorStone == obj.id) {
+                    console.log('objTemp2',objTemp)
+                    item["totalWeight"] = (obj.value)
+                }
+                console.log('item2',item)
+                return item
+            })
+        } else {
+            temp.map((item, i) => {
+                if (item.IdProductColorParentColorStone == obj.id) {
+                    console.log('objTemp3',objTemp)
+                    item["totalWeight"] = (obj.value)
+                }
+                console.log('item3',item)
+                return item
+            })
+            tempCustom.map((item, i) => {
+                if (item.IdProductColorParentColorStone == obj.id) {
+                    console.log('objTemp4',objTemp)
+                    item["totalWeight"] = (obj.value)
+                }
+                console.log('item4',item)
+                return item
+            })
+        }
+
+
+        dispatch({
+            type: UPDATE_CELL_INPUT_BAG,
+            payload: {
+                list_stone_save_split: temp,
+                list_stone_save_split_custom: tempCustom               
+            }
+
+        })
+        console.log('list_stone_save_split',list_stone_save_split)
 
     }
 }
@@ -2865,6 +2930,7 @@ export const SplitStone = (value) => {
         let { IdProduct, ColorParent, Color, IdStone } = itemStoneSplit_temp
         itemStoneSplit_temp.SplitIdProductColorParentColorStone = IdProduct + ColorParent + Color + IdStone
         itemStoneSplit_temp.Weight = 0
+        itemStoneSplit_temp.totalWeight = 0
         itemStoneSplit_temp.Exchange = 0
         itemStoneSplit_temp.exchange = 0
         let count_stone_split = parseInt(list_stone_save_split.filter(x => x.IdProductColorParentColorStone == itemStoneSplit_temp.IdProductColorParentColorStone).length + 1)
@@ -2924,6 +2990,7 @@ export const SplitStoneDetail = (value) => {
         let { IdProduct, ColorParent, Color, IdStone } = itemStoneSplit_temp
         itemStoneSplit_temp.SplitIdProductColorParentColorStone = IdProduct + ColorParent + Color + IdStone
         itemStoneSplit_temp.Weight = 0
+        itemStoneSplit_temp.totalWeight = 0
         itemStoneSplit_temp.Exchange = 0
         itemStoneSplit_temp.exchange = 0
         let count_stone_split = parseInt(list_stone_save_split.filter(x => x.IdProductColorParentColorStone == itemStoneSplit_temp.IdProductColorParentColorStone).length + 1)

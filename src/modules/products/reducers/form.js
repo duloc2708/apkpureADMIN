@@ -97,15 +97,18 @@ const INITIAL_STATE = {
     listHeaderTabCasting: [
         { key: 'NAME', title: 'Tên casting', type: 'text', class: '', valueFilter: '' },
         { key: 'SL', title: 'Số lượng', type: 'text', class: '', valueFilter: '' },
-        { key: 'WeightWax', title: 'Tổng TL sáp', type: 'text', class: '', valueFilter: '' },
-        { key: 'WeightGold', title: 'Tổng TL vàng', type: 'text', class: '', valueFilter: '' },
+        { key: 'WeightWax', title: 'TL sáp/Khuôn (Gr)', type: 'text', class: '', valueFilter: '' },
+        { key: 'WeightGold', title: 'TL vàng/Khuôn (Chỉ)', type: 'text', class: '', valueFilter: '' },
+        { key: 'WeightWax_T', title: 'Tổng TL sáp (Gr)', type: 'text', class: '', valueFilter: '' },
+        { key: 'WeightGold_T', title: 'Tổng TL vàng (Chỉ)', type: 'text', class: '', valueFilter: '' },
         { key: 'DELETE', title: 'Xoá', type: 'text', class: '', valueFilter: '' },
 
     ],
     listHeaderTabStone: [
         { key: 'ID', title: 'Mã đá', type: 'text', class: '' },
-        { key: 'PRIMARY', title: 'Đá handset', type: 'text', class: '' },
-        { key: 'SL', title: 'Số lượng', type: 'text', class: '' },
+        { key: 'PRIMARY', title: 'Đá Handset', type: 'text', class: '' },
+        { key: 'SL', title: 'Số lượng đá/pcs', type: 'text', class: '' },
+        { key: 'QTYHANDSET', title: 'SL đá tấm đi set tay/pcs', type: 'text', class: '' },
         { key: 'DELETE', title: 'Xoá', type: 'text', class: '' },
 
     ],

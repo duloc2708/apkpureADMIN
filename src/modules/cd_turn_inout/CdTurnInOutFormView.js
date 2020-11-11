@@ -144,9 +144,9 @@ class CdTurnInOutFormView extends React.Component {
             case 3:
                 alert('Vui lòng chọn sản phẩm cùng loại vàng, màu xi, loại hội ')
                 break;
-            case 4:
-                alert(`Số lượng sản phẩm ${IdProduct} lớn hơn tồn kho`)
-                break;
+            // case 4:
+            //     alert(`Số lượng sản phẩm ${IdProduct} lớn hơn tồn kho`)
+            //     break;
             case 5:
                 alert(`Vui lòng nhập đầy đủ số lượng`)
                 break;
@@ -171,7 +171,7 @@ class CdTurnInOutFormView extends React.Component {
             default:
                 break
         }
-        if ([1, 3, 4, 5, 6, 7, 8, 9, 10, 11].indexOf(checktype) != -1) {
+        if ([1, 3, 5, 6, 7, 8, 9, 10, 11].indexOf(checktype) != -1) {
             return false
         }
         return true

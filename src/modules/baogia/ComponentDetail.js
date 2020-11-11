@@ -13,6 +13,13 @@ class ComponentDetail extends React.Component {
             Updatedate: moment()
         };
     }
+    ChangeValueComboboxMulti(obj) {
+         let { key, data } = obj
+        let { objDataBaoGia } = this.props.baogia
+        console.log(obj)
+        objDataBaoGia[key] = data
+        this.props.updateInputItem(objDataBaoGia)
+    }
     ChangeValueCombobox(obj) {
         let { id, value } = obj
         let { objDataBaoGia } = this.props.baogia
@@ -50,6 +57,7 @@ class ComponentDetail extends React.Component {
         let { objDataBaoGia } = this.props.baogia
         objDataBaoGia["Updatedate"] = date.format('YYYY-MM-DD HH:mm:ss')
         this.props.updateInputItem(objDataBaoGia)
+        console.log(objDataBaoGia)
     }
     _onChangeValue(e) {
         let { objDataBaoGia } = this.props.baogia
@@ -112,6 +120,7 @@ class ComponentDetail extends React.Component {
             , GoldRate
             , VAT
             , PriceCatType
+            , CodeLV
         } = this.props.baogia.objDataBaoGia
         let { list_pricetype, isShowProduct, is_load } = this.props.baogia
         let { status } = this.props.toolbar
@@ -139,23 +148,28 @@ class ComponentDetail extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-4">
+                     <div className="col-md-3">
                         <div className="form-group">
-                            <div className="left">
-                                <button style={{ "marginLeft": "10px" }}
-                                    onClick={() => this._onApprove()}
-                                    className="btn btn-primary" >Áp dụng</button>
-                            </div>
+                          <div className="left">
+                            <label htmlFor="name">Loại vàng</label>
+                          </div>
+                          <div className="right">
+                            <ComboboxMultiple
+                              type_code="LV"
+                              id="CodeLV"
+                              value={CodeLV}
+                              parentObject={this}
+                            />
+                          </div>
                         </div>
-                    </div>
-
+                      </div>
 
                 </div>
                 <div className="row">
                      <div className="col-md-4">
                         <div className="form-group">
                             <div className="left">
-                                <label htmlFor="name">Tính giá cho loại</label>
+                                <label htmlFor="name">Loại hàng</label>
                             </div>
                             <div className="right" >
                                 <Combobox disabled={status == 'EDIT' ? true : false}  type_code='PRICE_FACTOR' value={PriceCatType} id='PriceCatType' parentObject={this} />
@@ -248,6 +262,15 @@ class ComponentDetail extends React.Component {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="col-md-4">
+                        <div className="form-group">
+                            <div className="left">
+                                <button style={{ "marginLeft": "10px" }}
+                                    onClick={() => this._onApprove()}
+                                    className="btn btn-primary" >Áp dụng</button>
+                            </div>
+                        </div>
                 </div>
                 {/* <div className="row">
                     <div className="col-md-12">

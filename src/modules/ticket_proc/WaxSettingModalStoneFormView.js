@@ -57,7 +57,9 @@ class WaxSettingModalStoneFormView extends React.Component {
     };
     this.props.updateCellStoneWaxSetting(objData);
   }
-
+  _copyWorker(item){
+        this.props.copyWorker(item);
+  }
   render() {
     let {
       listStoneWaxset,
@@ -145,6 +147,8 @@ class WaxSettingModalStoneFormView extends React.Component {
                         parentObject={this}
                       />
                     </td>
+                    <td><a onClick={()=>this._copyWorker({...item,index:i})}><i  className="fa fa-copy" aria-hidden="true"></i></a></td>
+
                     {/* <td style={{ width: `100px` }}>
                       <input
                         id={orderby}

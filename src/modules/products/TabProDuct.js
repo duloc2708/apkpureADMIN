@@ -285,7 +285,7 @@ class TabProDuct extends React.Component {
                                 <label htmlFor="name">Resin</label>
                             </div>
                             <div className="right">
-                                <input className="name form-control" value={Resin} onChange={(e) => this._onChange(e)} type="text" id="Resin" name="Resin" required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
+                                <Combobox type_code='TYPE_RESIN' value={Resin} id='Resin' parentObject={this} />
                             </div>
                         </div>
                     </div>

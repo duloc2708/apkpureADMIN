@@ -7,7 +7,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { I18n } from "react-redux-i18n";
 import ComboboxMultipleByCustomer from "./ComboboxMultipleByCustomer";
 import ComboboxMultipleBaoGia from "./ComboboxMultipleBaoGia";
-
+let oldUserInfo = SportConfig._getCookie("userInfo");
+try {
+  oldUserInfo = JSON.parse(SportConfig.function._base64.decode(oldUserInfo));
+} catch (e) {
+  oldUserInfo = null;
+}
 class ComboboxMultipleByCustomerByOrder extends React.Component {
   constructor() {
     super();
@@ -27,6 +32,28 @@ class ComboboxMultipleByCustomerByOrder extends React.Component {
     objDataOrder[id] = value;
     this.props.updateInputItem(objDataOrder);
   }
+  ChangeValueCell(obj){
+        let { key, value } = obj        
+        if (key==="discount")
+        {          
+          if (parseFloat(value)>'10')
+          {
+           this.child._addNotification(
+            'Giảm giá không được vượt quá 10% giá trị đơn hàng',
+            "warning"
+            ); 
+           value=0
+           // return;
+          }
+          let { objDataOrder } = this.props.order
+          let objDataOrder_temp = _.clone(objDataOrder, true)
+        
+          objDataOrder_temp["discount"] = value
+          this.props.updateInputItem(objDataOrder_temp)
+          // console.log('objDataOrder',objDataOrder)
+          return;
+        }
+    }
   componentDidMount() {
     this.props.getListCustomer().then(() => {
       this.props.getListColorOrder();
@@ -62,7 +89,10 @@ class ComboboxMultipleByCustomerByOrder extends React.Component {
     objDataOrder["DayMake"] = date.format("YYYY-MM-DD HH:mm:ss");
     this.props.updateInputItem(objDataOrder);
   }
+ handleClick(obj)
+ {
 
+ }
   _acceptOrder(status) {
     let { objDataOrder, listProductsSelected } = this.props.order;
     if (objDataOrder.IdOrder && listProductsSelected.length == 0) {
@@ -116,7 +146,7 @@ class ComboboxMultipleByCustomerByOrder extends React.Component {
       objDataOrder_temp["ValueMX"] = itemData.ValueMX;
       objDataOrder_temp["ValueLAI"] = itemData.ValueLAI;
       objDataOrder_temp["CodeBaoGia"] = itemData.CodeBaoGia;
-      objDataOrder_temp["discount"] = itemData.Discount;
+      // objDataOrder_temp["discount"] = itemData.Discount;
       this.props.updateInputItem(objDataOrder_temp);
       this.props.getListProductsByPrice(
         objDataOrder_temp.CodeBaoGia,
@@ -237,7 +267,17 @@ class ComboboxMultipleByCustomerByOrder extends React.Component {
       discount,
       Customer_groupKey
     } = this.props.order.objDataOrder;
-    let { status } = this.props.toolbar;
+    let { status,listButtonPer } = this.props.toolbar;
+    
+    
+
+    let checkPermisson = listButtonPer.filter(x => x == 'ALLOW_DISCOUNT')
+    // console.log('checkPermisson', checkPermisson)
+    let allow_Discount=false;
+    if (checkPermisson.length>0 || oldUserInfo.user_name.toUpperCase() == 'ADMIN')
+    {
+      allow_Discount=true;
+    }
     const styleLabel = { "border-style": "groove", padding: "2px" };
     return (
       <div className="form__personnal">
@@ -302,7 +342,7 @@ class ComboboxMultipleByCustomerByOrder extends React.Component {
               </div>
               <div className="right">
                 <ComboboxCustomer
-                  disable={status == "ADD" || isCopy ? false : true}
+                  disabled={status == "ADD" || isCopy ? false : true}
                   value={{ value: CodeKH, label: CodeKH, name: NameKH }}
                   list_data={listCustomer}
                 />
@@ -315,8 +355,9 @@ class ComboboxMultipleByCustomerByOrder extends React.Component {
                 <label htmlFor="name">Tên khách hàng</label>
               </div>
               <div className="right">
-                <input
+                <Cell
                   className="name form-control"
+                  readOnly="true"
                   value={NameKH}
                   type="text"
                   id="NameKH"
@@ -366,18 +407,30 @@ class ComboboxMultipleByCustomerByOrder extends React.Component {
             {/* <label htmlFor="name">{groupConfigText}</label> */}
           </div>
         </div>
-        {/* <div className="row">
-          <div className="col-md-3">
+        {allow_Discount==false ? (
+                      ""
+                    ) : 
+          ( <div className="row">
+          <div className="col-md-4">
             <div className="form-group">
               <div className="left">
-                <label htmlFor="name">Discount</label>
+                <label htmlFor="name">Giảm giá % trên đơn hàng</label>
               </div>
-              <div className="right">
-                <label htmlFor="name">{discount}%</label>{" "}
+              <div className="right">                
+                 <Cell
+                    type="text"
+                    value={discount || 0 }   
+                    keyInput="discount" id={discount} parentObject={this} 
+                    width="100px"
+                    className={`name form-control`}                    
+                  />
               </div>
             </div>
           </div>
-          <div className="col-md-3">
+          </div>
+          )}    
+          
+          {/*<div className="col-md-3">
             <div className="form-group">
               <div className="left">
                 <label htmlFor="name">Loại hội</label>

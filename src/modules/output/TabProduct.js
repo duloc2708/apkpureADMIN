@@ -152,20 +152,26 @@ class TabProduct extends React.Component {
         let list_products_temp = _.clone(ListProductByOrderOutput, true);
 
         // find item product copied
-        let listProductFind = list_products_temp.filter(x => x.IdGroup == IdGroup)
+        let listProductFindByIdGroup = list_products_temp.filter(x => x.IdGroup == IdGroup)
+        // console.log('listProductFindByIdGroup',listProductFindByIdGroup)
+
 
         // find last product similar and sort IdGroupStt  desc
-        let data = _.clone(ListProductByOrderOutput, true).filter(x => x.IdProductParent === listProductFind[0].IdProductParent);
-        data = data.sort((a, b) => b.IdGroupStt > a.IdGroupStt);
+        let data = _.clone(ListProductByOrderOutput, true).filter(x => x.IdProductParent === listProductFindByIdGroup[0].IdProductParent
+        && x.Color==listProductFindByIdGroup[0].Color);
+        // data = data.sort((a, b) => a.IdGroupStt > b.IdGroupStt);
+
+        let dataDesc=_.clone(data.sort((a, b) => b.IdGroupStt.localeCompare(a.IdGroupStt)));
 
         // split data sort max IdGroupStt
-        let splitData = data.splice(0, listProductFind.length)
-        splitData = splitData.sort((a, b) => a.IdGroupStt > b.IdGroupStt);
+        let splitData = dataDesc.splice(0, listProductFindByIdGroup.length)
+        splitData = splitData.sort((a, b) => a.IdGroupStt.localeCompare(b.IdGroupStt));
 
+        // console.log('splitData',splitData)
 
         let listProductFind_temp = []
         let IdGroupNewTemp = Helper.generateUUIDV4();
-
+        //
         splitData.forEach((item) => {
             let item_temp = _.clone(item, true)
             let strId = item_temp.IdGroupStt, IdGroupSttNew = ''
@@ -180,8 +186,10 @@ class TabProduct extends React.Component {
             item_temp.remark = ''
             listProductFind_temp.push(item_temp)
         })
+
         this.props.updateExistProduct(listProductFind_temp)
     }
+  
     handleClick() {
 
     }

@@ -173,11 +173,15 @@ class ListOrder extends React.Component {
                                     </thead>
                                     <tbody>
                                         {listProductsInProduct && listProductsInProduct.map((item, i) => {
-                                            let { ProductID, Basicprice, Saleprice, valueLAI, WeightGold, LAI2Value, WeightLAI, BasicPriceWLAI, VATBasicPrice, PriceWVAT, bufferValue } = item
+                                            let { ProductID, setting_amount,setting_lux_amount,stone_amount,stone_amount_lux, Basicprice, Saleprice, valueLAI, WeightGold, LAI2Value, WeightLAI, BasicPriceWLAI, VATBasicPrice, PriceWVAT, bufferValue } = item
                                             return (
                                                 <tr key={`data_${ProductID}`} >
                                                     <td>{ProductID}</td>
                                                     <td>{WeightGold}</td>
+                                                    <td>{SportConfig.function._formatMoney(stone_amount)}</td>
+                                                    <td>{SportConfig.function._formatMoney(stone_amount_lux)}</td>
+                                                    <td>{SportConfig.function._formatMoney(setting_amount)}</td>
+                                                    <td>{SportConfig.function._formatMoney(setting_lux_amount)}</td>
                                                     <td>{SportConfig.function._formatMoney(Basicprice)}</td>
                                                     <td onBlur={() => this._onBlurDataBuffer(item)}>
                                                         <Cell

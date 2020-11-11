@@ -81,6 +81,7 @@ export const getItemBagDetailByListId = (numGen, list_bag_id) => {
                             let { data: listHeaderColor } = response[1].data
                             let { data: listStoneWeight } = response[2].data
                             let listHeaderColorDefault = listHeaderColor.filter(x => x.IdBag == '')
+                            console.log('listStoneWeight',listStoneWeight)
                             list_bag_id.map((Id) => {
                                 let itemDetailTemp = listItemDetail.filter(x => x.Id == Id)
                                 let listHeaderColorTemp = []

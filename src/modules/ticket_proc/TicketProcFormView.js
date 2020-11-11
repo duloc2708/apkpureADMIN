@@ -21,7 +21,14 @@ class TicketProcFormView extends React.Component {
   componentWillUnmount() {
     this.props.resetDataCastingProc();
   }
+  _redirectCurrentPage(){
+    const type = Helper.getParam(window.location.href, "type");
+    const referId = Helper.getParam(window.location.href, "referId");
+    if(referId){
+      window.location.href = (window.location.pathname+'?type='+type);
+    }
 
+  }
   _validateSave() {
     let {
       objData,
@@ -33,7 +40,8 @@ class TicketProcFormView extends React.Component {
       IsIncludeInOut,
       Code,
       WorkerInTicket,
-      IsAllowProduct_NotSameGold
+      IsAllowProduct_NotSameGold,
+      IsGoldTypeRequest
     } = objConfig;
 
     let type = null;
@@ -41,11 +49,11 @@ class TicketProcFormView extends React.Component {
     let strBag = "";
 
     // validate common
-    if (listBagSelected.length === 0) {
-      message = `Vui lòng cập nhật danh sách Bag !`;
-      type = 1;
-    }
-    if (!objData.CodeLV) {
+    // if (listBagSelected.length === 0) {
+    //   message = `Vui lòng cập nhật danh sách Bag !`;
+    //   type = 1;
+    // }
+    if (!objData.CodeLV && IsGoldTypeRequest==1) {
       message = `Vui lòng nhập loại vàng !`;
       type = 1;
     }
@@ -98,24 +106,24 @@ class TicketProcFormView extends React.Component {
       // }
     }
     // validate begin spure  -> last
-    if (!type && LIST_PROCESS_PREV_SPURE.indexOf(typeProcess) === -1) {
-      if (
-        objData.Gold_Weight_IN_T &&
-        objData.Gold_Weight_OUT_T &&
-        objData.Gold_Weight_OUT_T > objData.Gold_Weight_IN_T
-      ) {
-        message = `Tổng trọng lượng vàng RA không thể lớn hơn VÀO !`;
-        type = 1;
-      }
-      if (
-        objData.Broken_Weight_OUT_T &&
-        objData.Product_Weight_IN_T &&
-        objData.Broken_Weight_OUT_T > objData.Product_Weight_IN_T
-      ) {
-        message = `Tổng trọng lượng sản phẩm RA không thể lớn hơn VÀO !`;
-        type = 1;
-      }
-    }
+    // if (!type && LIST_PROCESS_PREV_SPURE.indexOf(typeProcess) === -1) {
+    //   if (
+    //     objData.Gold_Weight_IN_T &&
+    //     objData.Gold_Weight_OUT_T &&
+    //     objData.Gold_Weight_OUT_T > objData.Gold_Weight_IN_T
+    //   ) {
+    //     message = `Tổng trọng lượng vàng RA không thể lớn hơn VÀO !`;
+    //     type = 1;
+    //   }
+    //   if (
+    //     objData.Broken_Weight_OUT_T &&
+    //     objData.Product_Weight_IN_T &&
+    //     objData.Broken_Weight_OUT_T > objData.Product_Weight_IN_T
+    //   ) {
+    //     message = `Tổng trọng lượng sản phẩm RA không thể lớn hơn VÀO !`;
+    //     type = 1;
+    //   }
+    // }
 
     listBagSelected = listBagSelected.filter(x => x.IdBag);
 
@@ -128,11 +136,11 @@ class TicketProcFormView extends React.Component {
 
             return false;
           }
-          if (bag.Product_Weight_IN > bag.Product_Weight_OUT) {
-            type = 3;
-            message = "Trọng lượng O phải lớn hớn I";
-            return false;
-          }
+          // if (bag.Product_Weight_IN > bag.Product_Weight_OUT) {
+          //   type = 3;
+          //   message = "Trọng lượng O phải lớn hớn I";
+          //   return false;
+          // }
         }
         if (WorkerInTicket == 2) {
           if (!bag.Worker) {
@@ -203,6 +211,7 @@ class TicketProcFormView extends React.Component {
           }
           if (this._validateSave()) {
             if (status == "EDIT") {
+              console.log('status',status)
               this.props.updateItem().then(res => {
                 this.props.updateButtonToolbar("EDIT").then(() => {
                   this.child._addNotification(
@@ -236,6 +245,7 @@ class TicketProcFormView extends React.Component {
           }
           if (this._validateSave()) {
             if (status == "EDIT") {
+              console.log('status',status)
               this.props.updateItem().then(res => {
                 this.props.updateButtonToolbar("").then(() => {
                   this.props.resetDataCastingProc().then(() => {
@@ -244,6 +254,7 @@ class TicketProcFormView extends React.Component {
                       "success"
                     );
                     this.props.getListDataTicketProc("");
+                    this._redirectCurrentPage();
                   });
                 });
               });
@@ -256,17 +267,18 @@ class TicketProcFormView extends React.Component {
                       "success"
                     );
                     this.props.getListDataTicketProc("");
+                    this._redirectCurrentPage();
                   });
                 });
               });
-            }
+            }            
           } else {
             isStatus = false;
             break;
           }
           break;
 
-          break;
+         
         case "ADD":
           this.props.updateButtonToolbar(valueTemp);
           this.props.isEditCasting(true);
@@ -291,6 +303,7 @@ class TicketProcFormView extends React.Component {
           if (r == true) {
             this.props.isEditCasting(false);
             this.props.updateButtonToolbar(valueTemp);
+            this._redirectCurrentPage();
           } else {
             isStatus = false;
           }

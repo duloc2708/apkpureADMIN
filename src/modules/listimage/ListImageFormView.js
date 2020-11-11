@@ -58,7 +58,7 @@ class ListImageFormView extends React.Component {
     let arr_data = []
     data.map((item) => {
       let { Pricename, Pricecode } = item
-      arr_data.push({ value: Pricecode, code: Pricecode, label: Pricename, name: Pricename })
+      arr_data.push({ code: Pricecode, value: Pricecode, label: Pricename, name: Pricename })
 
     })
     return arr_data;

@@ -202,6 +202,9 @@ class ListProductFormView extends React.Component {
       this.refs.code_order && this.refs.code_order.value
     );
   }
+  _showTooltip(item, status) {
+    this.props.updateActiveToolTipBag(item, status);
+  }
   onClickButtonPermission(obj) {
     let { data, nameBtn } = obj;
     let { item, checked, typePrint, status } = data;
@@ -231,6 +234,12 @@ class ListProductFormView extends React.Component {
       default:
         break;
     }
+  }
+  _onClickPrint(obj,typePrint)
+  {
+
+    this.props.printOrderDetail(obj, typePrint);
+    this._showTooltip(obj, false);
   }
   render() {
     let {
@@ -270,7 +279,7 @@ class ListProductFormView extends React.Component {
             <button onClick={() => this.closeModal()}>Đóng</button>
           </div>
         </Modal>
-        <div className="form__personnal">
+        <div id="table-search" className="form__personnal">
           <div className="row">
             <div className="col-md-5">
               <div className="form-group ">
@@ -340,10 +349,16 @@ class ListProductFormView extends React.Component {
                   StatusOrderTransferName,
                   ProductsEachBag,
                   StatusMoldName,
-                  TotalBags,DPCode,GCode
+                  TotalBags,DPCode,GCode,isActive
                 } = item;
+                let topPadding = 0;
+                var elmnt = document.getElementById("table-search");
+                if (elmnt) {
+                  topPadding = elmnt.offsetHeight;                 
+                }
                 return (
                   <tr
+                    id={`data_${i}`}
                     key={`data_${IdOrder}`}
                     onDoubleClick={() => this._onClickRowDouble(item, !checked)}
                   >
@@ -435,6 +450,83 @@ class ListProductFormView extends React.Component {
                       data={{ item: item }}
                       parentObject={this}
                     />
+                    <td>
+                      <a
+                        style={{ marginLeft: "10px" }}
+                        onClick={() => this._showTooltip(item, !isActive)}
+                      >
+                        <i className="fa fa-ellipsis-v"></i>
+                      </a>
+                      {1==1 && isActive ? (
+                        <div
+                          id="container"
+                          tabindex="-1"
+                          className={`dropdown-menu dropdown-menu-right ${
+                            isActive ? "show" : ""
+                          }`}
+                          x-placement="top-end"
+                          style={{
+                            width: "180px",
+                            position: "absolute",
+                            willChange: "transform",
+                            top: `${i< 6? 70 * (i) + topPadding:i<20?60 * (i) + topPadding:43 * (i ) + topPadding}px`,
+                            left: "1150px",
+                            marginLeft: "30px",
+                            paddingRight: "30px",
+                            paddingTop: "10px",
+                            lineHeight: 3
+                          }}
+                        >
+                          <button
+                            id="x"
+                            onClick={() => this._showTooltip(item, !isActive)}
+                          >
+                            X
+                          </button>
+                          <ul
+                            style={{
+                              float: "right",
+                              "list-style-type": "none"
+                            }}
+                          >
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this._onClickPrint(item, "type1")
+                                }
+                              >
+                                <i className="fa fa-print" /> In phiếu mẫu 1
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this._onClickPrint(item, "type2")
+                                }
+                              >
+                                <i className="fa fa-print" /> In phiếu mẫu 2
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                onClick={() =>
+                                  this._onClickPrint(item, "type3")
+                                }
+                              >
+                                <i className="fa fa-print" /> In phiếu mẫu 3
+                              </a>
+                            </li>
+                            
+                            
+                          </ul>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </td>
                   </tr>
                 );
               })}

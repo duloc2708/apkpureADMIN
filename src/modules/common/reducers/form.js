@@ -10,7 +10,7 @@ import {
 const INITIAL_STATE = {
     status: '',
     page: 1,
-    total: 50,
+    total: 100,
     totalRows: 0,
     totalPage: 0,
     startPage: 1,

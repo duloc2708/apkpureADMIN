@@ -24,7 +24,7 @@ export const loadFormStone = () => {
         })
     }
 }
-export const getListDataStoneBySearch = (params = { page: 1, total: 50, key: '', value: '' }) => {
+export const getListDataStoneBySearch = (params = { page: 1, total: 500, key: '', value: '' }) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             axios.get(`${Config.API_URL_USER}stone/get_stone_search`,

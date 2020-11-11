@@ -23,14 +23,19 @@ const INITIAL_STATE = {
     allChecked: false,
     listHeaderTable: [
         { key: 'Id', title: 'Mã đá', type: 'text', class: '', valueFilter: '' },
-        { key: 'Name', title: 'Tên đá', type: 'text', class: '', valueFilter: '' },
-        { key: 'HdName', title: 'Hình dạng', type: 'text', class: '', valueFilter: '' },
-        { key: 'KcName', title: 'Kích cỡ', type: 'text', class: '', valueFilter: '' },
-        { key: 'ColorName', title: 'Màu sắc', type: 'text', class: '', valueFilter: '' },
-        { key: 'UnitName', title: 'Unit', type: 'text', class: '', valueFilter: '' },
-        { key: 'Numb', title: 'Numb', type: 'text', class: '', valueFilter: '' },
+        { key: 'Name', title: 'Tên đá', type: 'text', class: '', valueFilter: '' },        
+        { key: 'Decription', title: 'Decription', type: 'text', class: '', valueFilter: '' },
         { key: 'Weight', title: 'Height', type: 'text', class: '', valueFilter: '' },
-        { key: 'Decription', title: 'Decription', type: 'text', class: '', valueFilter: '' }
+        { key: 'stone_price', title: 'Giá đá thường', type: 'text', class: '', valueFilter: '' },
+        { key: 'stone_price_lux', title: 'Giá đá CC', type: 'text', class: '', valueFilter: '' },
+        { key: 'waxset_cost', title: 'Công waxset', type: 'text', class: '', valueFilter: '' },
+        { key: 'handset_cost', title: 'Công handset', type: 'text', class: '', valueFilter: '' },
+        // { key: 'HdName', title: 'Hình dạng', type: 'text', class: '', valueFilter: '' },
+        // { key: 'KcName', title: 'Kích cỡ', type: 'text', class: '', valueFilter: '' },
+        // { key: 'ColorName', title: 'Màu sắc', type: 'text', class: '', valueFilter: '' },
+        // { key: 'UnitName', title: 'Unit', type: 'text', class: '', valueFilter: '' },
+        { key: 'Numb', title: 'Tỉ lệ bể đá %', type: 'text', class: '', valueFilter: '' },
+        
     ],
     listHeaderTabProduct: [
         { key: 'ID', title: 'Mã đá', type: 'text', class: '', valueFilter: '' },
@@ -50,14 +55,16 @@ const INITIAL_STATE = {
         Id: '',
         Name: '',
         Decription: '',
-        IdType: '',
-        IdUnit: '',
+        IdType: '',        
         Numb: '',
         Weight: '',
         TypeStone: '',
         Hd: '',
         Kc: '',
-        Color: ''
+        Color: '',
+        stone_price: '',
+        waxset_cost: '',
+        handset_cost: ''
     },
     fieldValidateStone: [
         { key: "Id", Des: "Mã đá" },

@@ -475,9 +475,9 @@ export const addNewItem = (data) => {
         dispatch({
             type: ADD_NEW_ITEM,
             payload: {
-                isSave: true
+              isSave: true
             }
-        });
+          });
         let { objData, listGoldSelected } = getState().cd_gold_trans
         listGoldSelected.map(x => x.CodeTicket = objData.CodeTicket)
         // sum total 
@@ -513,9 +513,9 @@ export const addNewItem = (data) => {
                     dispatch({
                         type: ADD_NEW_ITEM,
                         payload: {
-                            isSave: false
+                          isSave: false
                         }
-                    });
+                      });
                     resolve(response)
                 })
         }, (err) => {
@@ -529,9 +529,9 @@ export const updateItem = (data) => {
         dispatch({
             type: ADD_NEW_ITEM,
             payload: {
-                isSave: true
+              isSave: true
             }
-        });
+          });
         let { objData, listGoldSelected } = getState().cd_gold_trans
         listGoldSelected.map(x => x.CodeTicket = objData.CodeTicket)
         // sum total 
@@ -565,9 +565,9 @@ export const updateItem = (data) => {
                     dispatch({
                         type: ADD_NEW_ITEM,
                         payload: {
-                            isSave: false
+                          isSave: false
                         }
-                    });
+                      });
                     resolve(response)
                 })
         }, (err) => {

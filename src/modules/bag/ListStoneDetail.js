@@ -141,7 +141,7 @@ class ListStoneDetail extends React.Component {
                                     <td style={{ "textAlign": "left", "fontWeight": PrimaryStone == 1 ? 'bold' : '' }}>
                                         {IdStone}
                                     </td>
-                                    <td style={{ "textAlign": "left" }}>
+                                    <td style={{"font-weight":"bold" }}>
                                         <Combobox disable={true} type_code='DSM' keyInput="Color" value={PrimaryStone || Color ? Color : '001'} id={IdProductParent + ColorParent + IdStone + '/' + IdStone} parentObject={this} />
                                     </td>
                                     <td style={{ "textAlign": "left" }}>

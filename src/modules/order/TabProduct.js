@@ -167,6 +167,10 @@ class TabProduct extends React.Component {
       CodeBaoGiaTemp
     } = this.props.order;
     let { status } = this.props.toolbar;
+    if(objDataOrder.StatusOrder!=="STATUS_ORDER_01") {
+      alert("Không thể sửa đơn hàng khi đã xác nhận");
+      return;
+    }
     if (isEditProducts != "block" || isCopy) {
       if (!objDataOrder.IdCustomer) {
         alert("Vui lòng chọn khách hàng");
@@ -183,7 +187,8 @@ class TabProduct extends React.Component {
       if (list_products_by_baogia.length == 0) {
         // this.props.getListProductsByPrice(objDataOrder.CodeBaoGia);
       }
-    }else if(objDataOrder.StatusOrder!=="STATUS_ORDER_01") {
+    }
+    else if(objDataOrder.StatusOrder!=="STATUS_ORDER_01") {
       alert("Không thể sửa đơn hàng khi đã xác nhận");
     } 
   }
@@ -308,6 +313,7 @@ class TabProduct extends React.Component {
     let totalmoney = 0;
     let totalgoldweight = 0;
     let totalmoneydiscount = 0;
+    
     return (
       <div>
         <AlertCustom onRef={ref => (this.child = ref)} />
@@ -355,6 +361,7 @@ class TabProduct extends React.Component {
                   price_basic,
                   sum_basic,
                   isExists,
+                  isExistsBag,
                   index,
                   remark,
                   Image,
@@ -369,7 +376,7 @@ class TabProduct extends React.Component {
                   totalgoldweight +
                   (WeightReal ? WeightReal * sl || 0 : Weight * sl || 0);
                 totalmoneydiscount = totalmoneydiscount + sum;
-
+                
                 // set url image
                 let filename = url_image
                   ? Config.API_URL_IMAGE + url_image
@@ -417,11 +424,7 @@ class TabProduct extends React.Component {
                       index={index}
                       width="60px"
                       readOnly={
-                        isEditProducts == "block"
-                          ? true
-                          : isExists
-                          ? false
-                          : true
+                        isEditProducts == "block"? true : isExistsBag? true: false
                       }
                       value={sl}
                       keyInput="sl"
@@ -436,7 +439,7 @@ class TabProduct extends React.Component {
                                         /> */}
                       {list_color.length > 0 ? (
                         <Combobox
-                          disable={isEditProducts == "block" ? true : false}
+                          disable={isEditProducts == "block"? true : isExistsBag? true: false}
                           type_code="DSM"
                           keyInput="color"
                           data_order={list_color}
@@ -453,11 +456,7 @@ class TabProduct extends React.Component {
                       <input
                         onKeyPress={e => this._addProduct(e)}
                         readOnly={
-                          isEditProducts == "block"
-                            ? true
-                            : isExists
-                            ? false
-                            : true
+                         isEditProducts == "block"? true : isExistsBag? true: false
                         }
                         id={index}
                         style={{ width: `220px` }}
@@ -470,6 +469,7 @@ class TabProduct extends React.Component {
                     </td>
                     <td>
                       <button
+                        disabled={checkbag==true? true :false}
                         onClick={() =>
                           this._funcAddExistProduct(index, value, url_image)
                         }
@@ -625,13 +625,15 @@ class TabProduct extends React.Component {
                 <b> Tổng thành tiền</b>:
               </td>
               <td>{SportConfig.function._formatMoney(totalmoney)}</td>
+              {/*
               <td>
-                <b>Discount</b>: {objDataOrder.discount}
+                <b>Discount</b>: {objDataOrder.discount} 
               </td>
               <td>
                 <b>Tổng TT sau discount</b>:{" "}
               </td>
               <td>{SportConfig.function._formatMoney(totalmoneydiscount)}</td>
+              */}
             </tr>
           </tbody>
         </table>

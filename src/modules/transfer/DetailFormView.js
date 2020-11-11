@@ -24,13 +24,21 @@ class DetailFormView extends React.Component {
   ChangeValueCombobox(obj) {
     let { id, value } = obj;
     let { objData } = this.props.transfer;
+
+    if (id == 'IdStore_From') {
+      this.props.getListBalanceByIdStore(value)
+    }
+    if (value === 'TF_TYPE_02') {
+      objData = {
+        ...objData,
+        IdStore_From: 'SAJIKO',
+        IdStore_To: 'SAJIKO'
+      }
+    }
     this.props.updateInputItem({
       ...objData,
       [id]: value
     });
-    if (id == 'IdStore_From') {
-      this.props.getListBalanceByIdStore(value)
-    }
   }
 
   ChangeValueComboboxMulti(obj) {
@@ -54,6 +62,11 @@ class DetailFormView extends React.Component {
       return;
     }
     this.props.updateInputItem(objDataTemp);
+
+    // tinh lai trong luong vang sau nau chi tiet
+    if(id == 'TypeGoldWarm'){
+      this.props.calGoldWarmDetail(objDataTemp);
+    }
   }
   handleChangeDate(date) {
     let { objData } = this.props.cd_turn_inout;
@@ -92,7 +105,8 @@ class DetailFormView extends React.Component {
       TypeGoldWarm,
       TotalWeightAfterWarm,
       DayConfirmF,
-      Gold_Lost_T
+      Gold_Lost_T,
+      TotalWeightLH
     } = this.props.transfer.objData;
     let { objConfig, objSearch, list_turn_type } = this.props.transfer;
     let { list_config_process } = this.props.header;
@@ -209,7 +223,49 @@ class DetailFormView extends React.Component {
                           </div>
                         </div>
                       </div>
-                      {TransType === "TF_TYPE_02" ? (
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <div style={{ width: "20%" }}>
+                            <label htmlFor="name">Ghi chú </label>
+                          </div>
+                          <div style={{ width: "80%" }}>
+                            <textarea
+                              readOnly={blockInput}
+                              onChange={(e) => this._onChange(e)}
+                              rows="1"
+                              style={{ width: "100%" }}
+                              className="name form-control"
+                              value={Notes}
+                              type="text"
+                              id="Notes"
+                              name="Notes"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-3">
+                        <div className="form-group">
+                          <div className="left">
+                            <label htmlFor="name">
+                              Tổng TL hao hụt
+                          </label>
+                          </div>
+                          <div className="right">
+                            <input
+                              readOnly={true}
+                              className="name form-control"
+                              value={Gold_Lost_T}
+                              onChange={e => this._onChange(e)}
+                              type="text"
+                              id="Gold_Lost_T"
+                              name="Gold_Lost_T"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      {TransType !== "TF_TYPE_01" ? (
                         <div>
                           <div className="col-md-3">
                             <div className="form-group">
@@ -235,6 +291,26 @@ class DetailFormView extends React.Component {
                             <div className="form-group">
                               <div className="left">
                                 <label htmlFor="name">
+                                  Tổng TL hội
+                                </label>
+                              </div>
+                              <div className="right">
+                                <input
+                                  readOnly={blockInput}
+                                  className="name form-control"
+                                  value={TotalWeightLH}
+                                  onChange={e => this._onChange(e)}
+                                  type="text"
+                                  id="TotalWeightLH"
+                                  name="TotalWeightLH"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-3">
+                            <div className="form-group">
+                              <div className="left">
+                                <label htmlFor="name">
                                   Tổng TL vàng sau nấu
                                 </label>
                               </div>
@@ -251,52 +327,12 @@ class DetailFormView extends React.Component {
                               </div>
                             </div>
                           </div>
+                          
                         </div>
                       ) : (
                           ""
                         )}
-                    </div>
-                    <div className="row">
-                    <div className="col-md-3">
-                      <div className="form-group">
-                        <div className="left">
-                          <label htmlFor="name">
-                            Tổng TL hao hụt
-                          </label>
-                        </div>
-                        <div className="right">
-                          <input
-                            readOnly={true}
-                            className="name form-control"
-                            value={Gold_Lost_T}
-                            onChange={e => this._onChange(e)}
-                            type="text"
-                            id="Gold_Lost_T"
-                            name="Gold_Lost_T"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                      <div className="col-md-9">
-                        <div className="form-group">
-                          <div style={{ width: "10%" }}>
-                            <label htmlFor="name">Ghi chú </label>
-                          </div>
-                          <div style={{ width: "90%" }}>
-                            <textarea
-                              readOnly={blockInput}
-                              onChange={(e) => this._onChange(e)}
-                              rows="1"
-                              style={{ width: "100%" }}
-                              className="name form-control"
-                              value={Notes}
-                              type="text"
-                              id="Notes"
-                              name="Notes"
-                            />
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
                   </div>
                 </div>

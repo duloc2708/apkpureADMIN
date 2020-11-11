@@ -19,6 +19,7 @@ import {
   UPDATE_CELL_TICKET_STONE,
   UPDATE_TYPE_IN_OUT,
   UPDATE_BAG_DETAIL,
+  CONFIRM_BAG_DETAIL,
   LOADING_TICKET_PROC,
   GET_ALL_BAG_IN_TICKET,
   UPDATE_DEFAULT_BAG,
@@ -106,7 +107,7 @@ const INITIAL_STATE = {
     },
     {
       key: "DATE",
-      title: "Ngày thực hiện",
+      title: "Ngày T/hiện",
       type: "text",
       class: "",
       valueFilter: ""
@@ -114,6 +115,13 @@ const INITIAL_STATE = {
     {
       key: "CODELV",
       title: "Loại vàng",
+      type: "text",
+      class: "",
+      valueFilter: ""
+    },
+    {
+      key: "CODELVLH",
+      title: "Loại Hội",
       type: "text",
       class: "",
       valueFilter: ""
@@ -188,12 +196,6 @@ const INITIAL_STATE = {
     {
       key: "PRINT",
       title: "In",
-      type: "text",
-      class: ""
-    },
-    {
-      key: "DETAIL",
-      title: "Chi tiết",
       type: "text",
       class: ""
     }
@@ -476,6 +478,7 @@ const INITIAL_STATE = {
     { key: "STT", title: "STT", type: "text", class: "" },
     { key: "IDBAG", title: "Số Bag", type: "text", class: "" },
     { key: "WORKER", title: "Worker", type: "text", class: "" },
+    { key: 'COPY', title: '', type: '', class: '' },
     { key: "QTYASSIGNSTONE", title: "Số lượng SP", type: "text", class: "" },
     { key: "IDPRODUCT", title: "Mã SP", type: "text", class: "" },
     {
@@ -767,6 +770,7 @@ const INITIAL_STATE = {
       col: 2
     },
     { key: "STATUS", title: "Trạng thái", type: "text", class: "", col: 1 },
+    { key: "CONFIRM", title: "Xác nhận", type: "text", class: "", col: 1 },
     { key: "CONFIRMBY", title: "", type: "text", class: "", col: 1 }
   ],
   listProductCancel: [],
@@ -842,6 +846,11 @@ const Reducer = (state = INITIAL_STATE, action) => {
         ...action.payload
       };
     case UPDATE_BAG_DETAIL:
+      return {
+        ...state,
+        ...action.payload
+      };
+    case CONFIRM_BAG_DETAIL:
       return {
         ...state,
         ...action.payload

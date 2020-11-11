@@ -227,7 +227,7 @@ class TransferFormView extends React.Component {
             <ToolbarFormView isPopup={true} parentObject={this} />
             {objData.keyMap ? (
               <div>
-                {type==0?<DetailFormView />:<CookDetailFormView />}
+                <DetailFormView />
 
               </div>
 

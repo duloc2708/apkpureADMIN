@@ -21,10 +21,10 @@ class TabPrice extends React.Component {
                     </thead>
                     <tbody>
                         {listPrice && listPrice.map((item, i) => {
-                            let { SalepriceID, Basicprice, Saleprice } = item
+                            let { SalepriceID, Basicprice, Saleprice,Pricecode } = item
                             return (
                                 <tr key={`price_${i}`}>
-                                    <td>{SalepriceID}</td>
+                                    <td>{Pricecode}</td>
                                     <td>{SportConfig.function._formatMoney(Basicprice)}</td>
                                     <td>{SportConfig.function._formatMoney(Saleprice)}</td>
                                 </tr>)

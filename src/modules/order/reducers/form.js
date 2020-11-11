@@ -77,7 +77,8 @@ const INITIAL_STATE = {
     ValueLH: "",
     ValueLV: "",
     ValueLd: "",
-    groupConfig: ""
+    groupConfig: "",
+    discount:""
   },
   listHeaderTableOrder: [
     { key: "IdOrder", title: "Mã đơn hàng", type: "text", class: "" },

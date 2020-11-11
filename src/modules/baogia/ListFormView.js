@@ -174,7 +174,9 @@ class ListProductFormView extends React.Component {
                                 , Updatedate
                                 , IsDisable
                                 , Remark
-                                , checked
+                                , checked,valueLAI,VAT
+                                ,PriceCatType, PriceCatType_Name
+                                ,CodeLV
                             } = item
                             PriceType = list_pricetype.filter(x => x.value == PriceType)
                             return (
@@ -187,7 +189,11 @@ class ListProductFormView extends React.Component {
                                     <td>{Pricecode}</td>
                                     <td>{Pricename}</td>
                                     <td>{PriceType && PriceType[0] && PriceType[0].text}</td>
+                                    <td>{PriceCatType_Name}</td>
+                                    <td>{CodeLV}</td>
+                                    <td>{valueLAI}%</td>
                                     <td>{Ratio}%</td>
+                                    <td>{VAT}%</td>                                    
                                     <td>{moment.utc(Updatedate).format('DD/MM/YYYY HH:mm:ss')}</td>
                                     <td><button onClick={() => this._onRowEdit(item, !checked)}><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
                                     <td onClick={() => this._onPrint(item)}><button><i className="fa fa-print" aria-hidden="true"></i></button></td>

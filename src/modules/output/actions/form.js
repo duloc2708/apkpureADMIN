@@ -607,19 +607,20 @@ export const updateExistProduct = (listProduct) => {
             item_clone.sttOther = item_clone.IdProduct + '_' + (ListProductByOrderOutput.length) + '_' + i
             ListProductByOrderOutputTemp.push(item_clone)
         })
-        let sorData = _.orderBy(ListProductByOrderOutputTemp, 'IdGroupStt', 'asc')
-        sorData.map((item, i) => {
+        let sortData =ListProductByOrderOutputTemp.sort((a, b) => a.IdGroupStt.localeCompare(b.IdGroupStt));
+        sortData.map((item, i) => {
             item.index = i + 1
             return item
         })
         dispatch({
             type: UPDATE_EXISTS_PRODUCT_OUTPUT,
             payload: {
-                ListProductByOrderOutput: sorData
+                ListProductByOrderOutput: sortData
             }
         })
     }
 }
+
 export const updateCellProducts = (obj) => {
     return (dispatch, getState) => {
         let { ListProductByOrderOutput } = getState().output

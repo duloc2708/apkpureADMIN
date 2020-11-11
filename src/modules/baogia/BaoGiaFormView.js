@@ -313,7 +313,7 @@ class BaoGiaFormView extends React.Component {
         return isCheck
     }
     componentDidMount() {
-      let list = ['PRICE_FACTOR']
+      let list = ['PRICE_FACTOR','LV']
       this.props.getListTypeByListCode(list).then(() => {
           this.props.loadForm()
       })

@@ -19,14 +19,11 @@ export const perMissionToolbar = () => {
             let { locationBeforeTransitions } = getState().routing
             let listButton_temp = _.clone(listButton, true);
             let page = window.location.pathname+window.location.search
-            // if (locationBeforeTransitions && locationBeforeTransitions.pathname) {
-            //     page = locationBeforeTransitions.pathname
-            // }
             page=page.substring(1,page.length)
             let filData = []
             let listButtonPer = []
             list_function_user.map((item) => {
-                if (item.code == page) {
+                if (page.indexOf(item.code) !==-1) {
                     let arrBtn = item && item.strListBtn.split(',') || []
                     listButtonPer = arrBtn;
                     if(arrBtn.length>0){
@@ -41,8 +38,6 @@ export const perMissionToolbar = () => {
 
                 }
             })
-            console.log('filData>>>', filData);
-
             dispatch({
                 type: PERMISSION_TOOLBAR,
                 payload: {
@@ -50,7 +45,7 @@ export const perMissionToolbar = () => {
                     listButtonPer: listButtonPer
                 }
             })
-            resolve(UPDATE_LIST_BUTTON_TOOLBAR)
+            resolve(PERMISSION_TOOLBAR)
         })
     }
 }
@@ -174,34 +169,26 @@ export const updateListButton = () => {
             { code: 'SAVE', name: 'lưu', classBtn: 'fa fa-floppy-o', status: 'disable', display: true },
             { code: 'PRINT', name: 'In', classBtn: 'fa fa-print', status: '', display: true },
             { code: 'EXPORT', name: 'xuất dữ liệu', classBtn: 'fa fa-print', status: '', display: true },
-            { code: 'CANCEL', name: 'huỷ', class: 'fa fa-window-close-o', status: 'disable', display: true },
+            { code: 'CANCEL', name: 'Quay lại', class: 'fa fa-window-close-o', status: 'disable', display: true },
             { code: 'DETAIL', name: 'chi tiết', classBtn: 'fa fa-info-circle', status: '', display: true },
             { code: 'DELETE', name: 'xoá', classBtn: 'fa fa-times', status: '', display: true }
-            // { code: 'ACCEPT_ORDER', name: 'Xác nhận ĐH', classBtn: 'fa fa-check', status: 'disable', display: false },
-            // { code: 'CANCEL_ORDER', name: 'Huỷ đơn hàng', classBtn: 'fa fa-ban', status: 'disable', display: false },
-            // { code: 'PRICE_ORDER', name: 'Cập nhật giá ĐH', classBtn: 'fa fa-usd', status: 'disable', display: false },
-            // { code: 'ACCEPT_OUTPUT', name: 'Xác nhận XH', classBtn: 'fa fa-check', status: 'disable', display: false },
-            // { code: 'COMPlETED_OUTPUT', name: 'Hoàn thành XH', classBtn: 'fa fa-check', status: 'disable', display: false },
-            // { code: 'PRICE_OUTPUT', name: 'Cập nhật giá XH', classBtn: 'fa fa-usd', status: 'disable', display: false },
-            // { code: 'DELETE_BAG', name: 'Xoá bag', classBtn: 'fa fa-times', status: 'disable', display: false },
-            // { code: 'ACCEPT_CASH_TRANS', name: 'Xác nhận phiếu thu', classBtn: 'fa fa-check', status: 'disable', display: false },
-            // { code: 'COMPlETED_CASH_TRANS', name: 'Hoàn thành phiếu thu', classBtn: 'fa fa-check', status: 'disable', display: false },
         ]
-        let page = ''
-        if (locationBeforeTransitions && locationBeforeTransitions.pathname) {
-            page = locationBeforeTransitions.pathname
-        }
+        let page = window.location.pathname+window.location.search
+        page=page.substring(1,page.length)
 
         let filData = []
         list_function_user.map((item) => {
-            if (item.code == page) {
-                let arrBtn = item && item.strListBtn.split(',') || []
-                arrBtn.map(itemBtn => {
-                    let checkExists = listButton_temp.filter(x => x.code == itemBtn)
-                    if (checkExists.length > 0) {
-                        filData.push(checkExists[0])
-                    }
-                })
+            if (page.indexOf(item.code) !==-1 ) {
+                  let arrBtn = item && item.strListBtn.split(',') || []
+                  if(arrBtn.length>0){
+                    arrBtn.map(itemBtn => {
+                        let checkExists = listButton_temp.filter(x => x.code == itemBtn)
+                        if (checkExists.length > 0) {
+                            filData.push(checkExists[0])
+                        }
+                    })
+                  }
+
             }
         })
 

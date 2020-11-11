@@ -45,6 +45,7 @@ class ListGold extends React.Component {
         } = this.props.transfer.objData;
         let totalWeightFrom10 = 0;
         let totalTF_Weight10 = 0;
+        let totalTF_Weight_From=0;
         let totalWeightAfterWarmParse = 0;
         let list_data_goldTemp = list_data_gold;
         if (objSearchGold.valueLV) {
@@ -86,13 +87,35 @@ class ListGold extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
+                        {list_data_goldTemp && list_data_goldTemp.map((item, i) => {
+                            let {
+                                IdTransferdetail,
+                                keyMap,
+                                ValueLV_From,
+                                ValueLV_To,
+                                TF_Weight_From,
+                                TF_Weight_To,
+                                Status,
+                                TF_Weight,
+                                TF_Weight10,
+                                TF_Weight_Hold,
+                                indexCell,
+                                Gold_Lost
+                            } = item;
+                            const TF_Weight_From10 = TF_Weight_From && TF_Weight_From * ValueLV_From / 100 || '';
+                            totalWeightFrom10 = totalWeightFrom10 + (TF_Weight_From10 || 0);
+                            totalTF_Weight10 = totalTF_Weight10 + parseFloat(TF_Weight10 || 0);
+                            totalTF_Weight_From = totalTF_Weight_From + parseFloat(TF_Weight_From || 0);
+                            totalWeightAfterWarmParse = totalWeightAfterWarmParse + parseFloat(TF_Weight_To || 0);
+
+                        })}
                         <tr>
-                            <td></td>
-                            <td><b>Tổng TL vàng quy 10</b></td>
+                            <td><b>Tổng TL</b></td>
+                            <td> {Helper.round(totalTF_Weight_From, 4)}</td>
                             <td>{Helper.round(totalWeightFrom10, 4)}</td>
                             {TransType == 'TF_TYPE_01' ? '' :
                                 <td>{Helper.round(totalWeightAfterWarmParse, 4)}</td>}
-                            <td><b>Tổng TL tồn kho 10</b></td>
+                            <td></td>
                             <td>{Helper.round(totalTF_Weight10, 4)}</td>
                             <td></td>
                         </tr>
@@ -116,11 +139,12 @@ class ListGold extends React.Component {
                             totalTF_Weight10 = totalTF_Weight10 + (TF_Weight10 || 0);
                             totalWeightAfterWarmParse = totalWeightAfterWarmParse + (TF_Weight_To || 0);
                             return (
+
                                 <tr key={`data_${i}`}>
                                     <td>{ValueLV_From}</td>
                                     <Cell readOnly={blockInput} width="100px" id={i} value={TF_Weight_From} keyInput="TF_Weight_From" parentObject={this} />
                                     <td>{Helper.round(TF_Weight_From10 || 0, 4)}</td>
-                                    {TransType == 'TF_TYPE_02' ? <td>{Helper.round(TF_Weight_To || 0, 4)}</td> : ''}
+                                    {TransType != 'TF_TYPE_01' ? <td>{Helper.round(parseFloat(TF_Weight_To || 0),4)}</td> : ''}
                                     <td>{Helper.round(Gold_Lost || 0, 4)}</td>
                                     <td>{Helper.round(TF_Weight || 0, 4)}</td>
                                     <td>{Helper.round(TF_Weight10 || 0, 4)}</td>

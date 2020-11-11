@@ -18,9 +18,12 @@ class StoneFormView extends React.Component {
             Name: '',
             Decription: '',
             IdType: '',
-            IdUnit: '',
             Numb: '',
-            Weight: ''
+            Weight: '',
+            stone_price: '',
+            stone_price_lux: '',
+            waxset_cost: '',
+            handset_cost: '',
         }
     }
     _clearInput() {
@@ -39,7 +42,7 @@ class StoneFormView extends React.Component {
     }
     componentWillMount() {
         // get list type
-        let list = ['DSM', 'UNIT', 'TYPE_STONE', 'HD', 'KC']
+        let list = ['DSM', 'TYPE_STONE', 'HD', 'KC']
         this.props.getListTypeByListCode(list).then(() => {
             this.props.loadFormStone()
         })
@@ -248,14 +251,13 @@ class StoneFormView extends React.Component {
         let { Id,
             Name,
             Decription,
-            IdType,
-            IdUnit,
+            IdType,            
             Numb,
             Weight,
             TypeStone,
             Hd,
             Kc,
-            Color } = this.props.stone.objData
+            Color,stone_price,stone_price_lux,waxset_cost,handset_cost } = this.props.stone.objData
         return (
             <div className="container">
                 <AlertCustom onRef={ref => (this.child = ref)} />
@@ -313,24 +315,44 @@ class StoneFormView extends React.Component {
                                 </div>
 
 
-                                <div className="row">
+                                <div className="row">                                    
                                     <div className="col-md-4">
                                         <div className="form-group ">
                                             <div className="left">
-                                                <label htmlFor="name">Numb</label>
+                                                <label htmlFor="name">Giá đá thường</label>
                                             </div>
-                                            <div className="right">
+                                           <div className="right">
                                                 <input className="name form-control"
                                                     type="number"
-                                                    value={Numb}
+                                                    value={stone_price}
                                                     onChange={(e) => this._handleInput(e)}
-                                                    ref="Numb"
-                                                    id="Numb"
-                                                    name="Numb"
+                                                    ref="stone_price"
+                                                    id="stone_price"
+                                                    name="stone_price"
                                                     required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div className="col-md-4">
+                                        <div className="form-group ">
+                                            <div className="left">
+                                                <label htmlFor="name">Giá đá CC</label>
+                                            </div>
+                                           <div className="right">
+                                                <input className="name form-control"
+                                                    type="number"
+                                                    value={stone_price_lux}
+                                                    onChange={(e) => this._handleInput(e)}
+                                                    ref="stone_price_lux"
+                                                    id="stone_price_lux"
+                                                    name="stone_price_lux"
+                                                    required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
+                                            </div>
+                                        </div>
+                                    </div>    
+
+
                                     <div className="col-md-4">
                                         <div className="form-group">
                                             <div className="left">
@@ -347,17 +369,7 @@ class StoneFormView extends React.Component {
                                                     required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="form-group">
-                                            <div className="left">
-                                                <label htmlFor="name">Unit</label>
-                                            </div>
-                                            <div className="right">
-                                                <Combobox type_code='UNIT' id='IdUnit' value={IdUnit} parentObject={this} />
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
                                 <div className="row">
                                     <div className="col-md-4">
@@ -391,7 +403,59 @@ class StoneFormView extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <div className="form-group ">
+                                            <div className="left">
+                                                <label htmlFor="name">Tỉ lệ bể đá %</label>
+                                            </div>
+                                            <div className="right">
+                                                <input className="name form-control"
+                                                    type="number"
+                                                    value={Numb}
+                                                    onChange={(e) => this._handleInput(e)}
+                                                    ref="Numb"
+                                                    id="Numb"
+                                                    name="Numb"
+                                                    required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div className="col-md-4">
+                                        <div className="form-group">
+                                            <div className="left">
+                                                <label htmlFor="name">Công waxset</label>
+                                            </div>
+                                            <div className="right">
+                                                <input className="name form-control"
+                                                    type="number"
+                                                    value={waxset_cost}
+                                                    onChange={(e) => this._handleInput(e)}
+                                                    ref="waxset_cost"
+                                                    id="waxset_cost"
+                                                    name="waxset_cost"
+                                                    required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <div className="form-group">
+                                            <div className="left">
+                                                <label htmlFor="name">Công hanset</label>
+                                            </div>
+                                            <div className="right">
+                                                <input className="name form-control"
+                                                    type="number"
+                                                    value={handset_cost}
+                                                    onChange={(e) => this._handleInput(e)}
+                                                    ref="handset_cost"
+                                                    id="handset_cost"
+                                                    name="handset_cost"
+                                                    required="" /><span className="wpcf-not-valid-tip wpcf-display-none" ></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="row">
 
                                     <div className="col-md-12">
@@ -451,8 +515,8 @@ class StoneFormView extends React.Component {
                                         })}
                                     </tr>
                                     {list_data && list_data.map((item, i) => {
-                                        let { Id, Name, IdUnit, Numb, Weight, Decription, checked
-                                            , UnitName, HdName, KcName, ColorName
+                                        let { Id, Name, stone_price_lux, Numb, Weight, Decription, checked
+                                            , UnitName, HdName, KcName, ColorName,stone_price,waxset_cost,handset_cost
                                         } = item
                                         return (
                                             <tr key={`data_${i}`} onClick={() => this._onClickRow(item)}>
@@ -462,14 +526,16 @@ class StoneFormView extends React.Component {
                                                     </label>
                                                 </th>
                                                 <td>{Id}</td>
-                                                <td>{Name}</td>
-                                                <td>{HdName}</td>
-                                                <td>{KcName}</td>
-                                                <td>{ColorName}</td>
+                                                <td>{Name}</td>                                                
+                                                <td>{Decription}</td>
+                                                <td>{Weight}</td>
+                                                <td>{SportConfig.function._formatMoney(stone_price)}</td>
+                                                <td>{SportConfig.function._formatMoney(stone_price_lux)}</td>
+                                                <td>{SportConfig.function._formatMoney(waxset_cost)}</td>
+                                                <td>{SportConfig.function._formatMoney(handset_cost)}</td>
                                                 <td>{UnitName}</td>
                                                 <td>{Numb}</td>
-                                                <td>{Weight}</td>
-                                                <td>{Decription}</td>
+                                                
                                             </tr>)
                                     })}
                                 </tbody>

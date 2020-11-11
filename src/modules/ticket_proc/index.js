@@ -355,7 +355,7 @@ function updateItem(req, res, next) {
   }
   if (listStone.length > 0) {
     query = query + genQueryListStone(listStone, user_name);
-    console.log(genQueryListStone(listStone, user_name));
+    console.log('genQueryListStone',genQueryListStone(listStone, user_name));
   }
   if (listGoldSelected.length > 0) {
     query = query + genQueryListGold(listGoldSelected, user_name);
@@ -563,7 +563,7 @@ function get_all_gold_by_ticket(req, res, next) {
     { name: "CodeTicket", sqltype: sql.NVarChar, value: CodeTicket },
     { name: "Status", sqltype: sql.NVarChar, value: Status || "" }
   ];
-  console.log(listParams);
+  console.log('listParams',listParams);
   db.executeStoreProcedure(
     res,
     next,
